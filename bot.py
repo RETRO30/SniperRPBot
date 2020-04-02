@@ -20,35 +20,17 @@ async def on_ready():
 
 
 @bot.command(pass_context=True)
-async def calc(ctx, *arg):
-    arg = list(arg)
-    time_on_server = [int(arg[0].split(':')[0]), int(arg[0].split(':')[1])]
-    time_in_msc = [int(arg[1].split(':')[0]), int(arg[1].split(':')[1])]
-    if time_on_server[1] != 0:
-        time_in_msc[1] += int(0.6 * (60 - time_on_server[1]) * 0.8)
-        time_on_server[1] = 0
+async def calc(ctx, arg):
+    time = [int(arg[0].split(':')[0]), int(arg[0].split(':')[1])]
     time_table = []
-    for i in range(180):
-        if time_on_server[0] == 17:
-            time_table.append(
-                f'{instr(time_on_server[0])}:{instr(time_on_server[1])}'
-                f' - '
-                f'{instr(time_in_msc[0])}:{instr(time_in_msc[1])}'
-        )
-        if time_in_msc[1] + 8 >= 60:
-            time_in_msc[1] = (time_in_msc[1] + 8) - 60
-            if time_in_msc[0] + 1 == 24:
-                time_in_msc[0] = 0
-            else:
-                time_in_msc[0] += 1
+    for i in range(8):
+        time_table.append(f'{instr(time_on_server[0])}:{instr(time_on_server[1])}')
+        if time[1] + 24 >= 60:
+            time[0] += 4
+            time[1] = time[1] + 24 - 60
         else:
-            time_in_msc[1] += 8
-
-        if time_on_server[0] + 1 == 24:
-            time_on_server[0] = 0
-        else:
-            time_on_server[0] += 1
-
+            time[1] += 24
+            time[0] += 3
     for i in time_table:
         await ctx.send(i)
 

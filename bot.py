@@ -29,7 +29,7 @@ async def calc(ctx, *arg):
         time_on_server[1] = 0
     time_table = []
     for i in range(180):
-        if time_on_server[0] == 23:
+        if time_on_server[0] == 17:
             time_table.append(
                 f'{instr(time_on_server[0])}:{instr(time_on_server[1])}'
                 f' - '

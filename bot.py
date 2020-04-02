@@ -24,7 +24,7 @@ async def calc(ctx, arg):
     time = [int(arg.split(':')[0]), int(arg.split(':')[1])]
     time_table = []
     for i in range(8):
-        time_table.append(f'{instr(time_on_server[0])}:{instr(time_on_server[1])}')
+        time_table.append(f'{instr(time[0])}:{instr(time[1])}')
         if time[1] + 24 >= 60:
             time[0] += 4
             time[1] = time[1] + 24 - 60

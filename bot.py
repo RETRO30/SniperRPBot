@@ -21,7 +21,7 @@ async def on_ready():
 
 @bot.command(pass_context=True)
 async def calc(ctx, arg):
-    time = [int(arg[0].split(':')[0]), int(arg[0].split(':')[1])]
+    time = [int(arg.split(':')[0]), int(arg.split(':')[1])]
     time_table = []
     for i in range(8):
         time_table.append(f'{instr(time_on_server[0])}:{instr(time_on_server[1])}')

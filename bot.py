@@ -26,11 +26,17 @@ async def calc(ctx, arg):
     for i in range(8):
         time_table.append(f'{instr(time[0])}:{instr(time[1])}')
         if time[1] + 24 >= 60:
-            time[0] += 4
+            if time[0] + 4 >= 24:
+                time[0] = time[0] + 4 - 24
+            else:
+                time[0] += 4
             time[1] = time[1] + 24 - 60
         else:
             time[1] += 24
-            time[0] += 3
+            if time[0] + 3 >= 24:
+                time[0] = time[0] + 3 - 24
+            else:
+                time[0] += 3
     for i in time_table:
         await ctx.send(i)
 

@@ -77,11 +77,11 @@ async def calctime(ctx, *arg):
             for i in time_table:
                 await ctx.send(i)
         else:
-            await ctx.send('Что-то не то :thinking:\nДля получения справки о командах введите: >>help')
+            await ctx.send('Что-то не то :thinking:\nДля получения справки о командах введите: >>showhelp')
 
 
 @bot.command
-async def help(ctx):
+async def showhelp(ctx):
     await ctx.send('Команды:'
                    '\n>>help - справка'
                    '\n>>calctime - расчёт времени'

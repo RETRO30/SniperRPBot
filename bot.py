@@ -93,11 +93,6 @@ async def showhelp(ctx):
                    ' иначе возникнет погрешность.'
                    ' Всё время указывается без квадратных скобок и в формате: "часы:минуты".')
 
-@bot.event
-async def on_message(message):
-    if message.content.lower().startswith('Привет'):
-        channel = message.channel
-        await channel.send('Привет, Друг.')
 
 
 bot.run(os.environ.get('BOT_TOKEN'))

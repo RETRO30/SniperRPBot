@@ -56,7 +56,7 @@ async def calctime(ctx, *arg):
         else:
             await ctx.send('Что-то не то :thinking:\nДля получения справки о командах введите: >>showhelp')
 
-    if arg[0] == '-exp':
+    elif arg[0] == '-exp':
         if len(arg) == 2:
             time = [int(arg[1].split(':')[0]), int(arg[1].split(':')[1])]
             time_table = []
@@ -78,6 +78,8 @@ async def calctime(ctx, *arg):
                 await ctx.send(i)
         else:
             await ctx.send('Что-то не то :thinking:\nДля получения справки о командах введите: >>showhelp')
+    else:
+        await ctx.send('Что-то не то :thinking:\nДля получения справки о командах введите: >>showhelp')
 
 
 @bot.command()

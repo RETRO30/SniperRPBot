@@ -81,7 +81,7 @@ async def calctime(ctx, *arg):
 
 
 @bot.command
-def help(ctx):
+async def help(ctx):
     await ctx.send('Команды:'
                    '\n>>help - справка'
                    '\n>>calctime - расчёт времени'

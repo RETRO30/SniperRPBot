@@ -40,8 +40,8 @@ async def calctime(ctx, *arg):
                         time[0] += 3
             for i in time_table:
                 await ctx.send(i)
-        else:
-            await ctx.send('Что-то не то :thinking:\nДля получения справки о командах введите: >>showhelp')
+    else:
+        await ctx.send('Что-то не то :thinking:\nДля получения справки о командах введите: >>showhelp')
 
     elif arg[0] == '-exp':
         if len(arg) == 2:

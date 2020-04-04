@@ -21,7 +21,9 @@ async def on_ready():
 
 @bot.command(pass_context=True)
 async def calctime(ctx, *arg):
-    if len(arg) == 2:
+    arg = list(arg)
+    if arg[0] == '-nights':
+        if len(arg) == 2:
             time = [int(arg[1].split(':')[0]), int(arg[1].split(':')[1])]
             time_table = []
             for i in range(8):
@@ -40,8 +42,8 @@ async def calctime(ctx, *arg):
                         time[0] += 3
             for i in time_table:
                 await ctx.send(i)
-    else:
-        await ctx.send('Что-то не то :thinking:\nДля получения справки о командах введите: >>showhelp')
+        else:
+            await ctx.send('Что-то не то :thinking:\nДля получения справки о командах введите: >>showhelp')
 
     elif arg[0] == '-exp':
         if len(arg) == 2:
@@ -72,12 +74,18 @@ async def calctime(ctx, *arg):
 @bot.command()
 async def showhelp(ctx):
     await ctx.send('Команды:'
-                   '\n    >>showhelp - справка'
+                   '\n    >>help - справка'
                    '\n    >>calctime - расчёт времени'
                    '\n        Вариации:'
-                   '\n            -nights [время первой ночи(когда в игре 23:00)]'
+                   '\n            -nights [время первой ночи(когда на сервере 23:00)]'
                    '\n            -exp [время запуска сервера(по МСК)]')
 
+
+@bot.event
+async def on_message(message):
+    if message.content.lower().startswith('Привет'):
+        channel = message.channel
+        await channel.send('Привет, Друг.')
 
 
 bot.run(os.environ.get('BOT_TOKEN'))

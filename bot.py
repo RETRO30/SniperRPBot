@@ -81,11 +81,5 @@ async def showhelp(ctx):
                    '\n            -exp [время запуска сервера(по МСК)]')
 
 
-@bot.event
-async def on_message(message):
-    if message.content.lower().startswith('Привет'):
-        channel = message.channel
-        await channel.send('Привет, Друг.')
-
 
 bot.run(os.environ.get('BOT_TOKEN'))

@@ -40,6 +40,7 @@ async def calctime(ctx, *arg):
                         time[0] = time[0] + 3 - 24
                     else:
                         time[0] += 3
+            await ctx.send('Это время не точное, но я стрался)')
             for i in time_table:
                 await ctx.send(i)
         else:

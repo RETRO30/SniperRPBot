@@ -23,14 +23,16 @@ async def on_ready():
 async def calctime(ctx, *arg):
     arg = list(arg)
     if arg[0] == '-nights':
-        if len(arg) == 3 and int(arg[1].split(':')[1]) == 0:
+        if len(arg) == 3 and int(arg[2].split(':')[1]) == 0:
             time_on_server = [int(arg[1].split(':')[0]), int(arg[1].split(':')[1])]
             time = [int(arg[2].split(':')[0]), int(arg[2].split(':')[1])]
             if time_on_server[0] % 2 == 0:
-                if time[1] + (22 - time_on_server[0]) // 2 * 17 < 60:
+                if time[1] + (21 - time_on_server[0]) // 2 * 17 < 60:
                     time[1] += (22 - time_on_server[0]) // 2 * 17
                 else:
-                    time[1] = (time[0] + (22 - time_on_server[0]) // 2 * 17) - 60
+                    while time[1] + (21 - time_on_server[0]) // 2 * 17 >= 60:
+                        time[1] = (time[0] + (22 - time_on_server[0]) // 2 * 17) - 60
+                        time[0] += 1
                 time_on_server[0] = 22
             else:
                 if time[1] + (23 - time_on_server[0]) // 2 * 17 < 60:
@@ -38,9 +40,9 @@ async def calctime(ctx, *arg):
                 else:
                     time[1] = (time[0] + (23 - time_on_server[0]) // 2 * 17) - 60
                 time_on_server[0] = 23
-            time_table = []
+            time_table = [f'{instr(time_on_server[0])}:{instr(time_on_server[1])}']
             for i in range(8):
-                time_table.append(f'{i+1}.{instr(time[0])}:{instr(time[1])}')
+                time_table.append(f'{i + 1}.{instr(time[0])}:{instr(time[1])}')
                 if time[1] + 24 >= 60:
                     if time[0] + 4 >= 24:
                         time[0] = time[0] + 4 - 24
@@ -92,7 +94,6 @@ async def showhelp(ctx):
                    '\n        Вариации:'
                    '\n            -nights [время на сервере(например: 06:00, 17:00)] [время по МСК]'
                    '\n            -exp [время запуска сервера(по МСК)]')
-
 
 
 bot.run(os.environ.get('BOT_TOKEN'))

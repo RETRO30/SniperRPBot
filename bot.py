@@ -23,11 +23,24 @@ async def on_ready():
 async def calctime(ctx, *arg):
     arg = list(arg)
     if arg[0] == '-nights':
-        if len(arg) == 2:
-            time = [int(arg[1].split(':')[0]), int(arg[1].split(':')[1])]
+        if len(arg) == 3 and int(arg[2].split(':')[1]) == 0:
+            time_on_server = [int(arg[1].split(':')[0]), int(arg[1].split(':')[1])]
+            time = [int(arg[2].split(':')[0]), int(arg[2].split(':')[1])]
+            if time_on_server[0] % 2 == 0:
+                if time[1] + (22 - time_on_server[0]) // 2 * 17 < 60:
+                    time[1] += (22 - time_on_server[0]) // 2 * 17
+                else:
+                    time[1] = (time[0] + (22 - time_on_server[0]) // 2 * 17) - 60
+                time_on_server[0] = 22
+            else:
+                if time[1] + (23 - time_on_server[0]) // 2 * 17 < 60:
+                    time[1] += (23 - time_on_server[0]) // 2 * 17
+                else:
+                    time[1] = (time[0] + (23 - time_on_server[0]) // 2 * 17) - 60
+                time_on_server[0] = 23
             time_table = []
             for i in range(8):
-                time_table.append(f'{instr(time[0])}:{instr(time[1])}')
+                time_table.append(f'{i+1}.{instr(time[0])}:{instr(time[1])}')
                 if time[1] + 24 >= 60:
                     if time[0] + 4 >= 24:
                         time[0] = time[0] + 4 - 24
@@ -40,7 +53,6 @@ async def calctime(ctx, *arg):
                         time[0] = time[0] + 3 - 24
                     else:
                         time[0] += 3
-            await ctx.send('Это время не точное, но я стрался)')
             for i in time_table:
                 await ctx.send(i)
         else:
@@ -78,7 +90,7 @@ async def showhelp(ctx):
                    '\n    >>help - справка'
                    '\n    >>calctime - расчёт времени'
                    '\n        Вариации:'
-                   '\n            -nights [время первой ночи(когда на сервере 23:00)]'
+                   '\n            -nights [время на сервере(например: 06:00, 17:00)] [время по МСК]'
                    '\n            -exp [время запуска сервера(по МСК)]')
 
 

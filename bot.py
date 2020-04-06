@@ -69,8 +69,7 @@ async def calctime(ctx, *arg):
                         time[0] = time[0] + 3 - 24
                     else:
                         time[0] += 3
-            for i in time_table:
-                await ctx.send(i)
+            await ctx.send('\n'.join(time_table))
         else:
             await ctx.send('Что-то не то :thinking:\nДля получения справки о командах введите: >>showhelp')
 
@@ -92,8 +91,7 @@ async def calctime(ctx, *arg):
                         time[0] = time[0] + 3 - 24
                     else:
                         time[0] += 3
-            for i in time_table:
-                await ctx.send(i)
+            await ctx.send('\n'.join(time_table))
         else:
             await ctx.send('Что-то не то :thinking:\nДля получения справки о командах введите: >>showhelp')
     else:

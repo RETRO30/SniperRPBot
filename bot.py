@@ -99,12 +99,46 @@ async def calctime(ctx, *arg):
 
 
 @bot.command()
-async def showhelp(ctx):
+async def ghetto_stats(ctx):
+    browser = webdriver.Chrome()
+    browser.get('https://dednet.ru/map')
+    code = browser.page_source
+    browser.close()
+
+    soup = BeautifulSoup(code, features='lxml')
+    page = soup.find('svg', class_='leaflet-zoom-animated')
+    all_territories = page.find_all_next('g')
+    ghetto_table = []
+    for territory in all_territories:
+        args = str(territory.find('path')).split()
+        color = ''
+        for arg in args:
+            if arg.startswith('fill='):
+                color = arg
+        ghetto_table.append(color)
+    colors_ghetto = {'fill="#673AB7"': 'The Ballas Gang',
+                     'fill="#f44336"': 'Bloods',
+                     'fill="#4CAF50"': 'The Families',
+                     'fill="#2196F3"': 'Marabunta Grande',
+                     'fill="#FFEB3B"': 'Los Santos Vagos'}
+    ghetto_stats = {'The Ballas Gang': 0, 'Bloods': 0, 'The Families': 0, 'Marabunta Grande': 0, 'Los Santos Vagos': 0}
+    for i in ghetto_table:
+        if i in colors_ghetto.keys():
+            ghetto_stats[colors_ghetto[i]] += 1
+    string = ''
+    for band, amount in ghetto_stats.items():
+        string += f'{band}: {amount}\n'
+    await ctx.send(string)
+
+
+@bot.command()
+async def show_help(ctx):
     await ctx.send('Команды:'
-                   '\n    >>help - справка'
-                   '\n    >>calctime - расчёт времени'
+                   '\n    >>show_help - справка'
+                   '\n    >>calc_time - расчёт времени'
                    '\n        Вариации:'
                    '\n            -nights [время на сервере(например: 06:00, 17:00)] [время по МСК]'
-                   '\n            -exp [время запуска сервера(по МСК)]')
+                   '\n            -exp [время запуска сервера(по МСК)]'
+                   '\n    >>ghetto_stats - статистика захватов территорий гетто')
 
 bot.run(os.environ.get('BOT_TOKEN'))

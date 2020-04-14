@@ -1,4 +1,4 @@
 discord.py
 bs4
-requests
+selenium
 lxml

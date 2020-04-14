@@ -103,7 +103,10 @@ async def calctime(ctx, *arg):
 
 @bot.command()
 async def ghetto_stats(ctx):
-    browser = webdriver.Chrome()
+    options = Options()
+    options.add_argument('--headless')
+    options.add_argument('--disable-gpu')
+    browser = webdriver.Chrome(chrome_options=options)
     browser.get('https://dednet.ru/map')
     code = browser.page_source
     browser.close()

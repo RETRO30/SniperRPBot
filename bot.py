@@ -2,7 +2,7 @@ from discord.ext import commands
 import os
 from selenium import webdriver
 from bs4 import BeautifulSoup
-from webdriver_manager.chrome import ChromeDriverManager
+
 
 bot = commands.Bot(command_prefix='>>')
 
@@ -103,7 +103,7 @@ async def calctime(ctx, *arg):
 
 @bot.command()
 async def ghetto_stats(ctx):
-    browser = webdriver.Chrome(ChromeDriverManager().install())
+    browser = webdriver.Firefox()
     browser.get('https://dednet.ru/map')
     code = browser.page_source
     browser.close()

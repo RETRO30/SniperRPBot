@@ -2,4 +2,4 @@ discord.py
 bs4
 selenium
 lxml
-webdriver-manager
+

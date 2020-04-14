@@ -1,7 +1,6 @@
 from discord.ext import commands
 import os
 from selenium import webdriver
-from selenium.webdriver.chrome.options import Options
 from bs4 import BeautifulSoup
 
 
@@ -110,7 +109,7 @@ async def ghetto_stats(ctx):
     chrome_options.add_argument('--disable-gpu')
     chrome_options.add_argument('--no-sandbox')
     chrome_options.binary_location = GOOGLE_CHROME_PATH
-    browser = webdriver.Chrome(execution_path=CHROMEDRIVER_PATH, chrome_options=chrome_options)
+    browser = webdriver.Chrome(CHROMEDRIVER_PATH, chrome_options=chrome_options)
     browser.get('https://dednet.ru/map')
     code = browser.page_source
     browser.close()

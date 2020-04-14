@@ -104,7 +104,7 @@ async def calctime(ctx, *arg):
 
 @bot.command()
 async def ghetto_stats(ctx):
-    browser = webdriver.Firefox(GeckoDriverManager.install())
+    browser = webdriver.Firefox(GeckoDriverManager().install())
     browser.get('https://dednet.ru/map')
     code = browser.page_source
     browser.close()

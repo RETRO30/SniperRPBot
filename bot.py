@@ -103,7 +103,7 @@ async def calctime(ctx, *arg):
 
 @bot.command()
 async def ghetto_stats(ctx):
-    GOOGLE_CHROME_PATH = '/app/.apt/usr/bin/google_chrome'
+    GOOGLE_CHROME_PATH = '/app/.apt/usr/bin/google-chrome-stable'
     CHROMEDRIVER_PATH = '/app/.chromedriver/bin/chromedriver'
     chrome_options = webdriver.ChromeOptions()
     chrome_options.add_argument('--disable-gpu')

@@ -23,7 +23,7 @@ async def on_ready():
 
 
 @bot.command(pass_context=True)
-async def calctime(ctx, *arg):
+async def calc_time(ctx, *arg):
     arg = list(arg)
     if arg[0] == '-nights':
         if len(arg) == 3 and int(arg[1].split(':')[1]) == 0:

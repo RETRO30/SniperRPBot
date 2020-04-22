@@ -38,7 +38,7 @@ async def calc_time(ctx, *arg):
                 else:
                     time[0] += h
                 if time[1] + m > 60:
-                    time[0] += 1
+                    time[0] = time[0] + 1
                     time[1] = time[1] + m - 60
                 else:
                     time[1] += m

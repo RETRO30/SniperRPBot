@@ -1,8 +1,8 @@
-from discord.ext import commands
+from discord.ext import commands, tasks
 import os
 from selenium import webdriver
 from bs4 import BeautifulSoup
-
+import datetime
 
 bot = commands.Bot(command_prefix='>>')
 
@@ -20,6 +20,7 @@ async def on_ready():
     print(bot.user.name)
     print(bot.user.id)
     print('------')
+    notifications.start()
 
 
 @bot.command(pass_context=True)

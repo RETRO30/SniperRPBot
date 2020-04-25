@@ -149,6 +149,24 @@ async def show_help(ctx):
                    '\n        Вариации:'
                    '\n            -nights [время на сервере(например: 06:00, 17:00)] [время по МСК]'
                    '\n            -exp [время запуска сервера(по МСК)]'
-                   '\n    >>ghetto_stats - статистика захватов территорий гетто')
+                   '\n    >>ghetto_stats - статистика захватов территорий гетто'
+                   '\n    >>set_for_notif - задать канал для оповещений о мулах(нужно прописать в том канале, где вы хотите получать оповещения)')
+   
+@bot.command()
+async def set_for_notif(ctx):
+    global ctx_for_notif
+    print('Понял, принял')
+    await ctx.send('Понял, принял')
+    ctx_for_notif = ctx
+
+
+@tasks.loop(seconds=10)
+async def notifications():
+    now = datetime.datetime.utcnow()
+    if ctx_for_notif:
+        if now.day in dates and now.hour + 3 == 19 and now.minute == 30:
+            await ctx_for_notif.send('@THE BALLAS GANG\nЙоу, нигеры, птичка напела, что через 30 минут доставят'
+                                     ' грузовик "Pounder" с очень вкусным грузом.'
+                                     ' Вооружайтесь, закупайте броники(только в амуниции №6).')
 
 bot.run(os.environ.get('BOT_TOKEN'))

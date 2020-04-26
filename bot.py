@@ -3,8 +3,13 @@ import os
 from selenium import webdriver
 from bs4 import BeautifulSoup
 import datetime
+from itertools import cycle
+import discord
 
 bot = commands.Bot(command_prefix='>>')
+ctx_for_notif = None
+dates = [4, 8, 12, 16, 20, 24, 28]
+status = cycle(['БАЛЛАС', 'СОТКА'])
 
 
 def instr(n):
@@ -21,6 +26,7 @@ async def on_ready():
     print(bot.user.id)
     print('------')
     notifications.start()
+    change_status.start()
 
 
 @bot.command(pass_context=True)
@@ -169,5 +175,10 @@ async def notifications():
             await ctx_for_notif.send('@THE BALLAS GANG\nЙоу, нигеры, птичка напела, что через 30 минут доставят'
                                      ' грузовик "Pounder" с очень вкусным грузом.'
                                      ' Вооружайтесь, закупайте броники(только в амуниции №6).')
+           
+       
+@tasks.loop(seconds=1)
+async def change_status():
+    await bot.change_presence(activity=discord.Game(next(status)))
 
 bot.run(os.environ.get('BOT_TOKEN'))

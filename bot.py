@@ -177,7 +177,7 @@ async def notifications():
                                      ' Вооружайтесь, закупайте броники(только в амуниции №6).')
            
        
-@tasks.loop(seconds=1)
+@tasks.loop(seconds=5)
 async def change_status():
     await bot.change_presence(activity=discord.Game(next(status)))
 

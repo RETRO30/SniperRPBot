@@ -7,7 +7,6 @@ from itertools import cycle
 import discord
 
 bot = commands.Bot(command_prefix='>>')
-ctx_for_notif = discord.utils.get(ctx.guild.channels, id='699631174519357571')
 dates = [4, 8, 12, 16, 20, 24, 28]
 status = cycle(['БАЛЛАС', 'СОТКА'])
 
@@ -170,7 +169,8 @@ async def set_for_notif(ctx):
 @tasks.loop(seconds=10)
 async def notifications():
     now = datetime.datetime.utcnow()
-    if ctx_for_notif:
+    channel = discord.Object(id='699631174519357571')
+    if not client.is_closed:
         print(f'{now.day} {now.hour+3}:{now.minute}')
         if now.day in dates and now.hour + 3 == 19 and now.minute == 30:
             await ctx_for_notif.send('@THE BALLAS GANG\nЙоу, нигеры, птичка напела, что через 30 минут доставят'

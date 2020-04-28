@@ -7,7 +7,7 @@ from itertools import cycle
 import discord
 
 bot = commands.Bot(command_prefix='>>')
-ctx_for_notif = None
+ctx_for_notif = discord.utils.get(ctx.guild.channels, id='699631174519357571')
 dates = [4, 8, 12, 16, 20, 24, 28]
 status = cycle(['БАЛЛАС', 'СОТКА'])
 
@@ -156,9 +156,9 @@ async def show_help(ctx):
                    '\n        Вариации:'
                    '\n            -nights [время на сервере(например: 06:00, 17:00)] [время по МСК]'
                    '\n            -exp [время запуска сервера(по МСК)]'
-                   '\n    >>ghetto_stats - статистика захватов территорий гетто'
-                   '\n    >>set_for_notif - задать канал для оповещений о мулах(нужно прописать в том канале, где вы хотите получать оповещения)')
-   
+                   '\n    >>ghetto_stats - статистика захватов территорий гетто')
+
+
 @bot.command()
 async def set_for_notif(ctx):
     global ctx_for_notif

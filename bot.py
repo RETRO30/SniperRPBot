@@ -170,10 +170,10 @@ async def set_for_notif(ctx):
 async def notifications():
     now = datetime.datetime.utcnow()
     channel = discord.Object(id='699631174519357571')
-    if not client.is_closed:
+    if not bot.is_closed:
         print(f'{now.day} {now.hour+3}:{now.minute}')
         if now.day in dates and now.hour + 3 == 19 and now.minute == 30:
-            await ctx_for_notif.send('@THE BALLAS GANG\nЙоу, нигеры, птичка напела, что через 30 минут доставят'
+            await bot.send_message(channel, '@THE BALLAS GANG\nЙоу, нигеры, птичка напела, что через 30 минут доставят'
                                      ' грузовик "Pounder" с очень вкусным грузом.'
                                      ' Вооружайтесь, закупайте броники(только в амуниции №6).')
            

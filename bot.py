@@ -166,19 +166,22 @@ async def set_for_notif(ctx):
     ctx_for_notif = ctx
 
 
-@tasks.loop(seconds=10)
+@tasks.loop(seconds=60)
 async def notifications():
     now = datetime.datetime.utcnow()
-    channel = discord.Object(id='699631174519357571')
-    print(f'{now.day} {now.hour+3}:{now.minute}')
-    if now.day in dates and now.hour + 3 == 19 and now.minute == 30:
-        await bot.send_message(channel, '@THE BALLAS GANG\nЙоу, нигеры, птичка напела, что через 30 минут доставят'
-                                 ' грузовик "Pounder" с очень вкусным грузом.'
-                                 ' Вооружайтесь, закупайте броники(только в амуниции №6).')
-           
-       
+    day = now.date().day
+    hour = now.time().hour + 3
+    minute = now.time().minute
+    print(f'{day} {hour}:{minute}')
+    channel = bot.get_channel(699631174519357571)
+    if day in dates and hour == 19 and minute == 30:
+        await channel.send(f'''@THE BALLAS GANG
+ Йоу, нигеры, птичка напела, что через 30 минут доставят грузовик "Pounder" с очень вкусным грузом. Вооружайтесь, закупайте броники(только в амуниции №6).''')
+
+
 @tasks.loop(seconds=5)
 async def change_status():
     await bot.change_presence(activity=discord.Game(next(status)))
+
 
 bot.run(os.environ.get('BOT_TOKEN'))

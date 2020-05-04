@@ -173,7 +173,7 @@ async def notifications():
     hour = now.time().hour + 3
     minute = now.time().minute
     print(f'{day} {hour}:{minute}')
-    channel = bot.get_channel(702114384427614236)
+    channel = bot.get_channel(699631174519357571)
     if day in dates and hour == 19 and minute == 30:
         await channel.send(f'''@THE BALLAS GANG
  Йоу, нигеры, птичка напела, что через 30 минут доставят грузовик "Pounder" с очень вкусным грузом. Вооружайтесь, закупайте броники(только в амуниции №6).''')

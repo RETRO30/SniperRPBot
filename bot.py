@@ -81,7 +81,7 @@ async def calc_time(ctx, *arg):
                         time[0] += 3
             await ctx.send('\n'.join(time_table))
         else:
-            await ctx.send('Что-то не то :thinking:\nДля получения справки о командах введите: >>showhelp')
+            await ctx.send('Что-то не то :thinking:\nДля получения справки о командах введите: >>show_help')
 
     elif arg[0] == '-exp':
         if len(arg) == 2:
@@ -103,9 +103,9 @@ async def calc_time(ctx, *arg):
                         time[0] += 3
             await ctx.send('\n'.join(time_table))
         else:
-            await ctx.send('Что-то не то :thinking:\nДля получения справки о командах введите: >>showhelp')
+            await ctx.send('Что-то не то :thinking:\nДля получения справки о командах введите: >>show_help')
     else:
-        await ctx.send('Что-то не то :thinking:\nДля получения справки о командах введите: >>showhelp')
+        await ctx.send('Что-то не то :thinking:\nДля получения справки о командах введите: >>show_help')
 
 
 @bot.command()
@@ -173,7 +173,7 @@ async def notifications():
     hour = now.time().hour + 3
     minute = now.time().minute
     print(f'{day} {hour}:{minute}')
-    channel = bot.get_channel(699631174519357571)
+    channel = bot.get_channel(702114384427614236)
     if day in dates and hour == 19 and minute == 30:
         await channel.send(f'''@THE BALLAS GANG
  Йоу, нигеры, птичка напела, что через 30 минут доставят грузовик "Pounder" с очень вкусным грузом. Вооружайтесь, закупайте броники(только в амуниции №6).''')

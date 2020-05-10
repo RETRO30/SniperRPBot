@@ -56,6 +56,7 @@ async def on_ready():
     print('------')
     notifications.start()
     change_status.start()
+    notifications2.start()
 
 
 @bot.command(pass_context=True)

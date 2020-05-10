@@ -229,7 +229,7 @@ async def notifications():
 @tasks.loop(seconds=270)
 async def notifications2():
     channel = bot.get_channel(707282177833828443)
-    print(f'{dead_time()[0]}:{dead_time()[1]}')
+    print(f'{instr(dead_time()[0])}:{instr(dead_time()[1])}')
     if dead_time()[0] == '22':
         await channel.send(f'''Быдло, на грузы поедете? Время {dead_time()[0]}:{dead_time()[1]}''')
 

@@ -225,7 +225,7 @@ async def notifications():
  Йоу, нигеры, птичка напела, что через 30 минут доставят грузовик "Pounder" с очень вкусным грузом. Вооружайтесь, закупайте броники(только в амуниции №6).''')
 
         
-@tasks.loop(seconds=30, minutes=8)
+@tasks.loop(seconds=30)
 async def notifications2():
     channel = bot.get_channel(707282177833828443)
     if dead_time()[0] == '22':

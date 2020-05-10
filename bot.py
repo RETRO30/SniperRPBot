@@ -11,6 +11,14 @@ bot = commands.Bot(command_prefix='>>')
 dates = [4, 8, 12, 16, 20, 24, 28]
 status = cycle(['БАЛЛАС', 'СОТКА'])
 
+def dead_time():
+    code = requests.get('https://dednet.ru/servers').text
+    soup = BeautifulSoup(code, features='lxml')
+    string = soup.find('div', class_='col s12')
+    time_on_ded = str(string.find_next('label'))[7:-8].split(' ')[2].split(':')
+    hours = time_on_ded[0]
+    minutes = time_on_ded[1]
+    return hours, minutes
 
 def collect():
     code = requests.get('https://dednet.ru/map').text
@@ -215,6 +223,13 @@ async def notifications():
     if day in dates and hour == 19 and minute == 30:
         await channel.send(f'''@THE BALLAS GANG
  Йоу, нигеры, птичка напела, что через 30 минут доставят грузовик "Pounder" с очень вкусным грузом. Вооружайтесь, закупайте броники(только в амуниции №6).''')
+
+        
+@tasks.loop(seconds=30, minutes=8)
+async def notifications2():
+    channel = bot.get_channel(707282177833828443)
+    if dead_time()[0] == '22':
+        await channel.send(f'''Быдло, на грузы поедете? Время {dead_time()[0]}:{dead_time()[1]}''')
 
 
 @tasks.loop(seconds=5)

@@ -5,10 +5,32 @@ from bs4 import BeautifulSoup
 import datetime
 from itertools import cycle
 import discord
+import requests
 
 bot = commands.Bot(command_prefix='>>')
 dates = [4, 8, 12, 16, 20, 24, 28]
 status = cycle(['БАЛЛАС', 'СОТКА'])
+
+
+def collect():
+    code = requests.get('https://dednet.ru/map').text
+    code = code.split('\n')
+    not_sorted_table = code[-12].split(';')
+    code.clear()
+    sorted_table = []
+
+    for i in range(len(not_sorted_table)):
+        not_sorted_table[i] = not_sorted_table[i][
+                              not_sorted_table[i].rfind('(') + 2:not_sorted_table[i].rfind(')') - 1]
+        not_sorted_table[i] = not_sorted_table[i].replace('<span class=\\"green-text\\">', '')
+        not_sorted_table[i] = not_sorted_table[i].replace('</span>', '')
+    for i in not_sorted_table:
+        if i[i.find('<b>'):i.find('</b>')]:
+            sorted_table.append([i[i.find('<b>') + 3:i.find('</b>')],
+                                 i[i.find('Владелец: '):i.find('<br>Цена:')],
+                                 i[i.find('Цена: '):].split('<br>')[0],
+                                 i[i.find('Цена: '):].split('<br>')[1]])
+    return sorted_table
 
 
 def instr(n):
@@ -81,7 +103,7 @@ async def calc_time(ctx, *arg):
                         time[0] += 3
             await ctx.send('\n'.join(time_table))
         else:
-            await ctx.send('Что-то не то :thinking:\nДля получения справки о командах введите: >>show_help')
+            await ctx.send('Что-то не то :thinking:\nДля получения справки о командах введите: >>showhelp')
 
     elif arg[0] == '-exp':
         if len(arg) == 2:
@@ -103,9 +125,9 @@ async def calc_time(ctx, *arg):
                         time[0] += 3
             await ctx.send('\n'.join(time_table))
         else:
-            await ctx.send('Что-то не то :thinking:\nДля получения справки о командах введите: >>show_help')
+            await ctx.send('Что-то не то :thinking:\nДля получения справки о командах введите: >>showhelp')
     else:
-        await ctx.send('Что-то не то :thinking:\nДля получения справки о командах введите: >>show_help')
+        await ctx.send('Что-то не то :thinking:\nДля получения справки о командах введите: >>showhelp')
 
 
 @bot.command()
@@ -164,6 +186,22 @@ async def set_for_notif(ctx):
     print('Понял, принял')
     await ctx.send('Понял, принял')
     ctx_for_notif = ctx
+
+
+@bot.command(pass_context=True)
+async def find(ctx, *arg):
+    arg = list(arg)
+    table = collect()
+    property_ = []
+    for i in table:
+        if f'Владелец: {arg[0]} {arg[1]}' in i:
+            property_.append(i)
+    if len(property_) == 0:
+        await ctx.send(
+            'Я не нашёл дома или склада у этого игрока или вы ввели имя и фамилию не сущестувющего персонажа')
+    else:
+        for i in property_:
+            await ctx.send(f'```\n{i[0]}\n{i[1]}\n{i[2]}\n{i[3]}```')
 
 
 @tasks.loop(seconds=60)

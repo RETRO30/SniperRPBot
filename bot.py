@@ -6,10 +6,12 @@ import datetime
 from itertools import cycle
 import discord
 import requests
+import asyncio
 
 bot = commands.Bot(command_prefix='>>')
 dates = [4, 8, 12, 16, 20, 24, 28]
 status = cycle(['БАЛЛАС', 'СОТКА'])
+
 
 def dead_time():
     code = requests.get('https://dednet.ru/servers').text
@@ -19,6 +21,7 @@ def dead_time():
     hours = time_on_ded[0]
     minutes = time_on_ded[1]
     return hours, minutes
+
 
 def collect():
     code = requests.get('https://dednet.ru/map').text
@@ -225,13 +228,14 @@ async def notifications():
         await channel.send(f'''@THE BALLAS GANG
  Йоу, нигеры, птичка напела, что через 30 минут доставят грузовик "Pounder" с очень вкусным грузом. Вооружайтесь, закупайте броники(только в амуниции №6).''')
 
-        
-@tasks.loop(seconds=510)
+
+@tasks.loop(seconds=30)
 async def notifications2():
     channel = bot.get_channel(707282177833828443)
     print(f'{instr(dead_time()[0])}:{instr(dead_time()[1])}')
     if dead_time()[0] == '22':
         await channel.send(f'''Быдло, на грузы поедете? Время {dead_time()[0]}:{dead_time()[1]}''')
+        await asyncio.sleep(60000)
 
 
 @tasks.loop(seconds=5)

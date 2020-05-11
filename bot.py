@@ -6,7 +6,6 @@ import datetime
 from itertools import cycle
 import discord
 import requests
-import asyncio
 
 bot = commands.Bot(command_prefix='>>')
 dates = [4, 8, 12, 16, 20, 24, 28]
@@ -233,9 +232,11 @@ async def notifications():
 async def notifications2():
     channel = bot.get_channel(707282177833828443)
     print(f'{instr(dead_time()[0])}:{instr(dead_time()[1])}')
-    if dead_time()[0] == '22':
+    if dead_time()[0] == '22' and not flag:
         await channel.send(f'''Быдло, на грузы поедете? Время {dead_time()[0]}:{dead_time()[1]}''')
-        await asyncio.sleep(60000)
+        flag = True
+    if dead_time()[0] == '23':
+        flag = False
 
 
 @tasks.loop(seconds=5)

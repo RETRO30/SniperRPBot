@@ -235,7 +235,7 @@ async def notifications2():
     if dead_time()[0] == '22' and not flag:
         await channel.send(f'''Быдло, на грузы поедете? Время {instr(dead_time()[0])}:{instr(dead_time()[1])}''')
         flag = True
-    if dead_time()[0] != '22'
+    if dead_time()[0] != '22':
         flag = False
 
 

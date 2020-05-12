@@ -192,14 +192,6 @@ async def show_help(ctx):
                    '\n    >>ghetto_stats - статистика захватов территорий гетто')
 
 
-@bot.command()
-async def set_for_notif(ctx):
-    global ctx_for_notif
-    print('Понял, принял')
-    await ctx.send('Понял, принял')
-    ctx_for_notif = ctx
-
-
 @bot.command(pass_context=True)
 async def find(ctx, *arg):
     arg = list(arg)
@@ -235,15 +227,14 @@ async def notifications2():
     channel = bot.get_channel(707282177833828443)
     print(f'{instr(dead_time()[0])}:{instr(dead_time()[1])} {flag}')
     if dead_time()[0] == '22' and not flag:
-        await channel.send(f'''Быдло, на грузы поедете? Время {instr(dead_time()[0])}:{instr(dead_time()[1])}''')
         flag = True
-    if dead_time()[0] != '22':
+        await channel.send(f'''Быдло, на грузы поедете? Время {instr(dead_time()[0])}:{instr(dead_time()[1])}''')
+    elif dead_time()[0] != '22':
         flag = False
 
 
 @tasks.loop(seconds=5)
 async def change_status():
     await bot.change_presence(activity=discord.Game(next(status)))
-
 
 bot.run(os.environ.get('BOT_TOKEN'))

@@ -10,6 +10,7 @@ import requests
 bot = commands.Bot(command_prefix='>>')
 dates = [4, 8, 12, 16, 20, 24, 28]
 status = cycle(['БАЛЛАС', 'СОТКА'])
+flag = False
 
 
 def dead_time():
@@ -230,6 +231,7 @@ async def notifications():
 
 @tasks.loop(seconds=30)
 async def notifications2():
+    global flag
     channel = bot.get_channel(707282177833828443)
     print(f'{instr(dead_time()[0])}:{instr(dead_time()[1])} {flag}')
     if dead_time()[0] == '22' and not flag:

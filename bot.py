@@ -225,16 +225,13 @@ async def notifications():
 async def notifications2():
     global flag
     channel = bot.get_channel(707282177833828443)
-    print(f'{instr(dead_time()[0])}:{instr(dead_time()[1])} {flag}')
-    if dead_time()[0] == '22' and not flag:
+    time_ = dead_time()
+    if time_[0] == '22' and flag == False:
         flag = True
-        await channel.send(f'''Быдло, на грузы поедете? Время {instr(dead_time()[0])}:{instr(dead_time()[1])}''')
-    elif dead_time()[0] != '22':
+        await channel.send(f'''Быдло, на грузы поедете? Время {instr(time_[0])}:{instr(time_[1])}''')
+    elif time_[0] != '22':
         flag = False
+    print(f'{instr(time_[0])}:{instr(time_[1])} {flag}')
 
-
-@tasks.loop(seconds=5)
-async def change_status():
-    await bot.change_presence(activity=discord.Game(next(status)))
 
 bot.run(os.environ.get('BOT_TOKEN'))

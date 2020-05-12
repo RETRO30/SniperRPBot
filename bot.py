@@ -234,4 +234,9 @@ async def notifications2():
     print(f'{instr(time_[0])}:{instr(time_[1])} {flag}')
 
 
+@tasks.loop(seconds=5)
+async def change_status():
+    await bot.change_presence(activity=discord.Game(next(status)))
+
+
 bot.run(os.environ.get('BOT_TOKEN'))

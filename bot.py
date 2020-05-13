@@ -10,6 +10,7 @@ import requests
 bot = commands.Bot(command_prefix='>>')
 dates = [4, 8, 12, 16, 20, 24, 28]
 status = cycle(['БАЛЛАС', 'СОТКА'])
+id_for_notif = {699631174519357571: '@THE BALLAS GANG', 709921790738038835: '@Семья'}
 flag = False
 
 
@@ -189,7 +190,8 @@ async def show_help(ctx):
                    '\n        Вариации:'
                    '\n            -nights [время на сервере(например: 06:00, 17:00)] [время по МСК]'
                    '\n            -exp [время запуска сервера(по МСК)]'
-                   '\n    >>ghetto_stats - статистика захватов территорий гетто')
+                   '\n    >>ghetto_stats - статистика захватов территорий гетто'
+                   '\n    >>find [Имя Фамилия] - найти недвижимость у игрока(кроме квартир, пока что)')
 
 
 @bot.command(pass_context=True)
@@ -215,10 +217,11 @@ async def notifications():
     hour = now.time().hour + 3
     minute = now.time().minute
     print(f'{day} {hour}:{minute}')
-    channel = bot.get_channel(699631174519357571)
     if day in dates and hour == 19 and minute == 30:
-        await channel.send(f'''@THE BALLAS GANG
- Йоу, нигеры, птичка напела, что через 30 минут доставят грузовик "Pounder" с очень вкусным грузом. Вооружайтесь, закупайте броники(только в амуниции №6).''')
+        for i, j in id_for_notif.items():
+            channel = bot.get_channel(i)
+            await channel.send(f'''{j}
+ Йоу, птичка напела, что через 30 минут доставят грузовик "Pounder" с очень вкусным грузом. Вооружайтесь, закупайте броники.''')
 
 
 @tasks.loop(seconds=30)

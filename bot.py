@@ -10,7 +10,10 @@ import requests
 bot = commands.Bot(command_prefix='>>')
 dates = [4, 8, 12, 16, 20, 24, 28]
 status = cycle(['БАЛЛАС', 'СОТКА'])
-id_for_notif = {699631174519357571: '@THE BALLAS GANG', 709921790738038835: '@Семья'}
+id_for_notif = {699631174519357571: {'role': '@THE BALLAS GANG',
+                                     'text': 'Собираемся на грузы в 01:00. Амуниция №6. Сейчас в игре'},
+                709921790738038835: {'role': '@Семья',
+                                     'text': 'Собираемся на грузы. Сейчас в игре'}}
 flag = False
 
 
@@ -216,22 +219,22 @@ async def notifications():
     day = now.date().day
     hour = now.time().hour + 3
     minute = now.time().minute
-    print(f'{day} {hour}:{minute}')
     if day in dates and hour == 19 and minute == 30:
         for i, j in id_for_notif.items():
             channel = bot.get_channel(i)
-            await channel.send(f'''{j}
+            await channel.send(f'''{j['role']}
  Йоу, птичка напела, что через 30 минут доставят грузовик "Pounder" с очень вкусным грузом. Вооружайтесь, закупайте броники.''')
 
 
 @tasks.loop(seconds=30)
 async def notifications2():
-    global flag
-    channel = bot.get_channel(707282177833828443)
+    global flag, id_for_notif
     time_ = dead_time()
     if time_[0] == '22' and flag == False:
         flag = True
-        await channel.send(f'''Быдло, на грузы поедете? Время {instr(time_[0])}:{instr(time_[1])}''')
+        for i, j in id_for_notif.items():
+            channel = bot.get_channel(i)
+            await channel.send(f'''{j['role']} {j['text']} {instr(time_[0])}:{instr(time_[1])}''')
     elif time_[0] != '22':
         flag = False
     print(f'{instr(time_[0])}:{instr(time_[1])} {flag}')
@@ -240,7 +243,5 @@ async def notifications2():
 @tasks.loop(seconds=5)
 async def change_status():
     await bot.change_presence(activity=discord.Game(next(status)))
-
-
-    
+  
 bot.run(os.environ.get('BOT_TOKEN'))

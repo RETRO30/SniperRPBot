@@ -41,10 +41,10 @@ def collect():
         not_sorted_table[i] = not_sorted_table[i].replace('</span>', '')
     for i in not_sorted_table:
         if i[i.find('<b>'):i.find('</b>')]:
-            sorted_table.append([i[i.find('<b>') + 3:i.find('</b>')],
-                                 i[i.find('Владелец: '):i.find('<br>Цена:')],
-                                 i[i.find('Цена: '):].split('<br>')[0],
-                                 i[i.find('Цена: '):].split('<br>')[1]])
+            sorted_table.append({'Название': i[i.find('<b>') + 3:i.find('</b>')],
+                                 'Владелец': i[i.find('Владелец: '):i.find('<br>Цена:')][10:],
+                                 'Цена': i[i.find('Цена: '):].split('<br>')[0][6:],
+                                 'Адрес': i[i.find('Цена: '):].split('<br>')[1][7:]})
     return sorted_table
 
 
@@ -194,23 +194,27 @@ async def show_help(ctx):
                    '\n            -nights [время на сервере(например: 06:00, 17:00)] [время по МСК]'
                    '\n            -exp [время запуска сервера(по МСК)]'
                    '\n    >>ghetto_stats - статистика захватов территорий гетто'
-                   '\n    >>find [Имя Фамилия] - найти недвижимость у игрока(кроме квартир, пока что)')
+                   '\n    >>find [Имя или фамилия владельца, название, цена(знак доллара перед суммой, сотни отделять запятыми), адрес] - найти недвижимость')
 
 
 @bot.command(pass_context=True)
 async def find(ctx, *arg):
-    arg = list(arg)
+    arg = ' '.join(list(arg))
     table = collect()
     property_ = []
     for i in table:
-        if f'Владелец: {arg[0]} {arg[1]}' in i:
-            property_.append(i)
+        for j in i.items():
+            if not arg.isalpha():
+                if arg.lower() == j[1].lower():
+                    property_.append(i)
+            elif arg.lower() in j[1].lower():
+                property_.append(i)
     if len(property_) == 0:
         await ctx.send(
-            'Я не нашёл дом или склад у этого игрока, или вы ввели имя и фамилию не сущестувющего персонажа')
+            'Увы, я ничего не нашёл.')
     else:
         for i in property_:
-            await ctx.send(f'```\n{i[0]}\n{i[1]}\n{i[2]}\n{i[3]}```')
+            await ctx.send(f'```\n{i["Название"]}\nВладелец: {i["Владелец"]}\nЦена: {i["Цена"]}\nАдрес: {i["Адрес"]}```')
 
 
 @tasks.loop(seconds=60)
@@ -237,11 +241,10 @@ async def notifications2():
             await channel.send(f'''{j['role']} {j['text']} {instr(time_[0])}:{instr(time_[1])}''')
     elif time_[0] != '22':
         flag = False
-    print(f'{instr(time_[0])}:{instr(time_[1])} {flag}')
 
 
 @tasks.loop(seconds=5)
 async def change_status():
     await bot.change_presence(activity=discord.Game(next(status)))
-  
+
 bot.run(os.environ.get('BOT_TOKEN'))

@@ -274,7 +274,6 @@ async def notifications2():
 async def change_status():
     await bot.change_presence(activity=discord.Game(next(status)))
 
-
 @tasks.loop(seconds=30)
 async def notifications2():
     global data
@@ -283,7 +282,7 @@ async def notifications2():
         channel = bot.get_channel(707282293924036679)
         if len(data) < len(new_data):
             for i in difer(data, new_data):
-                await channel.send(f'<@&709967288534827068>\n```{i[0]}\n{i[1]}\n{i[2]}```')
+                await channel.send(f'<@&712655260266790912>\n```{i[0]}\n{i[1]}\n{i[2]}```')
         print(len(data), len(new_data), difer(data, new_data))
         data = new_data.copy()
 
@@ -296,11 +295,19 @@ async def notifications():
     minute = now.time().minute
     channel = bot.get_channel(707282293924036679)
     if minute + 5 < 60:
-        if f'{hour}:{minute + 5}' in exp_table:
-            await channel.send(f'<@&709967288534827068> слёт через 5 минут')
+        if hour + 3 < 24:
+            if f'{hour+3}:{minute + 5}' in exp_table:
+                await channel.send(f'<@&712655260266790912> слёт через 5 минут')
+        else:
+            if f'{hour+3-24}:{minute + 5}' in exp_table:
+                await channel.send(f'<@&712655260266790912> слёт через 5 минут')
     else:
-        if f'{hour + 1}:{minute + 5 - 60}' in exp_table:
-            await channel.send(f'<@&709967288534827068> слёт через 5 минут')
+        if hour + 4 < 24:
+            if f'{hour+4}:{minute + 5}' in exp_table:
+                await channel.send(f'<@&712655260266790912> слёт через 5 минут')
+        else:
+            if f'{hour+4-24}:{minute + 5}' in exp_table:
+                await channel.send(f'<@&712655260266790912> слёт через 5 минут')
 
 
 # Логирование

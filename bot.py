@@ -257,18 +257,14 @@ async def notifications():
 @tasks.loop(seconds=30)
 async def notifications2():
     global flag, id_for_notif
-    try:
-        time_ = dead_time()
-        if time_[0] == '22' and flag == False:
-            flag = True
-            for i, j in id_for_notif.items():
-                channel = bot.get_channel(i)
-                await channel.send(f'''{j['role']} {j['text']} {instr(time_[0])}:{instr(time_[1])}''')
-        elif time_[0] != '22':
-            flag = False
-    except Exception:
-        pass
-
+    time_ = dead_time()
+    if time_[0] == '22' and flag == False:
+        flag = True
+        for i, j in id_for_notif.items():
+            channel = bot.get_channel(i)
+            await channel.send(f'''{j['role']} {j['text']} {instr(time_[0])}:{instr(time_[1])}''')
+    elif time_[0] != '22':
+        flag = False
 
 @tasks.loop(seconds=5)
 async def change_status():

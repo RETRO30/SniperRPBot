@@ -7,6 +7,7 @@ from itertools import cycle
 import discord
 import requests
 
+# константы
 bot = commands.Bot(command_prefix='>>')
 dates = [4, 8, 12, 16, 20, 24, 28]
 status = cycle(['БАЛЛАС', 'СОТКА'])
@@ -15,8 +16,10 @@ id_for_notif = {699631174519357571: {'role': '<@&699626003760414761>',
                 709921790738038835: {'role': '<@&709219545155371030>',
                                      'text': 'Собираемся на грузы. Сейчас в игре'}}
 flag = False
+exp_table = ['05:08', '08:32', '11:56', '15:20', '18:44', '18:44', '18:44', '22:08', '01:32', '04:56']
 
 
+# вспомогательные функции
 def dead_time():
     code = requests.get('https://dednet.ru/servers').text
     soup = BeautifulSoup(code, features='lxml')
@@ -55,19 +58,44 @@ def instr(n):
         return f'{n}'
 
 
-@bot.event
-async def on_ready():
-    print('Logged in as')
-    print(bot.user.name)
-    print(bot.user.id)
-    print('------')
-    notifications.start()
-    change_status.start()
-    notifications2.start()
+def difer(list1, list2):
+    res = []
+    for i in list1:
+        if i not in list2:
+            res.append(i)
+    for i in list2:
+        if i not in list1:
+            res.append(i)
+    return res
 
 
+def collect_for_exp():
+    code = requests.get('https://dednet.ru/map?pfrom=1&pto=100000000&onlyFree=on').text
+    code = code.split('\n')
+    not_sorted_table = code[-12].split(';')
+    code.clear()
+    sorted_table = []
+
+    for i in range(len(not_sorted_table)):
+        not_sorted_table[i] = not_sorted_table[i][not_sorted_table[i].rfind('(') + 2:not_sorted_table[i].rfind(')') - 1]
+    for i in not_sorted_table:
+        if i[i.find('<b>'):i.find('</b>')]:
+            sorted_table.append([i[i.find('<b>') + 3:i.find('</b>')],
+                                 i[i.find('Цена: '):].split('<br>')[0],
+                                 i[i.find('Цена: '):].split('<br>')[1]])
+    return sorted_table
+
+
+data = collect_for_exp().copy()
+
+
+# Команды бота
 @bot.command(pass_context=True)
 async def calc_time(ctx, *arg):
+    '''расчёт времени
+        Вариации:
+            -nights [время на сервере(например: 06:00, 17:00)] [время по МСК]
+            -exp [время запуска сервера(по МСК)]'''
     arg = list(arg)
     if arg[0] == '-nights':
         if len(arg) == 3 and int(arg[1].split(':')[1]) == 0:
@@ -119,9 +147,10 @@ async def calc_time(ctx, *arg):
                         time[0] += 3
             await ctx.send('\n'.join(time_table))
         else:
-            await ctx.send('Что-то не то :thinking:\nДля получения справки о командах введите: >>show_help')
+            await ctx.send('Что-то не то :thinking:\nДля получения справки о командах введите: >>help calc_time')
 
     elif arg[0] == '-exp':
+        global exp_table
         if len(arg) == 2:
             time = [int(arg[1].split(':')[0]), int(arg[1].split(':')[1])]
             time_table = []
@@ -139,15 +168,17 @@ async def calc_time(ctx, *arg):
                         time[0] = time[0] + 3 - 24
                     else:
                         time[0] += 3
+            exp_table = time_table
             await ctx.send('\n'.join(time_table))
         else:
-            await ctx.send('Что-то не то :thinking:\nДля получения справки о командах введите: >>show_help')
+            await ctx.send('Что-то не то :thinking:\nДля получения справки о командах введите: >>help calc_time')
     else:
-        await ctx.send('Что-то не то :thinking:\nДля получения справки о командах введите: >>show_help')
+        await ctx.send('Что-то не то :thinking:\nДля получения справки о командах введите: >>help calc_time')
 
 
 @bot.command()
 async def ghetto_stats(ctx):
+    '''статистика территорий гетто'''
     GOOGLE_CHROME_PATH = '/app/.apt/usr/bin/google-chrome-stable'
     CHROMEDRIVER_PATH = '/app/.chromedriver/bin/chromedriver'
     chrome_options = webdriver.ChromeOptions()
@@ -185,20 +216,11 @@ async def ghetto_stats(ctx):
     await ctx.send(string)
 
 
-@bot.command()
-async def show_help(ctx):
-    await ctx.send('Команды:'
-                   '\n    >>show_help - справка'
-                   '\n    >>calc_time - расчёт времени'
-                   '\n        Вариации:'
-                   '\n            -nights [время на сервере(например: 06:00, 17:00)] [время по МСК]'
-                   '\n            -exp [время запуска сервера(по МСК)]'
-                   '\n    >>ghetto_stats - статистика захватов территорий гетто'
-                   '\n    >>find [Имя или фамилия владельца, название, цена(знак доллара перед суммой, сотни отделять запятыми), адрес] - найти недвижимость')
-
-
 @bot.command(pass_context=True)
 async def find(ctx, *arg):
+    ''' найти недвижимость
+        парметры(только один):
+            [Имя или фамилия владельца, название, цена(знак доллара перед суммой, сотни отделять запятыми), адрес]'''
     arg = ' '.join(list(arg))
     table = collect()
     property_ = []
@@ -214,9 +236,11 @@ async def find(ctx, *arg):
             'Увы, я ничего не нашёл.')
     else:
         for i in property_:
-            await ctx.send(f'```\n{i["Название"]}\nВладелец: {i["Владелец"]}\nЦена: {i["Цена"]}\nАдрес: {i["Адрес"]}```')
+            await ctx.send(
+                f'```\n{i["Название"]}\nВладелец: {i["Владелец"]}\nЦена: {i["Цена"]}\nАдрес: {i["Адрес"]}```')
 
 
+# Цикличные задачи бота на занем плане
 @tasks.loop(seconds=60)
 async def notifications():
     now = datetime.datetime.utcnow()
@@ -233,18 +257,60 @@ async def notifications():
 @tasks.loop(seconds=30)
 async def notifications2():
     global flag, id_for_notif
-    time_ = dead_time()
-    if time_[0] == '22' and flag == False:
-        flag = True
-        for i, j in id_for_notif.items():
-            channel = bot.get_channel(i)
-            await channel.send(f'''{j['role']} {j['text']} {instr(time_[0])}:{instr(time_[1])}''')
-    elif time_[0] != '22':
-        flag = False
+    try:
+        time_ = dead_time()
+        if time_[0] == '22' and flag == False:
+            flag = True
+            for i, j in id_for_notif.items():
+                channel = bot.get_channel(i)
+                await channel.send(f'''{j['role']} {j['text']} {instr(time_[0])}:{instr(time_[1])}''')
+        elif time_[0] != '22':
+            flag = False
+    except Exception:
+        pass
 
 
 @tasks.loop(seconds=5)
 async def change_status():
     await bot.change_presence(activity=discord.Game(next(status)))
+
+
+@tasks.loop(seconds=30)
+async def notifications2():
+    global data
+    new_data = collect_for_exp().copy()
+    if len(new_data):
+        channel = bot.get_channel(707282293924036679)
+        if len(data) < len(new_data):
+            for i in difer(data, new_data):
+                await channel.send(f'<@&709967288534827068>\n```{i[0]}\n{i[1]}\n{i[2]}```')
+        print(len(data), len(new_data), difer(data, new_data))
+        data = new_data.copy()
+
+
+@tasks.loop(seconds=60)
+async def notifications():
+    global exp_table
+    now = datetime.datetime.utcnow()
+    hour = now.time().hour
+    minute = now.time().minute
+    channel = bot.get_channel(707282293924036679)
+    if minute + 5 < 60:
+        if f'{hour}:{minute + 5}' in exp_table:
+            await channel.send(f'<@&709967288534827068> слёт через 5 минут')
+    else:
+        if f'{hour + 1}:{minute + 5 - 60}' in exp_table:
+            await channel.send(f'<@&709967288534827068> слёт через 5 минут')
+
+
+# Логирование
+@bot.event
+async def on_ready():
+    print('Logged in as')
+    print(bot.user.name)
+    notifications.start()
+    change_status.start()
+    notifications2.start()
+
 
 bot.run(os.environ.get('BOT_TOKEN'))

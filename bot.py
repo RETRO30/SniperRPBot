@@ -254,6 +254,7 @@ async def notifications():
 @tasks.loop(seconds=30)
 async def notifications2():
     global flag, id_for_notif
+    if (datetime.datetime.utcnow().time().hour + 3 == 4 and 50 < atetime.datetime.utcnow().time().minute < 59) or (datetime.datetime.utcnow().time().hour + 3 == 5 and 0 < atetime.datetime.utcnow().time().minute < 10)
     time_ = dead_time()
     if time_[0] == '22' and flag == False:
         flag = True

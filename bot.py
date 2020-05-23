@@ -10,7 +10,7 @@ import requests
 # константы
 bot = commands.Bot(command_prefix='>>')
 dates = [4, 8, 12, 16, 20, 24, 28]
-status = cycle(['Меня', 'написал', 'умный', 'паренёк'])
+status = cycle(['Хочешь меня на свой сервер?', 'Тебе к retro#9860'])
 id_for_notif = {709921790738038835: {'role': '<@&709219545155371030>',
                                      'text': 'Собираемся на грузы. Сейчас в игре'}}
 flag = False
@@ -148,7 +148,6 @@ async def calc_time(ctx, *arg):
             await ctx.send('Что-то не то :thinking:\nДля получения справки о командах введите: >>help calc_time')
 
     elif arg[0] == '-exp':
-        global exp_table
         if len(arg) == 2:
             time = [int(arg[1].split(':')[0]), int(arg[1].split(':')[1])]
             time_table = []
@@ -166,7 +165,6 @@ async def calc_time(ctx, *arg):
                         time[0] = time[0] + 3 - 24
                     else:
                         time[0] += 3
-            exp_table = time_table
             await ctx.send('\n'.join(time_table))
         else:
             await ctx.send('Что-то не то :thinking:\nДля получения справки о командах введите: >>help calc_time')
@@ -264,9 +262,11 @@ async def notifications2():
     elif time_[0] != '22':
         flag = False
 
+
 @tasks.loop(seconds=5)
 async def change_status():
     await bot.change_presence(activity=discord.Game(next(status)))
+
 
 @tasks.loop(seconds=30)
 async def notifications2():

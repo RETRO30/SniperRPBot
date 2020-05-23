@@ -258,6 +258,7 @@ async def notifications2():
         time_ = (0, 0)
     else:
         time_ = dead_time()
+    print(*time_)
     if time_[0] == '22' and flag == False:
         flag = True
         for i, j in id_for_notif.items():
@@ -272,7 +273,7 @@ async def change_status():
     await bot.change_presence(activity=discord.Game(next(status)))
 
 
-@tasks.loop(seconds=30)
+@tasks.loop(seconds=40)
 async def notifications2():
     global data
     new_data = collect_for_exp().copy()

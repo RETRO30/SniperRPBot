@@ -277,7 +277,6 @@ async def notifications2():
         if len(data) < len(new_data):
             for i in difer(data, new_data):
                 await channel.send(f'<@&712655260266790912>\n```{i[0]}\n{i[1]}\n{i[2]}```')
-        print(len(data), len(new_data), difer(data, new_data))
         data = new_data.copy()
 
 

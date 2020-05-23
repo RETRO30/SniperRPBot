@@ -273,8 +273,8 @@ async def change_status():
     await bot.change_presence(activity=discord.Game(next(status)))
 
 
-@tasks.loop(seconds=40)
-async def notifications2():
+@tasks.loop(seconds=30)
+async def notifications3():
     global data
     new_data = collect_for_exp().copy()
     if len(new_data):
@@ -286,7 +286,7 @@ async def notifications2():
 
 
 @tasks.loop(seconds=60)
-async def notifications():
+async def notifications4():
     global exp_table
     now = datetime.datetime.utcnow()
     hour = now.time().hour
@@ -316,6 +316,8 @@ async def on_ready():
     notifications.start()
     change_status.start()
     notifications2.start()
+    notifications3.start()
+    notifications4.start()
 
 
 bot.run(os.environ.get('BOT_TOKEN'))

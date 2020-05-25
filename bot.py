@@ -9,6 +9,7 @@ import requests
 
 # константы
 bot = commands.Bot(command_prefix='>>')
+bot.remove_command('help')
 dates = [4, 8, 12, 16, 20, 24, 28]
 status = cycle(['Хочешь меня на свой сервер?', 'Тебе к retro#9860'])
 id_for_notif = {709921790738038835: {'role': '<@&709219545155371030>',
@@ -16,6 +17,14 @@ id_for_notif = {709921790738038835: {'role': '<@&709219545155371030>',
                 700852534398419074: {'role': '<@&700079783836385428>', 'text': 'Собираемся на грузы. Сбор - 6-ая амунация. Сейчас в игре'}}
 flag = False
 exp_table = ['05:08', '08:32', '11:56', '15:20', '18:44', '18:44', '18:44', '22:08', '01:32', '04:56']
+help_text = 'Команды:'
+            '\n    >>help - справка'
+            '\n    >>calc_time - расчёт времени'
+            '\n        Аргументы:'
+            '\n            -nights [время на сервере(например: 06:00, 17:00)] [время по МСК]'
+            '\n            -exp [время запуска сервера(по МСК)]'
+            '\n    >>ghetto_stats - статистика захватов территорий гетто'
+            '\n    >>find [Имя или фамилия владельца, название, цена(знак доллара перед суммой, сотни отделять запятыми), адрес] - найти недвижимость'
 
 
 # вспомогательные функции
@@ -91,10 +100,6 @@ data = collect_for_exp().copy()
 # Команды бота
 @bot.command(pass_context=True)
 async def calc_time(ctx, *arg):
-    '''расчёт времени
-        Вариации:
-            -nights [время на сервере(например: 06:00, 17:00)] [время по МСК]
-            -exp [время запуска сервера(по МСК)]'''
     arg = list(arg)
     if arg[0] == '-nights':
         if len(arg) == 3 and int(arg[1].split(':')[1]) == 0:
@@ -175,7 +180,6 @@ async def calc_time(ctx, *arg):
 
 @bot.command()
 async def ghetto_stats(ctx):
-    '''статистика территорий гетто'''
     GOOGLE_CHROME_PATH = '/app/.apt/usr/bin/google-chrome-stable'
     CHROMEDRIVER_PATH = '/app/.chromedriver/bin/chromedriver'
     chrome_options = webdriver.ChromeOptions()
@@ -211,13 +215,15 @@ async def ghetto_stats(ctx):
     for band, amount in ghetto_stats.items():
         string += f'{band}: {amount}\n'
     await ctx.send(string)
+    
+@bot.command()
+async def help(ctx):
+    global help_text
+    await ctx.send(help_text) 
 
 
 @bot.command(pass_context=True)
 async def find(ctx, *arg):
-    ''' найти недвижимость
-        парметры(только один):
-            [Имя или фамилия владельца, название, цена(знак доллара перед суммой, сотни отделять запятыми), адрес]'''
     arg = ' '.join(list(arg))
     table = collect()
     property_ = []

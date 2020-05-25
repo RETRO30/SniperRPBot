@@ -14,17 +14,11 @@ dates = [4, 8, 12, 16, 20, 24, 28]
 status = cycle(['Хочешь меня на свой сервер?', 'Тебе к retro#9860', 'Введи >>help, чтобы узнать что я умею'])
 id_for_notif = {709921790738038835: {'role': '<@&709219545155371030>',
                                      'text': 'Собираемся на грузы. Сейчас в игре'},
-                700852534398419074: {'role': '<@&700079783836385428>', 'text': 'Собираемся на грузы. Сбор - 6-ая амунация. Сейчас в игре'}}
+                700852534398419074: {'role': '<@&700079783836385428>',
+                                     'text': 'Собираемся на грузы. Сбор - 6-ая амунация. Сейчас в игре'}}
 flag = False
 exp_table = ['05:08', '08:32', '11:56', '15:20', '18:44', '18:44', '18:44', '22:08', '01:32', '04:56']
-help_text = 'Команды:'
-            '\n    >>help - справка'
-            '\n    >>calc_time - расчёт времени'
-            '\n        Аргументы:'
-            '\n            -nights [время на сервере(например: 06:00, 17:00)] [время по МСК]'
-            '\n            -exp [время запуска сервера(по МСК)]'
-            '\n    >>ghetto_stats - статистика захватов территорий гетто'
-            '\n    >>find [Имя или фамилия владельца, название, цена(знак доллара перед суммой, сотни отделять запятыми), адрес] - найти недвижимость'
+help_text = '```Команды:\n    >>help - справка\n    >>calc_time - расчёт времени\n        Аргументы:\n            -nights [время на сервере(например: 06:00, 17:00)] [время по МСК]\n            -exp [время запуска сервера(по МСК)]\n    >>ghetto_stats - статистика захватов территорий гетто\n    >>find [Имя или фамилия владельца, название, цена(знак доллара перед суммой, сотни отделять запятыми), адрес] - найти недвижимость```'
 
 
 # вспомогательные функции
@@ -215,11 +209,12 @@ async def ghetto_stats(ctx):
     for band, amount in ghetto_stats.items():
         string += f'{band}: {amount}\n'
     await ctx.send(string)
-    
+
+
 @bot.command()
 async def help(ctx):
     global help_text
-    await ctx.send(help_text) 
+    await ctx.send(help_text)
 
 
 @bot.command(pass_context=True)
@@ -260,7 +255,8 @@ async def notifications():
 @tasks.loop(seconds=30)
 async def notifications2():
     global flag, id_for_notif
-    if (datetime.datetime.utcnow().time().hour + 3 == 4 and 50 < atetime.datetime.utcnow().time().minute < 59) or (datetime.datetime.utcnow().time().hour + 3 == 5 and 0 < atetime.datetime.utcnow().time().minute < 10):
+    if (datetime.datetime.utcnow().time().hour + 3 == 4 and 50 < atetime.datetime.utcnow().time().minute < 59) or (
+            datetime.datetime.utcnow().time().hour + 3 == 5 and 0 < atetime.datetime.utcnow().time().minute < 10):
         time_ = (0, 0)
     else:
         time_ = dead_time()
@@ -300,17 +296,17 @@ async def notifications4():
     channel = bot.get_channel(707282293924036679)
     if minute + 5 < 60:
         if hour + 3 < 24:
-            if f'{hour+3}:{minute + 5}' in exp_table:
+            if f'{hour + 3}:{minute + 5}' in exp_table:
                 await channel.send(f'<@&712655260266790912> слёт через 5 минут')
         else:
-            if f'{hour+3-24}:{minute + 5}' in exp_table:
+            if f'{hour + 3 - 24}:{minute + 5}' in exp_table:
                 await channel.send(f'<@&712655260266790912> слёт через 5 минут')
     else:
         if hour + 4 < 24:
-            if f'{hour+4}:{minute + 5 - 60}' in exp_table:
+            if f'{hour + 4}:{minute + 5 - 60}' in exp_table:
                 await channel.send(f'<@&712655260266790912> слёт через 5 минут')
         else:
-            if f'{hour+4-24}:{minute + 5 - 60}' in exp_table:
+            if f'{hour + 4 - 24}:{minute + 5 - 60}' in exp_table:
                 await channel.send(f'<@&712655260266790912> слёт через 5 минут')
 
 
@@ -324,6 +320,7 @@ async def on_ready():
     notifications2.start()
     notifications3.start()
     notifications4.start()
+
 
 
 bot.run(os.environ.get('BOT_TOKEN'))

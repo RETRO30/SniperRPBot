@@ -296,7 +296,7 @@ async def notifications3():
         data = new_data.copy()
 
 
-@tasks.loop(seconds=60)
+@tasks.loop(seconds=30)
 async def notifications4():
     global exp_table
     now = datetime.datetime.utcnow()
@@ -324,11 +324,12 @@ async def notifications4():
 async def on_ready():
     print('Logged in as')
     print(bot.user.name)
-    notifications.start()
     change_status.start()
+    notifications.start()
     notifications2.start()
     notifications3.start()
     notifications4.start()
 
 
+# Запуск бота
 bot.run(os.environ.get('BOT_TOKEN'))

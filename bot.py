@@ -296,7 +296,7 @@ async def notifications3():
         data = new_data.copy()
 
 
-@tasks.loop(seconds=30)
+@tasks.loop(seconds=60)
 async def notifications4():
     global exp_table
     now = datetime.datetime.utcnow()

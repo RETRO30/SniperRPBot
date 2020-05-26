@@ -18,7 +18,16 @@ id_for_notif = {709921790738038835: {'role': '<@&709219545155371030>',
                                      'text': 'Собираемся на грузы. Сбор - 6-ая амунация. Сейчас в игре'}}
 flag = False
 exp_table = ['05:08', '08:32', '11:56', '15:20', '18:44', '18:44', '18:44', '22:08', '01:32', '04:56']
-help_text = '```Команды:\n    >>help - справка\n    >>calc_time - расчёт времени\n        Аргументы:\n            -nights [время на сервере(например: 06:00, 17:00)] [время по МСК]\n            -exp [время запуска сервера(по МСК)]\n    >>ghetto_stats - статистика захватов территорий гетто\n    >>find [Имя или фамилия владельца, название, цена(знак доллара перед суммой, сотни отделять запятыми), адрес] - найти недвижимость```'
+help_text = '''```Команды:
+    >>help - справка
+    >>calc_time - расчёт времени
+        Аргументы:
+            -nights [время на сервере(например: 06:00, 17:00)] [время по МСК]
+            -exp [время запуска сервера(по МСК)]
+    >>ghetto_stats - статистика захватов территорий гетто
+    >>find - найти недвижимость
+        Аргументы(Что-то одно):
+            [Имя или фамилия владельца, название, цена(знак доллара перед суммой, сотни отделять запятыми), адрес] ```'''
 
 
 # вспомогательные функции
@@ -255,17 +264,19 @@ async def notifications():
 @tasks.loop(seconds=30)
 async def notifications2():
     global flag, id_for_notif
-    if (datetime.datetime.utcnow().time().hour + 3 == 4 and 50 < datetime.datetime.utcnow().time().minute < 59) or (datetime.datetime.utcnow().time().hour + 3 == 5 and 0 < datetime.datetime.utcnow().time().minute < 10):
-        time_ = (0, 0)
+    now = datetime.datetime.utcnow().time()
+    if (now.hour + 3 == 4 and 50 < datetime.datetime.utcnow().time().minute < 59) or (
+            datetime.datetime.utcnow().time().hour + 3 == 5 and 0 < datetime.datetime.utcnow().time().minute < 10):
+        pass
     else:
         time_ = dead_time()
-    if time_[0] == '22' and flag == False:
-        flag = True
-        for i, j in id_for_notif.items():
-            channel = bot.get_channel(i)
-            await channel.send(f'''{j['role']} {j['text']} {instr(time_[0])}:{instr(time_[1])}''')
-    elif time_[0] != '22':
-        flag = False
+        if time_[0] == '22' and not flag:
+            flag = True
+            for i, j in id_for_notif.items():
+                channel = bot.get_channel(i)
+                await channel.send(f'''{j['role']} {j['text']} {instr(time_[0])}:{instr(time_[1])}''')
+        elif time_[0] != '22':
+            flag = False
 
 
 @tasks.loop(seconds=5)
@@ -318,7 +329,6 @@ async def on_ready():
     notifications2.start()
     notifications3.start()
     notifications4.start()
-
 
 
 bot.run(os.environ.get('BOT_TOKEN'))

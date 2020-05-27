@@ -103,82 +103,85 @@ data = collect_for_exp().copy()
 # Команды бота
 @bot.command(pass_context=True)
 async def calc_time(ctx, *arg):
-    arg = list(arg)
-    if arg[0] == '-nights':
-        if len(arg) == 3 and int(arg[1].split(':')[1]) == 0:
-            time_on_server = [int(arg[1].split(':')[0]), int(arg[1].split(':')[1])]
-            time = [int(arg[2].split(':')[0]), int(arg[2].split(':')[1])]
-            if time_on_server[0] % 2 == 0:
-                deltatime = ((22 - time_on_server[0]) // 2) * 17
-                h = deltatime // 60
-                m = deltatime % 60
-                if time[0] + h > 24:
-                    time[0] = time[0] + h - 24
+    if arg:
+        arg = list(arg)
+        if arg[0] == '-nights':
+            if len(arg) == 3 and int(arg[1].split(':')[1]) == 0:
+                time_on_server = [int(arg[1].split(':')[0]), int(arg[1].split(':')[1])]
+                time = [int(arg[2].split(':')[0]), int(arg[2].split(':')[1])]
+                if time_on_server[0] % 2 == 0:
+                    deltatime = ((22 - time_on_server[0]) // 2) * 17
+                    h = deltatime // 60
+                    m = deltatime % 60
+                    if time[0] + h > 24:
+                        time[0] = time[0] + h - 24
+                    else:
+                        time[0] += h
+                    if time[1] + m > 60:
+                        time[0] = time[0] + 1
+                        time[1] = time[1] + m - 60
+                    else:
+                        time[1] += m
+                    time_on_server = [22, 0]
                 else:
-                    time[0] += h
-                if time[1] + m > 60:
-                    time[0] = time[0] + 1
-                    time[1] = time[1] + m - 60
-                else:
-                    time[1] += m
-                time_on_server = [22, 0]
+                    deltatime = ((23 - time_on_server[0]) // 2) * 17
+                    h = deltatime // 60
+                    m = deltatime % 60
+                    if time[0] + h > 24:
+                        time[0] = time[0] + h - 24
+                    else:
+                        time[0] += h
+                    if time[1] + m > 60:
+                        time[0] = time[0] + 1
+                        time[1] = time[1] + m - 60
+                    else:
+                        time[1] += m
+                    time_on_server = [23, 0]
+
+                time_table = [f'{instr(time_on_server[0])}:{instr(time_on_server[1])}:']
+                for i in range(8):
+                    time_table.append(f'{i + 1}. {instr(time[0])}:{instr(time[1])}')
+                    if time[1] + 24 >= 60:
+                        if time[0] + 4 >= 24:
+                            time[0] = time[0] + 4 - 24
+                        else:
+                            time[0] += 4
+                            time[1] = time[1] + 24 - 60
+                    else:
+                        time[1] += 24
+                        if time[0] + 3 >= 24:
+                            time[0] = time[0] + 3 - 24
+                        else:
+                            time[0] += 3
+                await ctx.send('\n'.join(time_table))
             else:
-                deltatime = ((23 - time_on_server[0]) // 2) * 17
-                h = deltatime // 60
-                m = deltatime % 60
-                if time[0] + h > 24:
-                    time[0] = time[0] + h - 24
-                else:
-                    time[0] += h
-                if time[1] + m > 60:
-                    time[0] = time[0] + 1
-                    time[1] = time[1] + m - 60
-                else:
-                    time[1] += m
-                time_on_server = [23, 0]
+                await ctx.send('Что-то не то :thinking:\nДля получения справки о командах введите: >>help')
 
-            time_table = [f'{instr(time_on_server[0])}:{instr(time_on_server[1])}:']
-            for i in range(8):
-                time_table.append(f'{i + 1}. {instr(time[0])}:{instr(time[1])}')
-                if time[1] + 24 >= 60:
-                    if time[0] + 4 >= 24:
-                        time[0] = time[0] + 4 - 24
+        elif arg[0] == '-exp':
+            if len(arg) == 2:
+                time = [int(arg[1].split(':')[0]), int(arg[1].split(':')[1])]
+                time_table = []
+                for i in range(8):
+                    time_table.append(f'{instr(time[0])}:{instr(time[1])}')
+                    if time[1] + 24 >= 60:
+                        if time[0] + 4 >= 24:
+                            time[0] = time[0] + 4 - 24
+                        else:
+                            time[0] += 4
+                            time[1] = time[1] + 24 - 60
                     else:
-                        time[0] += 4
-                        time[1] = time[1] + 24 - 60
-                else:
-                    time[1] += 24
-                    if time[0] + 3 >= 24:
-                        time[0] = time[0] + 3 - 24
-                    else:
-                        time[0] += 3
-            await ctx.send('\n'.join(time_table))
+                        time[1] += 24
+                        if time[0] + 3 >= 24:
+                            time[0] = time[0] + 3 - 24
+                        else:
+                            time[0] += 3
+                await ctx.send('\n'.join(time_table))
+            else:
+                await ctx.send('Что-то не то :thinking:\nДля получения справки о командах введите: >>help')
         else:
-            await ctx.send('Что-то не то :thinking:\nДля получения справки о командах введите: >>help calc_time')
-
-    elif arg[0] == '-exp':
-        if len(arg) == 2:
-            time = [int(arg[1].split(':')[0]), int(arg[1].split(':')[1])]
-            time_table = []
-            for i in range(8):
-                time_table.append(f'{instr(time[0])}:{instr(time[1])}')
-                if time[1] + 24 >= 60:
-                    if time[0] + 4 >= 24:
-                        time[0] = time[0] + 4 - 24
-                    else:
-                        time[0] += 4
-                        time[1] = time[1] + 24 - 60
-                else:
-                    time[1] += 24
-                    if time[0] + 3 >= 24:
-                        time[0] = time[0] + 3 - 24
-                    else:
-                        time[0] += 3
-            await ctx.send('\n'.join(time_table))
-        else:
-            await ctx.send('Что-то не то :thinking:\nДля получения справки о командах введите: >>help calc_time')
+            await ctx.send('Что-то не то :thinking:\nДля получения справки о командах введите: >>help')
     else:
-        await ctx.send('Что-то не то :thinking:\nДля получения справки о командах введите: >>help calc_time')
+        await ctx.send('Что-то не то :thinking:\nДля получения справки о командах введите: >>help')
 
 
 @bot.command()
@@ -265,6 +268,7 @@ async def notifications():
 async def notifications2():
     global flag, id_for_notif
     now = datetime.datetime.utcnow().time()
+    print(now.hour + 3, now.minute, sep=' ')
     if (now.hour + 3 == 4 and 50 < datetime.datetime.utcnow().time().minute < 59) or (
             datetime.datetime.utcnow().time().hour + 3 == 5 and 0 < datetime.datetime.utcnow().time().minute < 10):
         pass
@@ -296,7 +300,7 @@ async def notifications3():
         data = new_data.copy()
 
 
-@tasks.loop(seconds=60)
+@tasks.loop(seconds=30)
 async def notifications4():
     global exp_table
     now = datetime.datetime.utcnow()
@@ -305,17 +309,17 @@ async def notifications4():
     channel = bot.get_channel(707282293924036679)
     if minute + 5 < 60:
         if hour + 3 < 24:
-            if f'{hour + 3}:{minute + 5}' in exp_table:
+            if f'{instr(hour + 3)}:{instr(minute + 5)}' in exp_table:
                 await channel.send(f'<@&712655260266790912> слёт через 5 минут')
         else:
-            if f'{hour + 3 - 24}:{minute + 5}' in exp_table:
+            if f'{inst(hour + 3 - 24)}:{instr((minute + 5)}' in exp_table:
                 await channel.send(f'<@&712655260266790912> слёт через 5 минут')
     else:
         if hour + 4 < 24:
-            if f'{hour + 4}:{minute + 5 - 60}' in exp_table:
+            if f'{instr(hour + 4)}:{instr(minute + 5 - 60)}' in exp_table:
                 await channel.send(f'<@&712655260266790912> слёт через 5 минут')
         else:
-            if f'{hour + 4 - 24}:{minute + 5 - 60}' in exp_table:
+            if f'{instr(hour + 4 - 24)}:{instr(minute + 5 - 60)}' in exp_table:
                 await channel.send(f'<@&712655260266790912> слёт через 5 минут')
 
 

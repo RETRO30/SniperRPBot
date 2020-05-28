@@ -12,9 +12,7 @@ bot = commands.Bot(command_prefix='>>')
 bot.remove_command('help')
 dates = [4, 8, 12, 16, 20, 24, 28]
 status = cycle(['Хочешь меня на свой сервер?', 'Тебе к retro#9860', 'Введи >>help, чтобы узнать что я умею'])
-id_for_notif = {709921790738038835: {'role': '<@&709219545155371030>',
-                                     'text': 'Собираемся на грузы. Сейчас в игре'},
-                700852534398419074: {'role': '<@&700079783836385428>',
+id_for_notif = {700852534398419074: {'role': '<@&700079783836385428>',
                                      'text': 'Собираемся на грузы. Сбор - 6-ая амунация. Сейчас в игре'}}
 flag = False
 exp_table = ['08:32', '11:56', '15:20', '18:44', '18:44', '18:44', '22:08', '01:32', '04:56']
@@ -39,9 +37,11 @@ def dead_time():
         time_on_ded = str(string.find_next('label'))[7:-8].split(' ')[2].split(':')
         hours = time_on_ded[0]
         minutes = time_on_ded[1]
-        return hours, minutes
     except Exception as e:
-        print("Error! " + str(e)))
+        print("Error! " + str(e))
+        hours = 0
+        minutes = 0
+    return hours, minutes
 
 
 def collect():
@@ -271,6 +271,7 @@ async def notifications():
 async def notifications2():
     global flag, id_for_notif
     time_ = dead_time()
+    print(*time_)
     if time_:
         if time_[0] == '22' and not flag:
             flag = True

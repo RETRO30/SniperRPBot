@@ -40,7 +40,7 @@ def dead_time():
         hours = time_on_ded[0]
         minutes = time_on_ded[1]
         return hours, minutes
-    expect Exception as e:
+    except Exception as e:
         print("Error! " + str(e)))
 
 

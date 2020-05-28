@@ -32,13 +32,16 @@ help_text = '''```Команды:
 
 # вспомогательные функции
 def dead_time():
-    code = requests.get('https://dednet.ru/servers').text
-    soup = BeautifulSoup(code, features='lxml')
-    string = soup.find('div', class_='col s12')
-    time_on_ded = str(string.find_next('label'))[7:-8].split(' ')[2].split(':')
-    hours = time_on_ded[0]
-    minutes = time_on_ded[1]
-    return hours, minutes
+    try:
+        code = requests.get('https://dednet.ru/servers').text
+        soup = BeautifulSoup(code, features='lxml')
+        string = soup.find('div', class_='col s12')
+        time_on_ded = str(string.find_next('label'))[7:-8].split(' ')[2].split(':')
+        hours = time_on_ded[0]
+        minutes = time_on_ded[1]
+        return hours, minutes
+    expect Exception as e:
+        print("Error! " + str(e)))
 
 
 def collect():
@@ -267,13 +270,8 @@ async def notifications():
 @tasks.loop(seconds=30)
 async def notifications2():
     global flag, id_for_notif
-    now = datetime.datetime.utcnow().time()
-    print(now.hour + 3, now.minute, sep=' ')
-    if (now.hour + 3 == 4 and 50 < datetime.datetime.utcnow().time().minute < 60) or (
-            datetime.datetime.utcnow().time().hour + 3 == 5 and 0 <= datetime.datetime.utcnow().time().minute <= 9):
-        pass
-    else:
-        time_ = dead_time()
+    time_ = dead_time()
+    if time_:
         if time_[0] == '22' and not flag:
             flag = True
             for i, j in id_for_notif.items():

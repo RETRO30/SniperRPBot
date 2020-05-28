@@ -17,7 +17,7 @@ id_for_notif = {709921790738038835: {'role': '<@&709219545155371030>',
                 700852534398419074: {'role': '<@&700079783836385428>',
                                      'text': 'Собираемся на грузы. Сбор - 6-ая амунация. Сейчас в игре'}}
 flag = False
-exp_table = ['05:08', '08:32', '11:56', '15:20', '18:44', '18:44', '18:44', '22:08', '01:32', '04:56']
+exp_table = ['08:32', '11:56', '15:20', '18:44', '18:44', '18:44', '22:08', '01:32', '04:56']
 help_text = '''```Команды:
     >>help - справка
     >>calc_time - расчёт времени
@@ -270,7 +270,7 @@ async def notifications2():
     now = datetime.datetime.utcnow().time()
     print(now.hour + 3, now.minute, sep=' ')
     if (now.hour + 3 == 4 and 50 < datetime.datetime.utcnow().time().minute < 60) or (
-            datetime.datetime.utcnow().time().hour + 3 == 5 and 0 <= datetime.datetime.utcnow().time().minute <= 10):
+            datetime.datetime.utcnow().time().hour + 3 == 5 and 0 <= datetime.datetime.utcnow().time().minute <= 9):
         pass
     else:
         time_ = dead_time()
@@ -300,7 +300,7 @@ async def notifications3():
         data = new_data.copy()
 
 
-@tasks.loop(seconds=30)
+@tasks.loop(seconds=60)
 async def notifications4():
     global exp_table
     now = datetime.datetime.utcnow()

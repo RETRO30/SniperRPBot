@@ -269,8 +269,8 @@ async def notifications2():
     global flag, id_for_notif
     now = datetime.datetime.utcnow().time()
     print(now.hour + 3, now.minute, sep=' ')
-    if (now.hour + 3 == 4 and 50 < datetime.datetime.utcnow().time().minute < 59) or (
-            datetime.datetime.utcnow().time().hour + 3 == 5 and 0 < datetime.datetime.utcnow().time().minute < 10):
+    if (now.hour + 3 == 4 and 50 < datetime.datetime.utcnow().time().minute < 60) or (
+            datetime.datetime.utcnow().time().hour + 3 == 5 and 0 <= datetime.datetime.utcnow().time().minute <= 10):
         pass
     else:
         time_ = dead_time()

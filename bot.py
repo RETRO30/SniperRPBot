@@ -40,9 +40,6 @@ def dead_time():
         minutes = time_on_ded[1]
     except Exception as e:
         print("Error! " + str(e))
-        hours = 0
-        minutes = 0
-    return hours, minutes
 
 
 def collect():

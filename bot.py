@@ -331,12 +331,16 @@ async def on_ready():
     print('We are in the system!')
     print(f'User: {bot.user.name}')
     print('Starting background tasks...')
-    change_status.start()
-    notifications.start()
-    notifications2.start()
-    notifications3.start()
-    notifications4.start()
-    print('Success!')
+    try:
+        change_status.start()
+        notifications.start()
+        notifications2.start()
+        notifications3.start()
+        notifications4.start()
+    except Exception as e:
+        print("Error! " + str(e))
+    else:
+        print('Success!')
 
 
 # Запуск бота

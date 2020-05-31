@@ -15,7 +15,8 @@ status = cycle(['Хочешь меня на свой сервер?', 'Тебе �
 id_for_notif = {700852534398419074: {'role': '<@&700079783836385428>',
                                      'text': 'Собираемся на грузы. Сбор - 7-ая амунация. Сейчас в игре'}}
 flag = False
-exp_table = ['08:32', '11:56', '15:20', '18:44', '18:44', '18:44', '22:08', '01:32', '04:56']
+exp_table = ['08:32', '11:56', '15:20', '18:44', '22:08', '01:32', '04:56']
+
 help_text = '''```Команды:
     >>help - справка
     >>calc_time - расчёт времени
@@ -308,30 +309,37 @@ async def notifications4():
     channel = bot.get_channel(707282293924036679)
     if minute + 5 < 60:
         if hour + 3 < 24:
-            if f'{instr(hour + 3)}:{instr(minute + 5)}' in exp_table:
+            time_ = f'{instr(hour + 3)}:{instr(minute + 5)}'
+            if time_ in exp_table:
                 await channel.send(f'<@&712655260266790912> слёт через 5 минут')
         else:
-            if f'{inst(hour + 3 - 24)}:{instr(minute + 5)}' in exp_table:
+            time_ = f'{inst(hour + 3 - 24)}:{instr(minute + 5)}'
+            if time_ in exp_table:
                 await channel.send(f'<@&712655260266790912> слёт через 5 минут')
     else:
         if hour + 4 < 24:
-            if f'{instr(hour + 4)}:{instr(minute + 5 - 60)}' in exp_table:
+            time_ = f'{instr(hour + 4)}:{instr(minute + 5 - 60)}'
+            if time_ in exp_table:
                 await channel.send(f'<@&712655260266790912> слёт через 5 минут')
         else:
-            if f'{instr(hour + 4 - 24)}:{instr(minute + 5 - 60)}' in exp_table:
+            time_ = f'{instr(hour + 4 - 24)}:{instr(minute + 5 - 60)}'
+            if time_ in exp_table:
                 await channel.send(f'<@&712655260266790912> слёт через 5 минут')
+    print(f'{h}')
 
 
 # Логирование
 @bot.event
 async def on_ready():
-    print('Logged in as')
-    print(bot.user.name)
+    print('We are in the system!')
+    print(f'User: {bot.user.name}')
+    print('Starting background tasks...')
     change_status.start()
     notifications.start()
     notifications2.start()
     notifications3.start()
     notifications4.start()
+    print('Success!')
 
 
 # Запуск бота

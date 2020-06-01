@@ -314,7 +314,7 @@ async def notifications4():
             if time_ in exp_table:
                 await channel.send(f'<@&712655260266790912> слёт через 5 минут')
         else:
-            time_ = f'{inst(hour + 3 - 24)}:{instr(minute + 5)}'
+            time_ = f'{instr(hour + 3 - 24)}:{instr(minute + 5)}'
             if time_ in exp_table:
                 await channel.send(f'<@&712655260266790912> слёт через 5 минут')
     else:

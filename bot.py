@@ -40,6 +40,9 @@ def dead_time():
         minutes = time_on_ded[1]
     except Exception as e:
         print("Error! " + str(e))
+        hours = 0
+        minute = 0
+    return hours, minutes
 
 
 def collect():
@@ -269,7 +272,6 @@ async def notifications():
 async def notifications2():
     global flag, id_for_notif
     time_ = dead_time()
-    print(*time_)
     if time_:
         if time_[0] == '22' and not flag:
             flag = True

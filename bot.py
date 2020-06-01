@@ -268,7 +268,7 @@ async def notifications():
  Йоу, птичка напела, что через 30 минут доставят грузовик "Pounder" с очень вкусным грузом. Вооружайтесь, закупайте броники.''')
 
 
-@tasks.loop(seconds=60)
+@tasks.loop(seconds=30)
 async def notifications2():
     global flag, id_for_notif
     time_ = dead_time()

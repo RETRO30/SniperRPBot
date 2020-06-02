@@ -43,7 +43,7 @@ def dead_time():
     except Exception as e:
         print("Error! " + str(e))
         hours = 0
-        minute = 0
+        minutes = 0
     return hours, minutes
 
 
@@ -345,7 +345,6 @@ async def on_ready():
         print("Error! " + str(e))
     else:
         print('Success!')
-
 
 # Запуск бота
 bot.run(os.environ.get('BOT_TOKEN'))

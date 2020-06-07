@@ -30,7 +30,8 @@ help_text = '''```Команды:
     >>ghetto_stats - статистика захватов территорий гетто
     >>find - найти недвижимость
         Аргументы(Что-то одно):
-            [Имя или фамилия владельца, название, цена(знак доллара перед суммой, сотни отделять запятыми), адрес] ```'''
+            [Имя или фамилия владельца, название, цена(знак доллара перед суммой, сотни отделять запятыми), адрес]
+    >>deathtime - время на сервере(не очень точное)```'''
 
 
 # вспомогательные функции
@@ -42,11 +43,13 @@ def dead_time():
         time_on_ded = str(string.find_next('label'))[7:-8].split(' ')[2].split(':')
         hours = time_on_ded[0]
         minutes = time_on_ded[1]
+        restart = False
     except Exception as e:
         print("Error! " + str(e))
         hours = 0
         minutes = 0
-    return hours, minutes
+        restart = True
+    return hours, minutes, restart
 
 
 def collect():
@@ -235,6 +238,14 @@ async def ghetto_stats(ctx):
 async def help(ctx):
     global help_text
     await ctx.send(help_text)
+
+@bot.command()
+async def deathtime(ctx):
+    time_ = dead_time()
+    if time_[2]:
+        await ctx.send('Сервер не запущен')
+    else:
+        await ctx.send(f'Времея в игре: {time_[0]}:{time_[1]}')
 
 
 @bot.command(pass_context=True)

@@ -14,9 +14,9 @@ dates = [4, 8, 12, 16, 20, 24, 28]
 status = cycle(['Хочешь меня на свой сервер?', 'Тебе к retro#9860', 'Введи >>help, чтобы узнать что я умею'])
 id_for_notif = {700852534398419074: {'role': '<@&700079783836385428>',
                                      'text': 'Собираемся на грузы - *"сейчас будет рп"* (с) Карандаш. Сбор - 7-ая амунация. Сейчас в игре'},
-               699631174519357571:  {'role': '<@&699626003760414761>',
+                699631174519357571: {'role': '<@&699626003760414761>',
                                      'text': 'Собираемся на грузы, баласята, в 01:00. Сбор - 6-ая амунация. Сейчас в игре'},
-               717735581957881886:  {'role': '<@&717749640052604928>',
+                717735581957881886: {'role': '<@&717749640052604928>',
                                      'text': 'Собираемся на грузы. Место сбора - кольцо Миррор-Парка. Сейчас в игре'}}
 flag = False
 exp_table = ['08:32', '11:56', '15:20', '18:44', '22:08', '01:32', '04:56']
@@ -31,7 +31,10 @@ help_text = '''```Команды:
     >>find - найти недвижимость
         Аргументы(Что-то одно):
             [Имя или фамилия владельца, название, цена(знак доллара перед суммой, сотни отделять запятыми), адрес]
-    >>deathtime - время на сервере(не очень точное)```'''
+    >>deathtime - время на сервере(не очень точное)
+    >>isonline - проверить есть ли игрок онлайн
+        Аргументы(Что-то одно):
+                [Имя Фамилия]```'''
 
 
 # вспомогательные функции
@@ -50,6 +53,22 @@ def dead_time():
         minutes = 0
         restart = True
     return hours, minutes, restart
+
+
+def online():
+    code = requests.get('https://dednet.ru/servers').text
+    soup = BeautifulSoup(code, features='lxml')
+    table = soup.find('div', class_='col s12', id='monitoring')
+    rows = table.find_all('tr')[1:]
+    online_players = []
+    for i in rows:
+        if i:
+            online_players.append(str(i).split('\n')[2].split('>')[1].split('<')[0])
+    clean_online_players = []
+    for i in online_players:
+        if i:
+            clean_online_players.append(i)
+    return clean_online_players
 
 
 def collect():
@@ -239,11 +258,12 @@ async def help(ctx):
     global help_text
     await ctx.send(help_text)
 
+
 @bot.command()
 async def deathtime(ctx):
     time_ = dead_time()
     if time_[2]:
-        await ctx.send('Сервер не запущен')
+        await ctx.send('Что-то не так')
     else:
         await ctx.send(f'Времея в игре: {time_[0]}:{time_[1]}')
 
@@ -267,6 +287,20 @@ async def find(ctx, *arg):
         for i in property_:
             await ctx.send(
                 f'```\n{i["Название"]}\nВладелец: {i["Владелец"]}\nЦена: {i["Цена"]}\nАдрес: {i["Адрес"]}```')
+
+
+@bot.command(pass_context=True)
+async def isonline(ctx, *arg):
+    try:
+        name = ' '.join(arg)
+        players = online()
+        if name in players:
+            await ctx.send(f'{name} онлайн!')
+        else:
+            await ctx.send(f'{name} не онлайн!')
+    except Exception as e:
+        print("Error! " + str(e))
+        await ctx.send('Что-то не так')
 
 
 # Цикличные задачи бота на занем плане
@@ -358,6 +392,7 @@ async def on_ready():
         print("Error! " + str(e))
     else:
         print('Success!')
+
 
 # Запуск бота
 bot.run(os.environ.get('BOT_TOKEN'))

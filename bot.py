@@ -11,6 +11,7 @@ import requests
 bot = commands.Bot(command_prefix='>>')
 bot.remove_command('help')
 dates = [4, 8, 12, 16, 20, 24, 28]
+whitelist = [693811598338555944, 699234108127051827, 700064448911507456, 717732783753134100]
 status = cycle(['Хочешь меня на свой сервер?', 'Тебе к retro#9860', 'Введи >>help, чтобы узнать что я умею'])
 id_for_notif = {700852534398419074: {'role': '<@&700079783836385428>',
                                      'text': 'Собираемся на грузы - *"сейчас будет рп"* (с) Карандаш. Сбор - 7-ая амунация. Сейчас в игре'},
@@ -133,174 +134,211 @@ data = collect_for_exp().copy()
 # Команды бота
 @bot.command(pass_context=True)
 async def calc_time(ctx, *arg):
-    if arg:
-        arg = list(arg)
-        if arg[0] == '-nights':
-            if len(arg) == 3 and int(arg[1].split(':')[1]) == 0:
-                time_on_server = [int(arg[1].split(':')[0]), int(arg[1].split(':')[1])]
-                time = [int(arg[2].split(':')[0]), int(arg[2].split(':')[1])]
-                if time_on_server[0] % 2 == 0:
-                    deltatime = ((22 - time_on_server[0]) // 2) * 17
-                    h = deltatime // 60
-                    m = deltatime % 60
-                    if time[0] + h > 24:
-                        time[0] = time[0] + h - 24
+    try:
+        if ctx.message.guild.id in whitelist:
+            if arg:
+                arg = list(arg)
+                if arg[0] == '-nights':
+                    if len(arg) == 3 and int(arg[1].split(':')[1]) == 0:
+                        time_on_server = [int(arg[1].split(':')[0]), int(arg[1].split(':')[1])]
+                        time = [int(arg[2].split(':')[0]), int(arg[2].split(':')[1])]
+                        if time_on_server[0] % 2 == 0:
+                            deltatime = ((22 - time_on_server[0]) // 2) * 17
+                            h = deltatime // 60
+                            m = deltatime % 60
+                            if time[0] + h > 24:
+                                time[0] = time[0] + h - 24
+                            else:
+                                time[0] += h
+                            if time[1] + m > 60:
+                                time[0] = time[0] + 1
+                                time[1] = time[1] + m - 60
+                            else:
+                                time[1] += m
+                            time_on_server = [22, 0]
+                        else:
+                            deltatime = ((23 - time_on_server[0]) // 2) * 17
+                            h = deltatime // 60
+                            m = deltatime % 60
+                            if time[0] + h > 24:
+                                time[0] = time[0] + h - 24
+                            else:
+                                time[0] += h
+                            if time[1] + m > 60:
+                                time[0] = time[0] + 1
+                                time[1] = time[1] + m - 60
+                            else:
+                                time[1] += m
+                            time_on_server = [23, 0]
+
+                        time_table = [f'{instr(time_on_server[0])}:{instr(time_on_server[1])}:']
+                        for i in range(8):
+                            time_table.append(f'{i + 1}. {instr(time[0])}:{instr(time[1])}')
+                            if time[1] + 24 >= 60:
+                                if time[0] + 4 >= 24:
+                                    time[0] = time[0] + 4 - 24
+                                else:
+                                    time[0] += 4
+                                    time[1] = time[1] + 24 - 60
+                            else:
+                                time[1] += 24
+                                if time[0] + 3 >= 24:
+                                    time[0] = time[0] + 3 - 24
+                                else:
+                                    time[0] += 3
+                        await ctx.send('\n'.join(time_table))
                     else:
-                        time[0] += h
-                    if time[1] + m > 60:
-                        time[0] = time[0] + 1
-                        time[1] = time[1] + m - 60
+                        await ctx.send('Что-то не то :thinking:\nДля получения справки о командах введите: >>help')
+
+                elif arg[0] == '-exp':
+                    if len(arg) == 2:
+                        time = [int(arg[1].split(':')[0]), int(arg[1].split(':')[1])]
+                        time_table = []
+                        for i in range(8):
+                            time_table.append(f'{instr(time[0])}:{instr(time[1])}')
+                            if time[1] + 24 >= 60:
+                                if time[0] + 4 >= 24:
+                                    time[0] = time[0] + 4 - 24
+                                else:
+                                    time[0] += 4
+                                    time[1] = time[1] + 24 - 60
+                            else:
+                                time[1] += 24
+                                if time[0] + 3 >= 24:
+                                    time[0] = time[0] + 3 - 24
+                                else:
+                                    time[0] += 3
+                        await ctx.send('\n'.join(time_table))
                     else:
-                        time[1] += m
-                    time_on_server = [22, 0]
+                        await ctx.send('Что-то не то :thinking:\nДля получения справки о командах введите: >>help')
                 else:
-                    deltatime = ((23 - time_on_server[0]) // 2) * 17
-                    h = deltatime // 60
-                    m = deltatime % 60
-                    if time[0] + h > 24:
-                        time[0] = time[0] + h - 24
-                    else:
-                        time[0] += h
-                    if time[1] + m > 60:
-                        time[0] = time[0] + 1
-                        time[1] = time[1] + m - 60
-                    else:
-                        time[1] += m
-                    time_on_server = [23, 0]
-
-                time_table = [f'{instr(time_on_server[0])}:{instr(time_on_server[1])}:']
-                for i in range(8):
-                    time_table.append(f'{i + 1}. {instr(time[0])}:{instr(time[1])}')
-                    if time[1] + 24 >= 60:
-                        if time[0] + 4 >= 24:
-                            time[0] = time[0] + 4 - 24
-                        else:
-                            time[0] += 4
-                            time[1] = time[1] + 24 - 60
-                    else:
-                        time[1] += 24
-                        if time[0] + 3 >= 24:
-                            time[0] = time[0] + 3 - 24
-                        else:
-                            time[0] += 3
-                await ctx.send('\n'.join(time_table))
-            else:
-                await ctx.send('Что-то не то :thinking:\nДля получения справки о командах введите: >>help')
-
-        elif arg[0] == '-exp':
-            if len(arg) == 2:
-                time = [int(arg[1].split(':')[0]), int(arg[1].split(':')[1])]
-                time_table = []
-                for i in range(8):
-                    time_table.append(f'{instr(time[0])}:{instr(time[1])}')
-                    if time[1] + 24 >= 60:
-                        if time[0] + 4 >= 24:
-                            time[0] = time[0] + 4 - 24
-                        else:
-                            time[0] += 4
-                            time[1] = time[1] + 24 - 60
-                    else:
-                        time[1] += 24
-                        if time[0] + 3 >= 24:
-                            time[0] = time[0] + 3 - 24
-                        else:
-                            time[0] += 3
-                await ctx.send('\n'.join(time_table))
+                    await ctx.send('Что-то не то :thinking:\nДля получения справки о командах введите: >>help')
             else:
                 await ctx.send('Что-то не то :thinking:\nДля получения справки о командах введите: >>help')
         else:
-            await ctx.send('Что-то не то :thinking:\nДля получения справки о командах введите: >>help')
-    else:
-        await ctx.send('Что-то не то :thinking:\nДля получения справки о командах введите: >>help')
+            await ctx.send('Что-то не так :(')
+    except Exception:
+        await ctx.send('Что-то не так :(')
 
 
 @bot.command()
 async def ghetto_stats(ctx):
-    GOOGLE_CHROME_PATH = '/app/.apt/usr/bin/google-chrome-stable'
-    CHROMEDRIVER_PATH = '/app/.chromedriver/bin/chromedriver'
-    chrome_options = webdriver.ChromeOptions()
-    chrome_options.add_argument('--disable-gpu')
-    chrome_options.add_argument('--no-sandbox')
-    chrome_options.binary_location = GOOGLE_CHROME_PATH
-    browser = webdriver.Chrome(CHROMEDRIVER_PATH, chrome_options=chrome_options)
-    browser.get('https://dednet.ru/map')
-    code = browser.page_source
-    browser.close()
+    try:
+        if ctx.message.guild.id in whitelist:
+            GOOGLE_CHROME_PATH = '/app/.apt/usr/bin/google-chrome-stable'
+            CHROMEDRIVER_PATH = '/app/.chromedriver/bin/chromedriver'
+            chrome_options = webdriver.ChromeOptions()
+            chrome_options.add_argument('--disable-gpu')
+            chrome_options.add_argument('--no-sandbox')
+            chrome_options.binary_location = GOOGLE_CHROME_PATH
+            browser = webdriver.Chrome(CHROMEDRIVER_PATH, chrome_options=chrome_options)
+            browser.get('https://dednet.ru/map')
+            code = browser.page_source
+            browser.close()
 
-    soup = BeautifulSoup(code, features='lxml')
-    page = soup.find('svg', class_='leaflet-zoom-animated')
-    all_territories = page.find_all_next('g')
-    ghetto_table = []
-    for territory in all_territories:
-        args = str(territory.find('path')).split()
-        color = ''
-        for arg in args:
-            if arg.startswith('fill='):
-                color = arg
-        ghetto_table.append(color)
-    colors_ghetto = {'fill="#673AB7"': 'The Ballas Gang',
+
+            soup = BeautifulSoup(code, features='lxml')
+            page = soup.find('svg', class_='leaflet-zoom-animated')
+            all_territories = page.find_all_next('g')
+            ghetto_table = []
+            for territory in all_territories:
+                args = str(territory.find('path')).split()
+                color = ''
+                for arg in args:
+                    if arg.startswith('fill='):
+                        color = arg
+                ghetto_table.append(color)
+            colors_ghetto = {'fill="#673AB7"': 'The Ballas Gang',
                      'fill="#f44336"': 'Bloods',
                      'fill="#4CAF50"': 'The Families',
                      'fill="#2196F3"': 'Marabunta Grande',
                      'fill="#FFEB3B"': 'Los Santos Vagos'}
-    ghetto_stats = {'The Ballas Gang': 0, 'Bloods': 0, 'The Families': 0, 'Marabunta Grande': 0, 'Los Santos Vagos': 0}
-    for i in ghetto_table:
-        if i in colors_ghetto.keys():
-            ghetto_stats[colors_ghetto[i]] += 1
-    string = ''
-    for band, amount in ghetto_stats.items():
-        string += f'{band}: {amount}\n'
-    await ctx.send(string)
+            ghetto_stats = {'The Ballas Gang': 0, 'Bloods': 0, 'The Families': 0, 'Marabunta Grande': 0, 'Los Santos Vagos': 0}
+            for i in ghetto_table:
+                if i in colors_ghetto.keys():
+                    ghetto_stats[colors_ghetto[i]] += 1
+            string = ''
+            for band, amount in ghetto_stats.items():
+                string += f'{band}: {amount}\n'
+            await ctx.send(string)
+        else:
+            await ctx.send('Что-то не так :(')
+    except Exception:
+        await ctx.send('Что-то не так :(')
 
 
 @bot.command()
 async def help(ctx):
-    global help_text
-    await ctx.send(help_text)
+    try:
+        if ctx.message.guild.id in whitelist:
+            global help_text
+            await ctx.send(help_text)
+        else:
+            await ctx.send('Что-то не так :(')
+    except Exception:
+        await ctx.send('Что-то не так :(')
 
 
 @bot.command()
 async def deathtime(ctx):
-    time_ = dead_time()
-    if time_[2]:
-        await ctx.send('Что-то не так')
-    else:
-        await ctx.send(f'Времея в игре: {time_[0]}:{time_[1]}')
+    try:
+        if ctx.message.guild.id in whitelist:
+            time_ = dead_time()
+            if time_[2]:
+                await ctx.send('Что-то не так')
+            else:
+                await ctx.send(f'Времея в игре: {time_[0]}:{time_[1]}')
+        else:
+            await ctx.send('Что-то не так :(')
+    except Exception:
+        await ctx.send('Что-то не так :(')
 
 
 @bot.command(pass_context=True)
 async def find(ctx, *arg):
-    arg = ' '.join(list(arg))
-    table = collect()
-    property_ = []
-    for i in table:
-        for j in i.items():
-            if not arg.isalpha():
-                if arg.lower() == j[1].lower():
-                    property_.append(i)
-            elif arg.lower() in j[1].lower():
-                property_.append(i)
-    if len(property_) == 0:
-        await ctx.send(
-            'Увы, я ничего не нашёл.')
-    else:
-        for i in property_:
-            await ctx.send(
-                f'```\n{i["Название"]}\nВладелец: {i["Владелец"]}\nЦена: {i["Цена"]}\nАдрес: {i["Адрес"]}```')
+    try:
+        if ctx.message.guild.id in whitelist:
+            arg = ' '.join(list(arg))
+            table = collect()
+            property_ = []
+            for i in table:
+                for j in i.items():
+                    if not arg.isalpha():
+                        if arg.lower() == j[1].lower():
+                            property_.append(i)
+                    elif arg.lower() in j[1].lower():
+                        property_.append(i)
+            if len(property_) == 0:
+                await ctx.send(
+                    'Увы, я ничего не нашёл.')
+            else:
+                for i in property_:
+                    await ctx.send(
+                        f'```\n{i["Название"]}\nВладелец: {i["Владелец"]}\nЦена: {i["Цена"]}\nАдрес: {i["Адрес"]}```')
+        else:
+            await ctx.send('Что-то не так :(')
+    except Exception:
+        await ctx.send('Что-то не так :(')
 
 
 @bot.command(pass_context=True)
 async def isonline(ctx, *arg):
     try:
-        name = ' '.join(arg)
-        players = online()
-        if name in players:
-            await ctx.send(f'{name} онлайн!')
+        if ctx.message.guild.id in whitelist:
+            try:
+                name = ' '.join(arg)
+                players = online()
+                if name in players:
+                    await ctx.send(f'{name} онлайн!')
+                else:
+                    await ctx.send(f'{name} не онлайн!')
+            except Exception as e:
+                print("Error! " + str(e))
+                await ctx.send('Что-то не так')
         else:
-            await ctx.send(f'{name} не онлайн!')
-    except Exception as e:
-        print("Error! " + str(e))
-        await ctx.send('Что-то не так')
+            await ctx.send('Что-то не так :(')
+    except Exception:
+        await ctx.send('Что-то не так :(')
 
 
 # Цикличные задачи бота на занем плане

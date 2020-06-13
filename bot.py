@@ -373,7 +373,7 @@ async def notifications2():
             flag = True
             for i, j in id_for_notif.items():
                 channel = bot.get_channel(i)
-                await channel.send(f'''{j['role']} {j['text1'][0]} {instr(time_[0])}:{instr(time_[1])}''')
+                await channel.send(f'''{j['role']} {j['text'][0]} {instr(time_[0])}:{instr(time_[1])}''')
         elif time_[0] != '22':
             flag = False
 
@@ -434,7 +434,6 @@ async def on_ready():
         notifications.start()
         notifications2.start()
         notifications3.start()
-        notifications4.start()
     except Exception as e:
         print("Error! " + str(e))
     else:

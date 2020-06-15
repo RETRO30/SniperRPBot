@@ -362,7 +362,7 @@ async def notifications():
                 await channel.send(f'''{j['role']} {j['text'][-1]}''')
             else:
                 await channel.send(f'''{j['role']} {j['text'][1]}''')
-    if hour == 19 and minute == 40:
+    if hour == 18 and minute == 30:
         channel = bot.get_channel(700852534398419074)
         await channel.send('<@&700079783836385428> начинаем отписывать в <#714139823606333441>')
     if hour == 20 and minute == 10:

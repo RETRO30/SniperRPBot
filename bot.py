@@ -362,12 +362,17 @@ async def notifications():
                 await channel.send(f'''{j['role']} {j['text'][-1]}''')
             else:
                 await channel.send(f'''{j['role']} {j['text'][1]}''')
-    if hour == 18 and minute == 30:
+    if hour == 19 and minute == 40:
+        channel = bot.get_channel(700852534398419074)
+        if day in [3, 6, 9, 12, 15, 18, 21, 24, 27, 30]:
+            await channel.send('<@&700079783836385428> собираемся на мулы сразу после бизвара. Сбор 7-ая амунация.')
+        else:
+            await channel.send('<@&700079783836385428> собираемся на мулы в 20:00 по МСК. Сбор 7-ая амунация. Пишите в <#714139823606333441> что вам выдать.')
+    if day in [3, 6, 9, 12, 15, 18, 21, 24, 27, 30] and hour == 18 and minute == 30:
         channel = bot.get_channel(700852534398419074)
         await channel.send('<@&700079783836385428> начинаем отписывать в <#714139823606333441>')
-    if hour == 20 and minute == 10:
-        channel = bot.get_channel(700852534398419074)
-        await channel.send('<@&700079783836385428> собираемся на мулы. Сбор 7-ая заправка.')
+    
+        
 
 
 @tasks.loop(seconds=30)

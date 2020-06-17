@@ -288,7 +288,7 @@ async def deathtime(ctx):
     except Exception:
         await ctx.send('Что-то не так :(')
 
-
+@bot.command(pass_context=True)
 async def find(ctx, *arg):
     try:
         if ctx.message.guild.id in whitelist:

@@ -433,7 +433,6 @@ async def notifications4():
             time_ = f'{instr(hour + 4 - 24)}:{instr(minute + 5 - 60)}'
             if time_ in exp_table:
                 await channel.send(f'<@&712655260266790912> слёт через 5 минут')
-    print(time_)
 
 
 # Логирование

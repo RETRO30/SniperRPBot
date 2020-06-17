@@ -10,22 +10,10 @@ import requests
 # константы
 bot = commands.Bot(command_prefix='>>')
 bot.remove_command('help')
-dates = [4, 8, 12, 16, 20, 24, 28]
+dates_paunder = [4, 8, 12, 16, 20, 24, 28]
+dates_bizwars = [3, 6, 9, 12, 15, 18, 21, 24, 27, 30]
 whitelist = [693811598338555944, 699234108127051827, 700064448911507456, 717732783753134100]
 status = cycle(['Хочешь меня на свой сервер?', 'Тебе к retro#9860', 'Введи >>help, чтобы узнать что я умею'])
-id_for_notif = {700852534398419074: {'role': '<@&700079783836385428>',
-                                     'text':
-                                         ['Собираемся на грузы - *"сейчас будет рп"* (с) Карандаш. Сбор - 7-ая амунация. Сейчас в игре',
-                                          'Йоу, птичка напела, что через 30 минут доставят грузовик "Pounder" с очень вкусным грузом.',
-                                          'Через 30 минут будет жёсткий забив, а потом паундеры и мулы. Подготовьтесь!']},
-                699631174519357571: {'role': '<@&699626003760414761>',
-                                     'text':
-                                         ['Собираемся на грузы, баласята, в 01:00. Сбор - 6-ая амунация. Сейчас в игре',
-                                          'Йоу, птичка напела, что через 30 минут доставят грузовик "Pounder" с очень вкусным грузом.']},
-                717735581957881886: {'role': '<@&717749640052604928>',
-                                     'text':
-                                         ['Собираемся на грузы. Место сбора - кольцо Миррор-Парка. Сейчас в игре',
-                                          'Йоу, птичка напела, что через 30 минут доставят грузовик "Pounder" с очень вкусным грузом.']}}
 flag = False
 exp_table = ['08:32', '11:56', '15:20', '18:44', '22:08', '01:32', '04:56']
 
@@ -243,7 +231,6 @@ async def ghetto_stats(ctx):
             code = browser.page_source
             browser.close()
 
-
             soup = BeautifulSoup(code, features='lxml')
             page = soup.find('svg', class_='leaflet-zoom-animated')
             all_territories = page.find_all_next('g')
@@ -256,11 +243,12 @@ async def ghetto_stats(ctx):
                         color = arg
                 ghetto_table.append(color)
             colors_ghetto = {'fill="#673AB7"': 'The Ballas Gang',
-                     'fill="#f44336"': 'Bloods',
-                     'fill="#4CAF50"': 'The Families',
-                     'fill="#2196F3"': 'Marabunta Grande',
-                     'fill="#FFEB3B"': 'Los Santos Vagos'}
-            ghetto_stats = {'The Ballas Gang': 0, 'Bloods': 0, 'The Families': 0, 'Marabunta Grande': 0, 'Los Santos Vagos': 0}
+                             'fill="#f44336"': 'Bloods',
+                             'fill="#4CAF50"': 'The Families',
+                             'fill="#2196F3"': 'Marabunta Grande',
+                             'fill="#FFEB3B"': 'Los Santos Vagos'}
+            ghetto_stats = {'The Ballas Gang': 0, 'Bloods': 0, 'The Families': 0, 'Marabunta Grande': 0,
+                            'Los Santos Vagos': 0}
             for i in ghetto_table:
                 if i in colors_ghetto.keys():
                     ghetto_stats[colors_ghetto[i]] += 1
@@ -301,7 +289,6 @@ async def deathtime(ctx):
         await ctx.send('Что-то не так :(')
 
 
-@bot.command(pass_context=True)
 async def find(ctx, *arg):
     try:
         if ctx.message.guild.id in whitelist:
@@ -320,8 +307,8 @@ async def find(ctx, *arg):
                     'Увы, я ничего не нашёл.')
             else:
                 for i in property_:
-                    await ctx.send(
-                        f'```\n{i["Название"]}\nВладелец: {i["Владелец"]}\nЦена: {i["Цена"]}\nАдрес: {i["Адрес"]}```')
+                    embed = discord.Embed(title=i["Название"], description=f'Владелец: {i["Владелец"]}\nЦена: {i["Цена"]}\nАдрес: {i["Адрес"]}')
+                    await ctx.send(embed=embed)
         else:
             await ctx.send('Что-то не так :(')
     except Exception:
@@ -355,24 +342,28 @@ async def notifications():
     day = now.date().day
     hour = now.time().hour + 3
     minute = now.time().minute
-    if day in dates and hour == 19 and minute == 30:
-        for i, j in id_for_notif.items():
-            channel = bot.get_channel(i)
-            if day % 3 == 0:
-                await channel.send(f'''{j['role']} {j['text'][-1]}''')
-            else:
-                await channel.send(f'''{j['role']} {j['text'][1]}''')
-    if hour == 19 and minute == 40:
-        channel = bot.get_channel(700852534398419074)
+    # ghosts
+    channel = bot.get_channel(717735581957881886)
+    if day in dates_paunder and hour == 19 and minute == 30:
+        await channel.send(
+            '<@&717749640052604928> Йоу, птичка напела, что через 30 минут доставят грузовик "Pounder" с очень вкусным грузом.')
+
+    # the ballas gang
+    channel = bot.get_channel(699631174519357571)
+    if day in dates_paunder and hour == 19 and minute == 30:
+        await channel.send(
+            '<@&699626003760414761> Йоу, черномазые, птичка напела, что через 30 минут доставят грузовик "Pounder" с очень вкусным грузом.')
+
+    # yakuza
+    channel = bot.get_channel(700852534398419074)
+    if day in dates_bizwars or day in dates_paunder and hour == 18 and minute == 30:
+        await channel.send('<@&700079783836385428> начинаем отписывать в <#714139823606333441>')
+    if hour == 19 and minute == 30:
         if day in [3, 6, 9, 12, 15, 18, 21, 24, 27, 30]:
-            await channel.send('<@&700079783836385428> собираемся на мулы сразу после бизвара. Сбор 7-ая амунация.')
+            await channel.send('<@&700079783836385428> собираемся на мулы сразу после бизвара. Место сбора 7-ая амунация.')
         else:
             await channel.send('<@&700079783836385428> собираемся на мулы в 20:00 по МСК. Сбор 7-ая амунация. Пишите в <#714139823606333441> что вам выдать.')
-    if day in [3, 6, 9, 12, 15, 18, 21, 24, 27, 30] and hour == 18 and minute == 30:
-        channel = bot.get_channel(700852534398419074)
-        await channel.send('<@&700079783836385428> начинаем отписывать в <#714139823606333441>')
-    
-        
+
 
 
 @tasks.loop(seconds=30)
@@ -382,9 +373,19 @@ async def notifications2():
     if time_:
         if time_[0] == '22' and not flag:
             flag = True
-            for i, j in id_for_notif.items():
-                channel = bot.get_channel(i)
-                await channel.send(f'''{j['role']} {j['text'][0]} {instr(time_[0])}:{instr(time_[1])}''')
+
+            # ghosts
+            channel = bot.get_channel(717735581957881886)
+            await channel.send(f'''<@&717749640052604928> Собираемся на грузы. Место сбора - кольцо Миррор-Парка. Сейчас в игре {instr(time_[0])}:{instr(time_[1])}''')
+
+            # the ballas gang
+            channel = bot.get_channel(699631174519357571)
+            await channel.send(f'''<@&699626003760414761> Собираемся на грузы, баласята, в 01:00. Сбор - 6-ая амунация. Сейчас в игре {instr(time_[0])}:{instr(time_[1])}''')
+
+            # yakuza
+            channel = bot.get_channel(700852534398419074)
+            await channel.send(f'''<@&700079783836385428> 'Собираемся на грузы - *"сейчас будет рп"* (с) Карандаш. Сбор - 7-ая амунация. Сейчас в игре {instr(time_[0])}:{instr(time_[1])}''')
+
         elif time_[0] != '22':
             flag = False
 
@@ -402,7 +403,8 @@ async def notifications3():
         channel = bot.get_channel(707282293924036679)
         if len(data) < len(new_data):
             for i in difer(data, new_data):
-                await channel.send(f'<@&712655260266790912>\n```{i[0]}\n{i[1]}\n{i[2]}```')
+                embed = discord.Embed(title=i[0], description=f'{i[1]}\n{i[2]}')
+                await channel.send(f'<@&712655260266790912>', embed=embed)
         data = new_data.copy()
 
 

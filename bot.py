@@ -390,7 +390,7 @@ async def notifications2():
             flag = False
 
 
-@tasks.loop(seconds=5)
+@tasks.loop(seconds=8)
 async def change_status():
     await bot.change_presence(activity=discord.Game(next(status)))
 

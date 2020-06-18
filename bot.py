@@ -355,7 +355,7 @@ async def notifications():
             '<@&699626003760414761> Йоу, черномазые, птичка напела, что через 30 минут доставят грузовик "Pounder" с очень вкусным грузом.')
 
     # yakuza
-    channel = bot.get_channel(707282102147743761)
+    channel = bot.get_channel(700852534398419074)
     if (day in dates_bizwars or day in dates_paunder) and hour == 18 and minute == 30:
         await channel.send('<@&700079783836385428> начинаем отписывать в <#714139823606333441>')
     if hour == 19 and minute == 30:

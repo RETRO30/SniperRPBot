@@ -13,7 +13,9 @@ bot.remove_command('help')
 dates_paunder = [4, 8, 12, 16, 20, 24, 28]
 dates_bizwars = [3, 6, 9, 12, 15, 18, 21, 24, 27, 30]
 whitelist = [693811598338555944, 699234108127051827, 700064448911507456, 717732783753134100]
-blacklist = [580478163344162819, 723656787089424406, 723559013035540540, 305584796946530304]
+f = open('blacklist.txt', 'r')
+blacklist_ = list(map(int, f.read().split('\n')[1:]))
+f.close()
 status = cycle(['Хочешь меня на свой сервер?', 'Тебе к retro#9860', 'Введи >>help, чтобы узнать что я умею'])
 flag = False
 exp_table = ['08:32', '11:56', '15:20', '18:44', '22:08', '01:32', '04:56']
@@ -129,9 +131,55 @@ data = collect_for_exp().copy()
 
 # Команды бота
 @bot.command(pass_context=True)
+async def blacklist(ctx, *arg):
+    try:
+        if ctx.message.author.id == 408605476365008897 and ctx.message.guild.id in whitelist:
+            arg = list(arg)
+            if len(arg) == 2:
+                if arg[0] == '-add':
+                    if str(arg[1]).isdigit():
+                        user_id = int(arg[1])
+                        if user_id not in blacklist_:
+                            blacklist_.append(user_id)
+                            await ctx.send(f'{user_id} был добавлен в blacklist')
+                        else:
+                            await ctx.send('Этот пользователь уже есть в blacklist')
+                    else:
+                        await ctx.send('Что-то не так :(')
+                elif arg[0] == '-remove':
+                    if str(arg[1]).isdigit():
+                        user_id = int(arg[1])
+                        user = bot.get_user(user_id)
+                        if int(user_id) in blacklist_:
+                            blacklist_.remove(user_id)
+                            await ctx.send(f'{user_id} был удалён из blacklist')
+                        else:
+                            await ctx.send('Этого пользователя нет в blacklist')
+                f = open('blacklist.txt', 'w')
+                f.write('\n'.join(list(map(str, blacklist_))))
+                f.close()
+            elif len(arg) == 1:
+                if arg[0] == '-show':
+                    blacklist_string = ''
+                    if len(blacklist_) > 1:
+                        for user_id in blacklist_[1:]:
+                            user_id = user_id
+                            blacklist_string += f'{user_id}\n'
+                        await ctx.send(blacklist_string)
+                    else:
+                        await ctx.send('blacklist пока что пустой :(')
+            else:
+                await ctx.send('Что-то не так :(')
+        else:
+            await ctx.send('Похоже, у вас нет прав для использования этой команды :(')
+    except Exception:
+        await ctx.send('Что-то не так :(')
+
+
+@bot.command(pass_context=True)
 async def calc_time(ctx, *arg):
     try:
-        if ctx.message.guild.id in whitelist and ctx.message.author.id not in blacklist:
+        if ctx.message.guild.id in whitelist and ctx.message.author.id not in blacklist_:
             if arg:
                 arg = list(arg)
                 if arg[0] == '-nights':
@@ -214,13 +262,13 @@ async def calc_time(ctx, *arg):
         else:
             await ctx.send('Похоже сервер не был добавлен в мой whitelist или вы были внесены blacklist :(')
     except Exception:
-        await ctx.send('Я не умею отвечать в лс :(')
+        await ctx.send('Что-то не так :(')
 
 
 @bot.command()
 async def ghetto_stats(ctx):
     try:
-        if ctx.message.guild.id in whitelist and ctx.message.author.id not in blacklist:
+        if ctx.message.guild.id in whitelist and ctx.message.author.id not in blacklist_:
             GOOGLE_CHROME_PATH = '/app/.apt/usr/bin/google-chrome-stable'
             CHROMEDRIVER_PATH = '/app/.chromedriver/bin/chromedriver'
             chrome_options = webdriver.ChromeOptions()
@@ -260,25 +308,25 @@ async def ghetto_stats(ctx):
         else:
             await ctx.send('Похоже сервер не был добавлен в мой whitelist или вы были внесены blacklist :(')
     except Exception:
-        await ctx.send('Я не умею отвечать в лс :(')
+        await ctx.send('Что-то не так :(')
 
 
 @bot.command()
 async def help(ctx):
     try:
-        if ctx.message.guild.id in whitelist and ctx.message.author.id not in blacklist:
+        if ctx.message.guild.id in whitelist and ctx.message.author.id not in blacklist_:
             global help_text
             await ctx.send(help_text)
         else:
             await ctx.send('Похоже сервер не был добавлен в мой whitelist или вы были внесены blacklist :(')
     except Exception:
-        await ctx.send('Я не умею отвечать в лс :(')
+        await ctx.send('Что-то не так :(')
 
 
 @bot.command()
 async def deathtime(ctx):
     try:
-        if ctx.message.guild.id in whitelist and ctx.message.author.id not in blacklist:
+        if ctx.message.guild.id in whitelist and ctx.message.author.id not in blacklist_:
             time_ = dead_time()
             if time_[2]:
                 await ctx.send('Что-то не так')
@@ -287,12 +335,12 @@ async def deathtime(ctx):
         else:
             await ctx.send('Похоже сервер не был добавлен в мой whitelist или вы были внесены blacklist :(')
     except Exception:
-        await ctx.send('Я не умею отвечать в лс :(')
+        await ctx.send('Что-то не так :(')
 
 @bot.command(pass_context=True)
 async def find(ctx, *arg):
     try:
-        if ctx.message.guild.id in whitelist and ctx.message.author.id not in blacklist:
+        if ctx.message.guild.id in whitelist and ctx.message.author.id not in blacklist_:
             arg = ' '.join(list(arg))
             table = collect()
             property_ = []
@@ -313,13 +361,13 @@ async def find(ctx, *arg):
         else:
             await ctx.send('Похоже сервер не был добавлен в мой whitelist или вы были внесены blacklist :(')
     except Exception:
-        await ctx.send('Я не умею отвечать в лс :(')
+        await ctx.send('Что-то не так :(')
 
 
 @bot.command(pass_context=True)
 async def isonline(ctx, *arg):
     try:
-        if ctx.message.guild.id in whitelist and ctx.message.author.id not in blacklist:
+        if ctx.message.guild.id in whitelist and ctx.message.author.id not in blacklist_:
             try:
                 name = ' '.join(arg)
                 players = online()
@@ -333,7 +381,7 @@ async def isonline(ctx, *arg):
         else:
             await ctx.send('Похоже сервер не был добавлен в мой whitelist или вы были внесены blacklist :(')
     except Exception:
-        await ctx.send('Я не умею отвечать в лс :(')
+        await ctx.send('Что-то не так :(')
 
 
 # Цикличные задачи бота на занем плане
@@ -385,7 +433,7 @@ async def notifications2():
 
             # yakuza
             channel = bot.get_channel(700852534398419074)
-            await channel.send(f'''<@&700079783836385428> 'Собираемся на грузы - *"сейчас будет рп"* (с) Карандаш. Сбор - 7-ая амунация. Сейчас в игре {instr(time_[0])}:{instr(time_[1])}''')
+            await channel.send(f'''<@&700079783836385428> Собираемся на грузы - *"сейчас будет рп"* (с) Карандаш. Сбор - 7-ая амунация. Сейчас в игре {instr(time_[0])}:{instr(time_[1])}''')
 
         elif time_[0] != '22':
             flag = False

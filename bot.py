@@ -12,7 +12,7 @@ bot = commands.Bot(command_prefix='>>')
 bot.remove_command('help')
 dates_paunder = [4, 8, 12, 16, 20, 24, 28]
 dates_bizwars = [3, 6, 9, 12, 15, 18, 21, 24, 27, 30]
-whitelist = [693811598338555944, 699234108127051827, 700064448911507456, 717732783753134100]
+whitelist = [693811598338555944, 700064448911507456, 717732783753134100]
 blacklist = [580478163344162819, 723656787089424406, 723559013035540540, 305584796946530304]
 status = cycle(['Хочешь меня на свой сервер?', 'Тебе к retro#9860', 'Введи >>help, чтобы узнать что я умею'])
 flag = False
@@ -349,12 +349,6 @@ async def notifications():
         await channel.send(
             '<@&717749640052604928> Йоу, птичка напела, что через 30 минут доставят грузовик "Pounder" с очень вкусным грузом.')
 
-    # the ballas gang
-    channel = bot.get_channel(699631174519357571)
-    if day in dates_paunder and hour == 19 and minute == 30:
-        await channel.send(
-            '<@&699626003760414761> Йоу, черномазые, птичка напела, что через 30 минут доставят грузовик "Pounder" с очень вкусным грузом.')
-
     # yakuza
     channel = bot.get_channel(700852534398419074)
     if (day in dates_bizwars or day in dates_paunder) and hour == 18 and minute == 30:
@@ -378,10 +372,6 @@ async def notifications2():
             # ghosts
             channel = bot.get_channel(717735581957881886)
             await channel.send(f'''<@&717749640052604928> Собираемся на грузы. Место сбора - кольцо Миррор-Парка. Сейчас в игре {instr(time_[0])}:{instr(time_[1])}''')
-
-            # the ballas gang
-            channel = bot.get_channel(699631174519357571)
-            await channel.send(f'''<@&699626003760414761> Собираемся на грузы, баласята, в 01:00. Сбор - 6-ая амунация. Сейчас в игре {instr(time_[0])}:{instr(time_[1])}''')
 
             # yakuza
             channel = bot.get_channel(700852534398419074)

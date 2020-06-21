@@ -13,11 +13,12 @@ bot.remove_command('help')
 dates_paunder = [4, 8, 12, 16, 20, 24, 28]
 dates_bizwars = [3, 6, 9, 12, 15, 18, 21, 24, 27, 30]
 whitelist = [693811598338555944, 699234108127051827, 700064448911507456, 717732783753134100]
-f = open('blacklist.txt', 'r')
-blacklist_ = list(map(int, f.read().split('\n')[:-1].copy()))
-print(blacklist_)
-f.close()
-print(blacklist_)
+try:
+    f = open('blacklist.txt', 'r')
+    blacklist_ = list(map(int, f.read().split('\n')[:-1]))
+    f.close()
+except Exception:
+    blacklist_ = []
 status = cycle(['Хочешь меня на свой сервер?', 'Тебе к retro#9860', 'Введи >>help, чтобы узнать что я умею'])
 flag = False
 exp_table = ['08:32', '11:56', '15:20', '18:44', '22:08', '01:32', '04:56']
@@ -162,8 +163,8 @@ async def blacklist(ctx, *arg):
             elif len(arg) == 1:
                 if arg[0] == '-show':
                     blacklist_string = ''
-                    if len(blacklist_) > 1:
-                        for user_id in blacklist_[1:]:
+                    if len(blacklist_):
+                        for user_id in blacklist_:
                             user_id = user_id
                             blacklist_string += f'{user_id}\n'
                         await ctx.send(blacklist_string)

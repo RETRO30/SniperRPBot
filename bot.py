@@ -14,14 +14,12 @@ dates_paunder = [4, 8, 12, 16, 20, 24, 28]
 dates_bizwars = [3, 6, 9, 12, 15, 18, 21, 24, 27, 30]
 whitelist = [693811598338555944, 699234108127051827, 700064448911507456, 717732783753134100]
 f = open('blacklist.txt', 'r')
-print(f.read())
 blacklist_ = list(map(int, f.read().split('\n')[:-1]))
-f.close()
 print(blacklist_)
+f.close()
 status = cycle(['Хочешь меня на свой сервер?', 'Тебе к retro#9860', 'Введи >>help, чтобы узнать что я умею'])
 flag = False
 exp_table = ['08:32', '11:56', '15:20', '18:44', '22:08', '01:32', '04:56']
-
 help_text = '''```Команды:
     >>help - справка
     >>calc_time - расчёт времени

@@ -17,6 +17,7 @@ f = open('blacklist.txt', 'r')
 print(f.read())
 blacklist_ = list(map(int, f.read().split('\n')[:-1]))
 f.close()
+print(blacklist_)
 status = cycle(['Хочешь меня на свой сервер?', 'Тебе к retro#9860', 'Введи >>help, чтобы узнать что я умею'])
 flag = False
 exp_table = ['08:32', '11:56', '15:20', '18:44', '22:08', '01:32', '04:56']

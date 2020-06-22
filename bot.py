@@ -214,7 +214,7 @@ async def calc_time(ctx, *arg):
         else:
             await ctx.send('Похоже сервер не был добавлен в мой whitelist или вы были внесены blacklist :(')
     except Exception:
-        await ctx.send('Я не умею отвечать в лс :(')
+        await ctx.send('Что-то не так :(')
 
 
 @bot.command()
@@ -260,7 +260,7 @@ async def ghetto_stats(ctx):
         else:
             await ctx.send('Похоже сервер не был добавлен в мой whitelist или вы были внесены blacklist :(')
     except Exception:
-        await ctx.send('Я не умею отвечать в лс :(')
+        await ctx.send('Что-то не так :(')
 
 
 @bot.command()
@@ -272,7 +272,7 @@ async def help(ctx):
         else:
             await ctx.send('Похоже сервер не был добавлен в мой whitelist или вы были внесены blacklist :(')
     except Exception:
-        await ctx.send('Я не умею отвечать в лс :(')
+        await ctx.send('Что-то не так :(')
 
 
 @bot.command()
@@ -283,11 +283,11 @@ async def deathtime(ctx):
             if time_[2]:
                 await ctx.send('Что-то не так')
             else:
-                await ctx.send(f'Времея в игре: {time_[0]}:{time_[1]}')
+                await ctx.send(f'Время в игре: {time_[0]}:{time_[1]}')
         else:
             await ctx.send('Похоже сервер не был добавлен в мой whitelist или вы были внесены blacklist :(')
     except Exception:
-        await ctx.send('Я не умею отвечать в лс :(')
+        await ctx.send('Что-то не так :(')
 
 @bot.command(pass_context=True)
 async def find(ctx, *arg):
@@ -313,7 +313,7 @@ async def find(ctx, *arg):
         else:
             await ctx.send('Похоже сервер не был добавлен в мой whitelist или вы были внесены blacklist :(')
     except Exception:
-        await ctx.send('Я не умею отвечать в лс :(')
+        await ctx.send('Что-то не так :(')
 
 
 @bot.command(pass_context=True)
@@ -333,7 +333,7 @@ async def isonline(ctx, *arg):
         else:
             await ctx.send('Похоже сервер не был добавлен в мой whitelist или вы были внесены blacklist :(')
     except Exception:
-        await ctx.send('Я не умею отвечать в лс :(')
+        await ctx.send('Что-то не так :(')
 
 
 # Цикличные задачи бота на занем плане

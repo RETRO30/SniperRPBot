@@ -41,15 +41,18 @@ def dead_time():
         soup = BeautifulSoup(code, features='lxml')
         string = soup.find('div', class_='col s12')
         time_on_ded = str(string.find_next('label'))[7:-8].split(' ')[2].split(':')
+        date_on_ded = str(string.find_next('label'))[7:-8].split(' ')[3]
         hours = time_on_ded[0]
         minutes = time_on_ded[1]
+        date = date_on_ded
         restart = False
     except Exception as e:
         print("Error! " + str(e))
         hours = 0
         minutes = 0
+        date = 0
         restart = True
-    return hours, minutes, restart
+    return hours, minutes, restart, date
 
 
 def online():
@@ -60,7 +63,7 @@ def online():
     online_players = []
     for i in rows:
         if i:
-            online_players.append(str(i).split('\n')[2].split('>')[1].split('<')[0])
+            online_players.append(str(i).split('\n')[2].replace('<span class="green-text">', '').replace('<span class="amber-text">', '').split('>')[1].split('<')[0])
     clean_online_players = []
     for i in online_players:
         if i:
@@ -283,7 +286,8 @@ async def deathtime(ctx):
             if time_[2]:
                 await ctx.send('Что-то не так')
             else:
-                await ctx.send(f'Время в игре: {time_[0]}:{time_[1]}')
+                embed = discord.Embed(title=f'{time_[0]}:{time_[1]}', description=time_[3])
+                await ctx.send(embed=embed)
         else:
             await ctx.send('Похоже сервер не был добавлен в мой whitelist или вы были внесены blacklist :(')
     except Exception:
@@ -324,12 +328,14 @@ async def isonline(ctx, *arg):
                 name = ' '.join(arg)
                 players = online()
                 if name in players:
-                    await ctx.send(f'{name} онлайн!')
+                    embed = discord.Embed(colour=discord.Colour.green(), title=f'{name} онлайн!')
+                    await ctx.send(embed=embed)
                 else:
-                    await ctx.send(f'{name} не онлайн!')
+                    embed = discord.Embed(colour=discord.Colour.red(), title=f'{name} не онлайн!')
+                    await ctx.send(embed=embed)
             except Exception as e:
                 print("Error! " + str(e))
-                await ctx.send('Что-то не так')
+                await ctx.send('Что-то не так :(')
         else:
             await ctx.send('Похоже сервер не был добавлен в мой whitelist или вы были внесены blacklist :(')
     except Exception:

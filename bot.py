@@ -355,6 +355,12 @@ async def notifications():
         await channel.send(
             '<@&717749640052604928> Йоу, птичка напела, что через 30 минут доставят грузовик "Pounder" с очень вкусным грузом.')
 
+    # marabunta grande
+    channel = bot.get_channel(726126978071134652)
+    if day in dates_paunder and hour == 19 and minute == 30:
+        await channel.send(
+            '<@&726545635301392546> Йоу, птичка напела, что через 30 минут доставят грузовик "Pounder" с очень вкусным грузом.')
+                                         
     # yakuza
     channel = bot.get_channel(700852534398419074)
     if (day in dates_bizwars or day in dates_paunder) and hour == 18 and minute == 30:
@@ -378,6 +384,10 @@ async def notifications2():
             # ghosts
             channel = bot.get_channel(717735581957881886)
             await channel.send(f'''<@&717749640052604928> Собираемся на грузы. Место сбора - кольцо Миррор-Парка. Сейчас в игре {instr(time_[0])}:{instr(time_[1])}''')
+            
+            # ghosts
+            channel = bot.get_channel(726126978071134652)
+            await channel.send(f'''<@&726545635301392546> Собираемся на грузы. Место сбора - кольцо Миррор-Парка. Сейчас в игре {instr(time_[0])}:{instr(time_[1])}''')
 
             # yakuza
             channel = bot.get_channel(700852534398419074)

@@ -385,9 +385,10 @@ async def notifications2():
             channel = bot.get_channel(717735581957881886)
             await channel.send(f'''<@&717749640052604928> Собираемся на грузы. Место сбора - кольцо Миррор-Парка. Сейчас в игре {instr(time_[0])}:{instr(time_[1])}''')
             
-            # ghosts
+            # marabunta grande
+
             channel = bot.get_channel(726126978071134652)
-            await channel.send(f'''<@&726545635301392546> Собираемся на грузы. Место сбора - кольцо Миррор-Парка. Сейчас в игре {instr(time_[0])}:{instr(time_[1])}''')
+            await channel.send(f'''<@&726545635301392546> Собираемся на грузы. Сейчас в игре {instr(time_[0])}:{instr(time_[1])}''')
 
             # yakuza
             channel = bot.get_channel(700852534398419074)

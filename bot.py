@@ -354,6 +354,16 @@ async def notifications():
     if day in dates_paunder and hour == 19 and minute == 30:
         await channel.send(
             '<@&717749640052604928> Йоу, птичка напела, что через 30 минут доставят грузовик "Pounder" с очень вкусным грузом.')
+    
+    # ballas gang
+    channel = bot.get_channel(725719732178649149)
+    if hour == 18 and minute == 30:
+        await channel.send(
+            '<@&699626003760414761> Йоу, появилась инфа, что через 30 минут поедут два военных грузовика со взрывчаткой c4')
+    
+    if day in dates_paunder and hour == 19 and minute == 30:
+        await channel.send(
+            '<@&699626003760414761> Йоу, птичка напела, что через 30 минут доставят грузовик "Pounder" с очень вкусным грузом.')
 
     # marabunta grande
     channel = bot.get_channel(726126978071134652)
@@ -386,13 +396,16 @@ async def notifications2():
             await channel.send(f'''<@&717749640052604928> Собираемся на грузы. Место сбора - кольцо Миррор-Парка. Сейчас в игре {instr(time_[0])}:{instr(time_[1])}''')
             
             # marabunta grande
-
             channel = bot.get_channel(726126978071134652)
             await channel.send(f'''<@&726545635301392546> Собираемся на грузы. Сейчас в игре {instr(time_[0])}:{instr(time_[1])}''')
 
+            # ballas gang
+            channel = bot.get_channel(725719732178649149)
+            await channel.send(f'''<@&699626003760414761> Собираемся на грузы. Место сбор - 3-ая амунация. Сейчас в игре {instr(time_[0])}:{instr(time_[1])}''')
+                                          
             # yakuza
             channel = bot.get_channel(700852534398419074)
-            await channel.send(f'''<@&700079783836385428> Собираемся на грузы - *"сейчас будет рп"* (с) Карандаш. Сбор - 6-ая амунация. Сейчас в игре {instr(time_[0])}:{instr(time_[1])}''')
+            await channel.send(f'''<@&700079783836385428> Собираемся на грузы - *"сейчас будет рп"* (с) Карандаш. Место сбор - 6-ая амунация. Сейчас в игре {instr(time_[0])}:{instr(time_[1])}''')
 
         elif time_[0] != '22':
             flag = False

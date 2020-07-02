@@ -349,12 +349,7 @@ async def notifications():
     day = now.date().day
     hour = now.time().hour + 3
     minute = now.time().minute
-    # ghosts
-    channel = bot.get_channel(717735581957881886)
-    if day in dates_paunder and hour == 19 and minute == 30:
-        await channel.send(
-            '<@&717749640052604928> Йоу, птичка напела, что через 30 минут доставят грузовик "Pounder" с очень вкусным грузом.')
-    
+
     # ballas gang
     channel = bot.get_channel(725719732178649149)
     if hour == 18 and minute == 30:
@@ -391,10 +386,6 @@ async def notifications2():
         if time_[0] == '22' and not flag:
             flag = True
 
-            # ghosts
-            channel = bot.get_channel(717735581957881886)
-            await channel.send(f'''<@&717749640052604928> Собираемся на грузы. Место сбора - кольцо Миррор-Парка. Сейчас в игре {instr(time_[0])}:{instr(time_[1])}''')
-            
             # marabunta grande
             channel = bot.get_channel(726126978071134652)
             await channel.send(f'''<@&726545635301392546> Собираемся на грузы. Сейчас в игре {instr(time_[0])}:{instr(time_[1])}''')

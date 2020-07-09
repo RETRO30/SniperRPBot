@@ -361,11 +361,6 @@ async def notifications():
         await channel.send(
             '<@&699626003760414761> Йоу, птичка напела, что через 30 минут доставят грузовик "Pounder" с очень вкусным грузом.')
 
-    # marabunta grande
-    channel = bot.get_channel(726126978071134652)
-    if day in dates_paunder and hour == 19 and minute == 30:
-        await channel.send(
-            '<@&726545635301392546> Йоу, птичка напела, что через 30 минут доставят грузовик "Pounder" с очень вкусным грузом.')
                                          
     # yakuza
     channel = bot.get_channel(700852534398419074)
@@ -387,9 +382,6 @@ async def notifications2():
         if time_[0] == '22' and not flag:
             flag = True
 
-            # marabunta grande
-            channel = bot.get_channel(726126978071134652)
-            await channel.send(f'''<@&726545635301392546> Собираемся на грузы. Сейчас в игре {instr(time_[0])}:{instr(time_[1])}''')
 
             # ballas gang
             channel = bot.get_channel(725719732178649149)

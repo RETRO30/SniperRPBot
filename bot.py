@@ -187,7 +187,7 @@ async def calc_time(ctx, *arg):
                                     time[0] += 3
                         await ctx.send('\n'.join(time_table))
                     else:
-                        await ctx.send('Что-то не то :thinking:\nДля получения справки о командах введите: >>help')
+                        await ctx.send('Что-то не то :thinking:\nДля получения справки о командах введите: $help')
 
                 elif arg[0] == '-exp':
                     if len(arg) == 2:
@@ -209,11 +209,11 @@ async def calc_time(ctx, *arg):
                                     time[0] += 3
                         await ctx.send('\n'.join(time_table))
                     else:
-                        await ctx.send('Что-то не то :thinking:\nДля получения справки о командах введите: >>help')
+                        await ctx.send('Что-то не то :thinking:\nДля получения справки о командах введите: $help')
                 else:
-                    await ctx.send('Что-то не то :thinking:\nДля получения справки о командах введите: >>help')
+                    await ctx.send('Что-то не то :thinking:\nДля получения справки о командах введите: $help')
             else:
-                await ctx.send('Что-то не то :thinking:\nДля получения справки о командах введите: >>help')
+                await ctx.send('Что-то не то :thinking:\nДля получения справки о командах введите: $help')
         else:
             pass
     except Exception:

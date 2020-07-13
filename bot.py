@@ -12,7 +12,7 @@ bot = commands.Bot(command_prefix='$')
 bot.remove_command('help')
 dates_paunder = [4, 8, 12, 16, 20, 24, 28]
 dates_bizwars = [3, 6, 9, 12, 15, 18, 21, 24, 27, 30]
-whitelist = ['Yakuza',714110106501120061, 'Ballas Gang',725700328552661133, 725700933178097714, 'retro',722774766230175784]
+whitelist = ['Yakuza',714110106501120061, 'Ballas Gang',725700328552661133, 725700933178097714, 'retro',722774766230175784, 'Apelsin', 731047569114791976]
 blacklist = [580478163344162819, 612074024117469184, 305584796946530304, 304853315177545728, 168770786570534912, 353910133010464769, 365094849961132032, 304853315177545728, 530347941609734145, 480114691004170250]
 status = cycle(['Хочешь меня на свой сервер?', 'Тебе к retro#9860', 'Введи $help, чтобы узнать что я умею'])
 flag = False
@@ -375,15 +375,24 @@ async def notifications():
     channel = bot.get_channel(731242668826296360)
     if hour == 19 and minute == 30:
         if day in dates_bizwars and day in dates_paunder:
-            await channel.send('<@&731215534414364764> Через 30 минут начнётся бизвар и появятся паундеры. В 20:30 появится мулы. Заходите в дискорд.')
+            await channel.send('<@&731215534414364764> Через 30 минут начнётся бизвар и появятся паундеры. Заходите в дискорд.')
         elif day in dates_bizwars:
-            await channel.send('<@&731215534414364764>  Через 30 минут начнётся бизвар. В 20:30 появятся мулы. Заходите в дискорд.')
+            await channel.send('<@&731215534414364764>  Через 30 минут начнётся бизвар. Заходите в дискорд.')
         elif day in dates_paunder:
-            await channel.send('<@&731215534414364764>  Через 30 минут появятся паундеры. В 20:30 появятся мулы. Заходите в дискорд.')
+            await channel.send('<@&731215534414364764>  Через 30 минут появятся паундеры. Заходите в дискорд.')
     else:
         if hour == 20 and minute == 0:
             await channel.send('<@&731215534414364764>  Через 30 минут появятся мулы. Заходите в дискорд.')
-
+    
+    #Apelsin
+    channel = bot.get_channel(732336335356166235)
+    if hour == 18 and minute == 30:
+        await.channel.send('@everyone Через 30 минут начнёт движение колонна грузовиков набитых взрывчаткой C4')
+    if hour == 19 and minute == 30 and day in dates_paunder:
+        await.channel.send('@everyone Через 30 минут появятся паундеры')
+    else:
+        if hour == 20 and minute == 0:
+            await channel.send('<@&731215534414364764>  Через 30 минут появятся мулы.')
 
 
 @tasks.loop(seconds=30)
@@ -405,7 +414,11 @@ async def notifications2():
             
             # aliance
             channel = bot.get_channel(731242668826296360)
-            await channel.send(f'''<@&731215534414364764> Скоро грузы. Сейчас в игре {instr(time_[0])}:{instr(time_[1])}''')                            
+            await channel.send(f'''<@&731215534414364764> Скоро грузы. Сейчас в игре {instr(time_[0])}:{instr(time_[1])}''')
+                   
+            # apelsin
+            channel = bot.get_channel(732336335356166235)
+            await channel.send(f'''<@&731215534414364764> Скоро грузы. Сейчас в игре {instr(time_[0])}:{instr(time_[1])}''')
 
         elif time_[0] != '22':
             flag = False

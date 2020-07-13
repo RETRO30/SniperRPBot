@@ -387,9 +387,9 @@ async def notifications():
     #Apelsin
     channel = bot.get_channel(732336335356166235)
     if hour == 18 and minute == 30:
-        await.channel.send('@everyone Через 30 минут начнёт движение колонна грузовиков набитых взрывчаткой C4')
+        await channel.send('@everyone Через 30 минут начнёт движение колонна грузовиков набитых взрывчаткой C4')
     if hour == 19 and minute == 30 and day in dates_paunder:
-        await.channel.send('@everyone Через 30 минут появятся паундеры')
+        await channel.send('@everyone Через 30 минут появятся паундеры')
     else:
         if hour == 20 and minute == 0:
             await channel.send('<@&731215534414364764>  Через 30 минут появятся мулы.')

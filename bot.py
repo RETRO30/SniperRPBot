@@ -418,7 +418,7 @@ async def notifications2():
                    
             # apelsin
             channel = bot.get_channel(732336335356166235)
-            await channel.send(f'''<@&731215534414364764> Скоро грузы. Сейчас в игре {instr(time_[0])}:{instr(time_[1])}''')
+            await channel.send(f'''@everyone Скоро грузы. Сейчас в игре {instr(time_[0])}:{instr(time_[1])}''')
 
         elif time_[0] != '22':
             flag = False

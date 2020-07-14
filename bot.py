@@ -392,7 +392,7 @@ async def notifications():
         await channel.send('@everyone Через 30 минут появятся паундеры')
     else:
         if hour == 20 and minute == 0:
-            await channel.send('<@&731215534414364764>  Через 30 минут появятся мулы.')
+            await channel.send('@everyone  Через 30 минут появятся мулы.')
 
 
 @tasks.loop(seconds=30)

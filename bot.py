@@ -497,6 +497,7 @@ async def notifications3():
                                   colour=discord.Colour.green())
             embed.set_image(url=new_data_cars[car]['image'])
             await channel.send(f'<@&712655260266790912>', embed=embed)
+    data_cars = new_data_cars
 
 @tasks.loop(seconds=60)
 async def notifications4():

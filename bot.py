@@ -12,8 +12,10 @@ bot = commands.Bot(command_prefix='$')
 bot.remove_command('help')
 dates_paunder = [4, 8, 12, 16, 20, 24, 28]
 dates_bizwars = [3, 6, 9, 12, 15, 18, 21, 24, 27, 30]
-whitelist = ['Yakuza',714110106501120061, 'Ballas Gang',725700328552661133, 725700933178097714, 'retro',722774766230175784, 'Apelsin', 731047569114791976]
-blacklist = [580478163344162819, 612074024117469184, 305584796946530304, 304853315177545728, 168770786570534912, 353910133010464769, 365094849961132032, 304853315177545728, 530347941609734145, 480114691004170250]
+whitelist = ['Yakuza', 714110106501120061, 'Ballas Gang', 725700328552661133, 725700933178097714, 'retro',
+             722774766230175784, 'Apelsin', 731047569114791976]
+blacklist = [580478163344162819, 612074024117469184, 305584796946530304, 304853315177545728, 168770786570534912,
+             353910133010464769, 365094849961132032, 304853315177545728, 530347941609734145, 480114691004170250]
 status = cycle(['Хочешь меня на свой сервер?', 'Тебе к retro#9860', 'Введи $help, чтобы узнать что я умею'])
 flag = False
 exp_table = ['08:32', '11:56', '15:20', '18:44', '22:08', '01:32', '04:56']
@@ -31,7 +33,8 @@ help_text = '''```Команды:
     $deathtime - время на сервере(не очень точное)
     $isonline - проверить есть ли игрок онлайн
         Аргументы(Что-то одно):
-                [Имя Фамилия]```'''
+                [Имя Фамилия]
+    $carinfo - информация о машине(цена и наличе в магазине)```'''
 
 
 # вспомогательные функции
@@ -40,8 +43,8 @@ def dead_time():
         code = requests.get('https://dednet.ru/servers').text
         soup = BeautifulSoup(code, features='lxml')
         string = soup.find('div', class_='col s12')
-        time_on_ded = str(string.find_next('label'))[7:-8].split(' ')[2].split(':')
-        date_on_ded = str(string.find_next('label'))[7:-8].split(' ')[3]
+        time_on_ded = str(string.find('label'))[7:-8].split(' ')[2].split(':')
+        date_on_ded = str(string.find('label'))[7:-8].split(' ')[3]
         hours = time_on_ded[0]
         minutes = time_on_ded[1]
         date = date_on_ded
@@ -63,7 +66,9 @@ def online():
     online_players = []
     for i in rows:
         if i:
-            online_players.append(str(i).split('\n')[2].replace('<span class="green-text">', '').replace('<span class="amber-text">', '').split('>')[1].split('<')[0])
+            online_players.append(
+                str(i).split('\n')[2].replace('<span class="green-text">', '').replace('<span class="amber-text">',
+                                                                                       '').split('>')[1].split('<')[0])
     clean_online_players = []
     for i in online_players:
         if i:
@@ -127,7 +132,23 @@ def collect_for_exp():
     return sorted_table
 
 
+def get_carlist():
+    code = requests.get('https://dednet.ru/car-list').text
+    soup = BeautifulSoup(code, features='lxml')
+    rows = soup.find('div', class_='row')
+    table = rows.find_all('div', class_='col s12 l3')
+    carlist = {}
+    for car in table:
+        image = 'https://dednet.ru/' + str(car.find('div', class_='card-image')).split('"')[5]
+        name = car.find('span', class_='card-title').text.lower()
+        cost = car.find('a', class_='bw-text btn z-depth-0').text
+        count = int(car.find('a', class_='bw-text btn z-depth-0 right').text.split()[0].split('/')[0])
+        carlist.update({name: {'cost': cost, 'count': count, 'image': image}})
+    return carlist
+
+
 data = collect_for_exp().copy()
+data_cars = get_carlist()
 
 
 # Команды бота
@@ -293,6 +314,7 @@ async def deathtime(ctx):
     except Exception:
         await ctx.send('Что-то не так :(')
 
+
 @bot.command(pass_context=True)
 async def find(ctx, *arg):
     try:
@@ -312,12 +334,34 @@ async def find(ctx, *arg):
                     'Увы, я ничего не нашёл.')
             else:
                 for i in property_:
-                    embed = discord.Embed(title=i["Название"], description=f'Владелец: {i["Владелец"]}\nЦена: {i["Цена"]}\nАдрес: {i["Адрес"]}')
+                    embed = discord.Embed(title=i["Название"],
+                                          description=f'Владелец: {i["Владелец"]}\nЦена: {i["Цена"]}\nАдрес: {i["Адрес"]}')
                     await ctx.send(embed=embed)
         else:
             pass
     except Exception:
         await ctx.send('Что-то не так :(')
+
+
+@bot.command(pass_context=True)
+async def carinfo(ctx, *arg):
+    if ctx.message.channel.id in whitelist and ctx.message.author.id not in blacklist:
+        name = list(arg)[0].lower()
+        carlist = get_carlist()
+        if name in carlist.keys():
+            if carlist[name]["count"] == 0:
+                color = discord.Colour.red()
+            else:
+                color = discord.Colour.green()
+            embed = discord.Embed(title=name.upper(),
+                                  description=f'{carlist[name]["cost"]}\n В наличии: {str(carlist[name]["count"])}',
+                                  colour=color)
+            embed.set_image(url=carlist[name]['image'])
+            await ctx.send(embed=embed)
+        else:
+            await ctx.send('Увы, я ничего не нашёл.')
+    else:
+        pass
 
 
 @bot.command(pass_context=True)
@@ -355,27 +399,29 @@ async def notifications():
     if hour == 18 and minute == 30:
         await channel.send(
             '<@&699626003760414761> Йоу, появилась инфа, что через 30 минут поедут два военных грузовика со взрывчаткой c4')
-    
+
     if day in dates_paunder and hour == 19 and minute == 30:
         await channel.send(
             '<@&699626003760414761> Йоу, птичка напела, что через 30 минут доставят грузовик "Pounder" с очень вкусным грузом.')
 
-                                         
     # yakuza
     channel = bot.get_channel(700852534398419074)
     if (day in dates_bizwars or day in dates_paunder) and hour == 18 and minute == 30:
         await channel.send('<@&700079783836385428> начинаем отписывать в <#714139823606333441>')
     if hour == 19 and minute == 30:
         if day in dates_bizwars:
-            await channel.send('<@&700079783836385428> собираемся на мулы сразу после бизвара. Место сбора 6-ая амунация.')
+            await channel.send(
+                '<@&700079783836385428> собираемся на мулы сразу после бизвара. Место сбора 6-ая амунация.')
         else:
-            await channel.send('<@&700079783836385428> собираемся на мулы в 20:00 по МСК. Сбор 6-ая амунация. Пишите в <#714139823606333441> что вам выдать.')
-    
+            await channel.send(
+                '<@&700079783836385428> собираемся на мулы в 20:00 по МСК. Сбор 6-ая амунация. Пишите в <#714139823606333441> что вам выдать.')
+
     # aliance
     channel = bot.get_channel(731242668826296360)
     if hour == 19 and minute == 30:
         if day in dates_bizwars and day in dates_paunder:
-            await channel.send('<@&731215534414364764> Через 30 минут начнётся бизвар и появятся паундеры. Заходите в дискорд.')
+            await channel.send(
+                '<@&731215534414364764> Через 30 минут начнётся бизвар и появятся паундеры. Заходите в дискорд.')
         elif day in dates_bizwars:
             await channel.send('<@&731215534414364764>  Через 30 минут начнётся бизвар. Заходите в дискорд.')
         elif day in dates_paunder:
@@ -383,8 +429,8 @@ async def notifications():
     else:
         if hour == 20 and minute == 0:
             await channel.send('<@&731215534414364764>  Через 30 минут появятся мулы. Заходите в дискорд.')
-    
-    #Apelsin
+
+    # Apelsin
     channel = bot.get_channel(732336335356166235)
     if hour == 18 and minute == 30:
         await channel.send('@everyone Через 30 минут начнёт движение колонна грузовиков набитых взрывчаткой C4')
@@ -403,19 +449,21 @@ async def notifications2():
         if time_[0] == '22' and not flag:
             flag = True
 
-
             # ballas gang
             channel = bot.get_channel(725719732178649149)
-            await channel.send(f'''<@&699626003760414761> Собираемся на грузы. Место сбор - 3-ая амунация. Сейчас в игре {instr(time_[0])}:{instr(time_[1])}''')
-                                          
+            await channel.send(
+                f'''<@&699626003760414761> Собираемся на грузы. Место сбор - 3-ая амунация. Сейчас в игре {instr(time_[0])}:{instr(time_[1])}''')
+
             # yakuza
             channel = bot.get_channel(700852534398419074)
-            await channel.send(f'''<@&700079783836385428> Собираемся на грузы - *"сейчас рп будет"* (с) Карандаш. Место сбора - 6-ая амунация. Сейчас в игре {instr(time_[0])}:{instr(time_[1])}''')
-            
+            await channel.send(
+                f'''<@&700079783836385428> Собираемся на грузы - *"сейчас рп будет"* (с) Карандаш. Место сбора - 6-ая амунация. Сейчас в игре {instr(time_[0])}:{instr(time_[1])}''')
+
             # aliance
             channel = bot.get_channel(731242668826296360)
-            await channel.send(f'''<@&731215534414364764> Скоро грузы. Сейчас в игре {instr(time_[0])}:{instr(time_[1])}''')
-                   
+            await channel.send(
+                f'''<@&731215534414364764> Скоро грузы. Сейчас в игре {instr(time_[0])}:{instr(time_[1])}''')
+
             # apelsin
             channel = bot.get_channel(732336335356166235)
             await channel.send(f'''@everyone Скоро грузы. Сейчас в игре {instr(time_[0])}:{instr(time_[1])}''')
@@ -429,18 +477,26 @@ async def change_status():
     await bot.change_presence(activity=discord.Game(next(status)))
 
 
-@tasks.loop(seconds=30)
+@tasks.loop(seconds=15)
 async def notifications3():
     global data
+    channel = bot.get_channel(707282293924036679)
     new_data = collect_for_exp().copy()
-    if len(new_data):
-        channel = bot.get_channel(707282293924036679)
+    if len(new_data):       
         if len(data) < len(new_data):
             for i in difer(data, new_data):
                 embed = discord.Embed(title=i[0], description=f'{i[1]}\n{i[2]}')
                 await channel.send(f'<@&712655260266790912>', embed=embed)
         data = new_data.copy()
 
+    new_data_cars = get_carlist()
+    for car in data_cars.keys():
+        if data_cars[car]['count'] < new_data_cars[car]['count']:
+            embed = discord.Embed(title=car.upper(),
+                                  description=f'{new_data_cars[car]["cost"]}\n В наличии: {str(new_data_cars[car]["count"])}\n +{new_data_cars[car]["count"] - data_cars[car]["count"]}',
+                                  colour=discord.Colour.green())
+            embed.set_image(url=new_data_cars[car]['image'])
+            await channel.send(f'<@&712655260266790912>', embed=embed)
 
 @tasks.loop(seconds=60)
 async def notifications4():

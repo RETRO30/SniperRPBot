@@ -479,7 +479,7 @@ async def change_status():
 
 @tasks.loop(seconds=15)
 async def notifications3():
-    global data
+    global data, data_cars
     channel = bot.get_channel(707282293924036679)
     new_data = collect_for_exp().copy()
     if len(new_data):       

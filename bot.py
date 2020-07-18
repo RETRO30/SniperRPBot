@@ -419,7 +419,7 @@ async def change_status():
 @tasks.loop(seconds=15)
 async def notifications3():
     global data, data_cars
-    channel = bot.get_channel(707282293924036679)
+    channel = bot.get_channel(733887346898108499)
     new_data = collect_for_exp().copy()
     if len(new_data):
         if len(data) < len(new_data):
@@ -444,7 +444,7 @@ async def notifications4():
     now = datetime.datetime.utcnow()
     hour = now.time().hour
     minute = now.time().minute
-    channel = bot.get_channel(707282293924036679)
+    channel = bot.get_channel(733887346898108499)
     if minute + 5 < 60:
         if hour + 3 < 24:
             time_ = f'{instr(hour + 3)}:{instr(minute + 5)}'

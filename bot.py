@@ -21,19 +21,12 @@ flag = False
 exp_table = ['08:32', '11:56', '15:20', '18:44', '22:08', '01:32', '04:56']
 
 help_embed = discord.Embed(title='BOT BY RETRO', description='Йоу, быдло!')
-help_embed.add_field(name='Commands',
-                     value='''$help - вызвать это сообщение
-$ghetto_stats - статистика захватов территорий гетто
-$find - найти недвижимость
-    Аргументы(Что-то одно):
-        [Имя или фамилия владельца, название, цена(знак доллара перед суммой, сотни отделять запятыми), адрес]
-$deathtime - время на сервере(не очень точное)
-$isonline - проверить есть ли игрок онлайн
-    Аргументы(Что-то одно):
-            [Имя Фамилия]
-$carinfo - информация о тс(цена и наличе в магазине)
-    Аргументы:
-            [Название тс]''')
+help_embed.add_field(name='$help', value='вызвать это сообщение')
+help_embed.add_field(name='$ghetto_stats', value='статистика захватов территорий гетто')
+help_embed.add_field(name='$find [параметр поиска]', value='найти недвижимость')
+help_embed.add_field(name='$deathtime', value='время на сервере(не очень точное)')
+help_embed.add_field(name='$isonline', value='проверить есть ли игрок онлайн')
+help_embed.add_field(name='$carinfo [азвание тс]', value='информация о тс(цена и наличе в магазине)')
 help_embed.set_thumbnail(url='https://cdn.discordapp.com/avatars/706272473288671303/ee27442b2391ed48ae232d1404f03d29.webp?size=128')
 
 
@@ -159,79 +152,24 @@ async def calc_time(ctx, *arg):
         if ctx.message.channel.id in whitelist and ctx.message.author.id not in blacklist:
             if arg:
                 arg = list(arg)
-                if arg[0] == '-nights':
-                    if len(arg) == 3 and int(arg[1].split(':')[1]) == 0:
-                        time_on_server = [int(arg[1].split(':')[0]), int(arg[1].split(':')[1])]
-                        time = [int(arg[2].split(':')[0]), int(arg[2].split(':')[1])]
-                        if time_on_server[0] % 2 == 0:
-                            deltatime = ((22 - time_on_server[0]) // 2) * 17
-                            h = deltatime // 60
-                            m = deltatime % 60
-                            if time[0] + h > 24:
-                                time[0] = time[0] + h - 24
+                if len(arg) == 2:
+                    time = [int(arg[1].split(':')[0]), int(arg[1].split(':')[1])]
+                    time_table = []
+                    for i in range(8):
+                        time_table.append(f'{instr(time[0])}:{instr(time[1])}')
+                        if time[1] + 24 >= 60:
+                            if time[0] + 4 >= 24:
+                                time[0] = time[0] + 4 - 24
                             else:
-                                time[0] += h
-                            if time[1] + m > 60:
-                                time[0] = time[0] + 1
-                                time[1] = time[1] + m - 60
-                            else:
-                                time[1] += m
-                            time_on_server = [22, 0]
+                                time[0] += 4
+                                time[1] = time[1] + 24 - 60
                         else:
-                            deltatime = ((23 - time_on_server[0]) // 2) * 17
-                            h = deltatime // 60
-                            m = deltatime % 60
-                            if time[0] + h > 24:
-                                time[0] = time[0] + h - 24
+                            time[1] += 24
+                            if time[0] + 3 >= 24:
+                                time[0] = time[0] + 3 - 24
                             else:
-                                time[0] += h
-                            if time[1] + m > 60:
-                                time[0] = time[0] + 1
-                                time[1] = time[1] + m - 60
-                            else:
-                                time[1] += m
-                            time_on_server = [23, 0]
-
-                        time_table = [f'{instr(time_on_server[0])}:{instr(time_on_server[1])}:']
-                        for i in range(8):
-                            time_table.append(f'{i + 1}. {instr(time[0])}:{instr(time[1])}')
-                            if time[1] + 24 >= 60:
-                                if time[0] + 4 >= 24:
-                                    time[0] = time[0] + 4 - 24
-                                else:
-                                    time[0] += 4
-                                    time[1] = time[1] + 24 - 60
-                            else:
-                                time[1] += 24
-                                if time[0] + 3 >= 24:
-                                    time[0] = time[0] + 3 - 24
-                                else:
-                                    time[0] += 3
-                        await ctx.send('\n'.join(time_table))
-                    else:
-                        await ctx.send('Что-то не то :thinking:\nДля получения справки о командах введите: $help')
-
-                elif arg[0] == '-exp':
-                    if len(arg) == 2:
-                        time = [int(arg[1].split(':')[0]), int(arg[1].split(':')[1])]
-                        time_table = []
-                        for i in range(8):
-                            time_table.append(f'{instr(time[0])}:{instr(time[1])}')
-                            if time[1] + 24 >= 60:
-                                if time[0] + 4 >= 24:
-                                    time[0] = time[0] + 4 - 24
-                                else:
-                                    time[0] += 4
-                                    time[1] = time[1] + 24 - 60
-                            else:
-                                time[1] += 24
-                                if time[0] + 3 >= 24:
-                                    time[0] = time[0] + 3 - 24
-                                else:
-                                    time[0] += 3
-                        await ctx.send('\n'.join(time_table))
-                    else:
-                        await ctx.send('Что-то не то :thinking:\nДля получения справки о командах введите: $help')
+                                time[0] += 3
+                    await ctx.send('\n'.join(time_table))
                 else:
                     await ctx.send('Что-то не то :thinking:\nДля получения справки о командах введите: $help')
             else:

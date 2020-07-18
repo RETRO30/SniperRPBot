@@ -483,5 +483,6 @@ async def on_ready():
         print('Success!')
 
 
+                                          
 # Запуск бота
 bot.run(os.environ.get('BOT_TOKEN'))

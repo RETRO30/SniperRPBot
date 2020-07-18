@@ -259,6 +259,10 @@ async def find(ctx, *arg):
     try:
         if ctx.message.channel.id in whitelist and ctx.message.author.id not in blacklist:
             arg = ' '.join(list(arg))
+            if ard.lower() != 'склад' and arg.lower() != 'дом':
+                pass
+            else:
+                arg = ''
             table = collect()
             property_ = []
             for i in table:

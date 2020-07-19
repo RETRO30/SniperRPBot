@@ -422,25 +422,28 @@ async def change_status():
 
 @tasks.loop(seconds=15)
 async def notifications3():
-    global data, data_cars
-    channel = bot.get_channel(733887346898108499)
-    new_data = collect_for_exp().copy()
-    if len(new_data):
-        if len(data) < len(new_data):
-            for i in difer(data, new_data):
-                embed = discord.Embed(title=i[0], description=f'{i[1]}\n{i[2]}')
-                await channel.send(f'<@&712655260266790912>', embed=embed)
-        data = new_data.copy()
+    try:
+        global data, data_cars
+        channel = bot.get_channel(733887346898108499)
+        new_data = collect_for_exp().copy()
+        if len(new_data):
+            if len(data) < len(new_data):
+                for i in difer(data, new_data):
+                    embed = discord.Embed(title=i[0], description=f'{i[1]}\n{i[2]}')
+                    await channel.send(f'<@&712655260266790912>', embed=embed)
+            data = new_data.copy()
 
-    new_data_cars = get_carlist()
-    for car in data_cars.keys():
-        if data_cars[car]['count'] < new_data_cars[car]['count']:
-            embed = discord.Embed(title=car.upper(),
-                                  description=f'{new_data_cars[car]["cost"]}\n В наличии: {str(new_data_cars[car]["count"])}\n +{new_data_cars[car]["count"] - data_cars[car]["count"]}',
-                                  colour=discord.Colour.green())
-            embed.set_image(url=new_data_cars[car]['image'])
-            await channel.send(f'<@&712655260266790912>', embed=embed)
-    data_cars = new_data_cars
+        new_data_cars = get_carlist()
+        for car in data_cars.keys():
+            if data_cars[car]['count'] < new_data_cars[car]['count']:
+                embed = discord.Embed(title=car.upper(),
+                                      description=f'{new_data_cars[car]["cost"]}\n В наличии: {str(new_data_cars[car]["count"])}\n +{new_data_cars[car]["count"] - data_cars[car]["count"]}',
+                                      colour=discord.Colour.green())
+                embed.set_image(url=new_data_cars[car]['image'])
+                await channel.send(f'<@&712655260266790912>', embed=embed)
+        data_cars = new_data_cars
+    except Exception:
+        pass
 
 @tasks.loop(seconds=60)
 async def notifications4():

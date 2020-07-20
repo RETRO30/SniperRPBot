@@ -6,6 +6,7 @@ import datetime
 from itertools import cycle
 import discord
 import requests
+from discord.ext.commands import CommandNotFound
 
 # константы
 bot = commands.Bot(command_prefix='$')
@@ -27,8 +28,8 @@ help_embed.add_field(name='$find [параметр поиска]', value='най
 help_embed.add_field(name='$deathtime', value='время на сервере(не очень точное)')
 help_embed.add_field(name='$isonline', value='проверить есть ли игрок онлайн')
 help_embed.add_field(name='$carinfo [азвание тс]', value='информация о тс(цена и наличе в магазине)')
-help_embed.set_thumbnail(url='https://cdn.discordapp.com/avatars/706272473288671303/ee27442b2391ed48ae232d1404f03d29.webp?size=128')
-
+help_embed.set_thumbnail(
+    url='https://cdn.discordapp.com/avatars/706272473288671303/ee27442b2391ed48ae232d1404f03d29.webp?size=128')
 
 
 # вспомогательные функции
@@ -445,6 +446,7 @@ async def notifications3():
     except Exception:
         pass
 
+
 @tasks.loop(seconds=60)
 async def notifications4():
     global exp_table
@@ -472,7 +474,7 @@ async def notifications4():
                 await channel.send(f'<@&712655260266790912> слёт через 5 минут')
 
 
-# Логирование
+# События
 @bot.event
 async def on_ready():
     print('We are in the system!')
@@ -490,6 +492,12 @@ async def on_ready():
         print('Success!')
 
 
-                                          
+@bot.event
+async def on_command_error(ctx, error):
+    if isinstance(error, CommandNotFound):
+        return
+    raise error
+
+
 # Запуск бота
 bot.run(os.environ.get('BOT_TOKEN'))

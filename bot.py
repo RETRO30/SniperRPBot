@@ -13,7 +13,7 @@ bot = commands.Bot(command_prefix='$')
 bot.remove_command('help')
 dates_paunder = [4, 8, 12, 16, 20, 24, 28]
 dates_bizwars = [3, 6, 9, 12, 15, 18, 21, 24, 27, 30]
-whitelist = ['Yakuza', 714110106501120061, 'Ballas Gang', 725700328552661133, 725700933178097714, 'retro',
+whitelist = ['Ballas Gang', 725700328552661133, 725700933178097714, 'retro',
              722774766230175784, 'Apelsin', 731047569114791976]
 blacklist = [580478163344162819, 612074024117469184, 305584796946530304, 304853315177545728, 168770786570534912,
              353910133010464769, 365094849961132032, 304853315177545728, 530347941609734145, 480114691004170250]
@@ -347,18 +347,6 @@ async def notifications():
     if day in dates_paunder and hour == 19 and minute == 30:
         await channel.send(
             '<@&699626003760414761> Йоу, птичка напела, что через 30 минут доставят грузовик "Pounder" с очень вкусным грузом.')
-
-    # yakuza
-    channel = bot.get_channel(700852534398419074)
-    if (day in dates_bizwars or day in dates_paunder) and hour == 18 and minute == 30:
-        await channel.send('<@&700079783836385428> начинаем отписывать в <#714139823606333441>')
-    if hour == 19 and minute == 30:
-        if day in dates_bizwars:
-            await channel.send(
-                '<@&700079783836385428> собираемся на мулы сразу после бизвара. Место сбора 6-ая амунация.')
-        else:
-            await channel.send(
-                '<@&700079783836385428> собираемся на мулы в 20:00 по МСК. Сбор 6-ая амунация. Пишите в <#714139823606333441> что вам выдать.')
 
     # aliance
     channel = bot.get_channel(731242668826296360)

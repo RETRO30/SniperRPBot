@@ -348,20 +348,6 @@ async def notifications():
         await channel.send(
             '<@&699626003760414761> Йоу, птичка напела, что через 30 минут доставят грузовик "Pounder" с очень вкусным грузом.')
 
-    # aliance
-    channel = bot.get_channel(731242668826296360)
-    if hour == 19 and minute == 30:
-        if day in dates_bizwars and day in dates_paunder:
-            await channel.send(
-                '<@&731215534414364764> Через 30 минут начнётся бизвар и появятся паундеры. Заходите в дискорд.')
-        elif day in dates_bizwars:
-            await channel.send('<@&731215534414364764>  Через 30 минут начнётся бизвар. Заходите в дискорд.')
-        elif day in dates_paunder:
-            await channel.send('<@&731215534414364764>  Через 30 минут появятся паундеры. Заходите в дискорд.')
-    else:
-        if hour == 20 and minute == 0:
-            await channel.send('<@&731215534414364764>  Через 30 минут появятся мулы. Заходите в дискорд.')
-
     # Apelsin
     channel = bot.get_channel(732336335356166235)
     if hour == 18 and minute == 30:
@@ -390,11 +376,6 @@ async def notifications2():
             channel = bot.get_channel(700852534398419074)
             await channel.send(
                 f'''<@&700079783836385428> Собираемся на грузы - *"сейчас рп будет"* (с) Карандаш. Место сбора - 6-ая амунация. Сейчас в игре {instr(time_[0])}:{instr(time_[1])}''')
-
-            # aliance
-            channel = bot.get_channel(731242668826296360)
-            await channel.send(
-                f'''<@&731215534414364764> Скоро грузы. Сейчас в игре {instr(time_[0])}:{instr(time_[1])}''')
 
             # apelsin
             channel = bot.get_channel(732336335356166235)

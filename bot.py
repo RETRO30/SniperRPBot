@@ -223,7 +223,8 @@ async def ghetto_stats(ctx):
             await ctx.send(string)
         else:
             pass
-    except Exception:
+    except Exception as e:
+        print(e)
         await ctx.send('Что-то не так :(')
 
 

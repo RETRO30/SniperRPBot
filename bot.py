@@ -13,7 +13,7 @@ bot = commands.Bot(command_prefix='$')
 bot.remove_command('help')
 dates_paunder = [4, 8, 12, 16, 20, 24, 28]
 dates_bizwars = [3, 6, 9, 12, 15, 18, 21, 24, 27, 30]
-whitelist = ['Ballas Gang', 725700328552661133, 725700933178097714, 'retro',
+whitelist = ['retro',
              722774766230175784, 'Apelsin', 731047569114791976]
 blacklist = [580478163344162819, 612074024117469184, 305584796946530304, 304853315177545728, 168770786570534912,
              353910133010464769, 365094849961132032, 304853315177545728, 530347941609734145, 480114691004170250]
@@ -339,16 +339,6 @@ async def notifications():
     hour = now.time().hour + 3
     minute = now.time().minute
 
-    # ballas gang
-    channel = bot.get_channel(725719732178649149)
-    if hour == 18 and minute == 30:
-        await channel.send(
-            '<@&699626003760414761> Йоу, появилась инфа, что через 30 минут поедут два военных грузовика со взрывчаткой c4')
-
-    if day in dates_paunder and hour == 19 and minute == 30:
-        await channel.send(
-            '<@&699626003760414761> Йоу, птичка напела, что через 30 минут доставят грузовик "Pounder" с очень вкусным грузом.')
-
     # Apelsin
     channel = bot.get_channel(732336335356166235)
     if hour == 18 and minute == 30:
@@ -367,17 +357,7 @@ async def notifications2():
     if time_:
         if time_[0] == '22' and not flag:
             flag = True
-
-            # ballas gang
-            channel = bot.get_channel(725719732178649149)
-            await channel.send(
-                f'''<@&699626003760414761> Собираемся на грузы. Место сбор - 3-ая амунация. Сейчас в игре {instr(time_[0])}:{instr(time_[1])}''')
-
-            # yakuza
-            channel = bot.get_channel(700852534398419074)
-            await channel.send(
-                f'''<@&700079783836385428> Собираемся на грузы - *"сейчас рп будет"* (с) Карандаш. Место сбора - 6-ая амунация. Сейчас в игре {instr(time_[0])}:{instr(time_[1])}''')
-
+                                          
             # apelsin
             channel = bot.get_channel(732336335356166235)
             await channel.send(f'''@everyone Скоро грузы. Сейчас в игре {instr(time_[0])}:{instr(time_[1])}''')

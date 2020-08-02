@@ -13,8 +13,7 @@ bot = commands.Bot(command_prefix='$')
 bot.remove_command('help')
 dates_paunder = [4, 8, 12, 16, 20, 24, 28]
 dates_bizwars = [3, 6, 9, 12, 15, 18, 21, 24, 27, 30]
-whitelist = ['retro',
-             722774766230175784, 'Apelsin', 731047569114791976]
+whitelist = ['retro', 722774766230175784, 'Apelsin', 731047569114791976, 'ballas gang', 725700933178097714, 725700328552661133]
 blacklist = [580478163344162819, 612074024117469184, 305584796946530304, 304853315177545728, 168770786570534912,
              353910133010464769, 365094849961132032, 304853315177545728, 530347941609734145, 480114691004170250]
 status = cycle(['Хочешь меня на свой сервер?', 'Тебе к retro#9860', 'Введи $help, чтобы узнать что я умею'])
@@ -361,7 +360,11 @@ async def notifications2():
             # apelsin
             channel = bot.get_channel(732336335356166235)
             await channel.send(f'''@everyone Скоро грузы. Сейчас в игре {instr(time_[0])}:{instr(time_[1])}''')
-
+                                          
+            # ballas gang
+            channel = bot.get_channel(725719732178649149)
+            await channel.send(f'''<@&699626003760414761> Скоро грузы. Место сбора - 6-ая амунация. Сейчас в игре {instr(time_[0])}:{instr(time_[1])}''')
+                                          
         elif time_[0] != '22':
             flag = False
 
@@ -391,7 +394,10 @@ async def notifications3():
                                       description=f'{new_data_cars[car]["cost"]}\n В наличии: {str(new_data_cars[car]["count"])}\n +{new_data_cars[car]["count"] - data_cars[car]["count"]}',
                                       colour=discord.Colour.green())
                 embed.set_image(url=new_data_cars[car]['image'])
-                await channel.send(f'<@&712655260266790912>', embed=embed)
+                if car in ['thrax', 'zentorno', 't20']:
+                    await channel.send(f'<@&712655260266790912> <@!268053859866247188>', embed=embed)
+                else:
+                    await channel.send(f'<@&712655260266790912>', embed=embed)
         data_cars = new_data_cars
     except Exception:
         pass

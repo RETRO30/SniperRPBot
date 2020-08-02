@@ -394,7 +394,7 @@ async def notifications3():
                                       description=f'{new_data_cars[car]["cost"]}\n В наличии: {str(new_data_cars[car]["count"])}\n +{new_data_cars[car]["count"] - data_cars[car]["count"]}',
                                       colour=discord.Colour.green())
                 embed.set_image(url=new_data_cars[car]['image'])
-                if car in ['thrax', 'zentorno', 't20']:
+                if car in ['thrax', 'zentorno', 't20', 'dubsta3', 'nero', 'nero2', 'shotaro']:
                     await channel.send(f'<@&712655260266790912> <@!268053859866247188>', embed=embed)
                 else:
                     await channel.send(f'<@&712655260266790912>', embed=embed)

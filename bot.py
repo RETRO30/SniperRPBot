@@ -398,7 +398,7 @@ async def notifications3():
                     await channel.send(f'<@&712655260266790912> <@!268053859866247188>', embed=embed)
                 else:
                     await channel.send(f'<@&712655260266790912>', embed=embed)
-        data_cars = new_data_cars
+        data_cars = new_data_cars.copy()
     except Exception:
         pass
 

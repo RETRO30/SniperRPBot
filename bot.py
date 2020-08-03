@@ -13,12 +13,14 @@ bot = commands.Bot(command_prefix='$')
 bot.remove_command('help')
 dates_paunder = [4, 8, 12, 16, 20, 24, 28]
 dates_bizwars = [3, 6, 9, 12, 15, 18, 21, 24, 27, 30]
-whitelist = ['retro', 722774766230175784, 'Apelsin', 731047569114791976, 'ballas gang', 725700933178097714, 725700328552661133]
+whitelist = ['retro', 722774766230175784, 'Apelsin', 731047569114791976, 'ballas gang', 725700933178097714, 725700328552661133, 'ukrain mafia', 738791491585048736]
 blacklist = [580478163344162819, 612074024117469184, 305584796946530304, 304853315177545728, 168770786570534912,
              353910133010464769, 365094849961132032, 304853315177545728, 530347941609734145, 480114691004170250]
 status = cycle(['Хочешь меня на свой сервер?', 'Тебе к retro#9860', 'Введи $help, чтобы узнать что я умею'])
 flag = False
 exp_table = ['08:32', '11:56', '15:20', '18:44', '22:08', '01:32', '04:56']
+
+roles = {'🇺🇦': 712655260266790912}
 
 help_embed = discord.Embed(title='BOT BY RETRO', description='Йоу, быдло!')
 help_embed.add_field(name='$help', value='вызвать это сообщение')
@@ -26,7 +28,8 @@ help_embed.add_field(name='$ghetto_stats', value='статистика захв�
 help_embed.add_field(name='$find [параметр поиска]', value='найти недвижимость')
 help_embed.add_field(name='$deathtime', value='время на сервере(не очень точное)')
 help_embed.add_field(name='$isonline', value='проверить есть ли игрок онлайн')
-help_embed.add_field(name='$carinfo [азвание тс]', value='информация о тс(цена и наличе в магазине)')
+help_embed.add_field(name='$carinfo [название тс]', value='информация о тс(цена и наличе в магазине)')
+help_embed.add_field(name='$info [тег пользователя]', value='информация о пользователе, чтобы увидеть информаицию о пользователе нужно его тегнуть, без тега выведется информация о авторе')
 help_embed.set_thumbnail(
     url='https://cdn.discordapp.com/avatars/706272473288671303/ee27442b2391ed48ae232d1404f03d29.webp?size=128')
 
@@ -285,6 +288,41 @@ async def find(ctx, *arg):
             pass
     except Exception:
         await ctx.send('Что-то не так :(')
+                                          
+                                          
+@bot.command(pass_context=True)
+async def info(ctx, *arg):
+    try:
+        if ctx.message.channel.id in whitelist and ctx.message.author.id not in blacklist:
+            arg = list(arg)
+            if len(arg) == 0:
+                user = ctx.author
+            else:
+                user = ctx.guild.get_member(int(arg[0][3:-1]))
+            name = user.name
+            nick = user.nick
+            avatar = user.avatar_url
+            activity = user.activity
+            date_join = user.joined_at.strftime("%A %d-%B-%y %H:%M")
+            date_created = user.created_at.strftime("%A %d-%B-%y %H:%M")
+            if not activity:
+                description = 'Гоняет лысого'
+            else:
+                description = activity.name
+            if nick:
+                user_embed = discord.Embed(title=f'{name.upper()}, более известный как {nick.upper()}',
+                                           description=description)
+            else:
+                user_embed = discord.Embed(title=f'{name.upper()}', description=description)
+            user_embed.add_field(name='Сидит тут с:', value=date_join)
+            user_embed.add_field(name='Вылупился:', value=date_created)
+            user_embed.set_image(url=avatar)
+            user_embed.set_footer(text='А это его ебало')
+            await ctx.send(embed=user_embed)
+        else:
+            pass
+    except Exception:
+        await ctx.send('Что-то не так :(')
 
 
 @bot.command(pass_context=True)
@@ -364,6 +402,10 @@ async def notifications2():
             # ballas gang
             channel = bot.get_channel(725719732178649149)
             await channel.send(f'''<@&699626003760414761> Скоро грузы. Место сбора - 6-ая амунация. Сейчас в игре {instr(time_[0])}:{instr(time_[1])}''')
+            
+            # ukrain mafia
+            channel = bot.get_channel(738792481566752871)
+            await channel.send(f'''<@&699626003760414761> Скоро грузы, братья. Сейчас в игре {instr(time_[0])}:{instr(time_[1])}''')
                                           
         elif time_[0] != '22':
             flag = False
@@ -431,6 +473,7 @@ async def notifications4():
 
 
 # События
+
 @bot.event
 async def on_ready():
     print('We are in the system!')
@@ -453,7 +496,30 @@ async def on_command_error(ctx, error):
     if isinstance(error, CommandNotFound):
         return
     raise error
+                                          
+async def on_raw_reaction_add(payload):
+    try:
+        if payload.message_id == 733502952664334346:
+            channel = bot.get_channel(payload.channel_id)
+            message = await channel.fetch_message(payload.message_id)
+            member = discord.utils.get(message.guild.members, id=payload.user_id)
+            emoji = str(payload.emoji)
+            role = discord.utils.get(message.guild.roles, id=roles[emoji])
+            await member.add_roles(role)
+    except Exception:
+        pass
 
+@bot.event
+async def on_raw_reaction_remove(payload):
+    try:
+        channel = bot.get_channel(payload.channel_id)
+        message = await channel.fetch_message(payload.message_id)
+        member = discord.utils.get(message.guild.members, id=payload.user_id)
+        emoji = str(payload.emoji)
+        role = discord.utils.get(message.guild.roles, id=roles[emoji])
+        await member.remove_roles(role)
+    except Exception:
+        pass
 
 # Запуск бота
 bot.run(os.environ.get('BOT_TOKEN'))

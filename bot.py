@@ -496,7 +496,8 @@ async def on_command_error(ctx, error):
     if isinstance(error, CommandNotFound):
         return
     raise error
-                                          
+
+@bot.event
 async def on_raw_reaction_add(payload):
     try:
         if payload.message_id == 739772302421655584:

@@ -499,7 +499,7 @@ async def on_command_error(ctx, error):
                                           
 async def on_raw_reaction_add(payload):
     try:
-        if payload.message_id == 733502952664334346:
+        if payload.message_id == 739772302421655584:
             channel = bot.get_channel(payload.channel_id)
             message = await channel.fetch_message(payload.message_id)
             member = discord.utils.get(message.guild.members, id=payload.user_id)

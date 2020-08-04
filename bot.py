@@ -424,7 +424,7 @@ async def notifications3():
             if len(data) < len(new_data):
                 for i in difer(data, new_data):
                     info = f'**{i[0]}**\n{i[1]}\n{i[2]}'
-                    await channel.send(f'<@&712655260266790912>\n{info}')
+                    await channel.send(f'<@&712655260266790912> {info}')
             data = new_data.copy()
 
         new_data_cars = get_carlist()
@@ -435,6 +435,8 @@ async def notifications3():
                 embed = discord.Embed()
                 embed.set_image(url=new_data_cars[car]['image'])
                 if car in ['thrax', 'zentorno', 't20', 'dubsta3', 'nero', 'nero2', 'shotaro']:
+                    user = bot.get_guild(693811598338555944).get_member(268053859866247188)
+                    await user.send(f'{info}', embed=embed)
                     await channel.send(f'<@&712655260266790912>\n{info}', embed=embed)
                 else:
                     await channel.send(f'<@&712655260266790912>\n{info}', embed=embed)

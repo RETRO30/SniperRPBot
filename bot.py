@@ -437,13 +437,13 @@ async def notifications3():
         channel = bot.get_channel(740139877743722527)
         for car in data_cars.keys():
             if data_cars[car]['count'] < new_data_cars[car]['count']:
-                info = f'**{car.upper()}**\n{new_data_cars[car]["cost"]}\nВ наличии: {str(new_data_cars[car]["count"])}(+{new_data_cars[car]["count"] - data_cars[car]["count"]})'
+                info = f'**{car.upper()}**\n{new_data_cars[car]["cost"]}\nВ наличии: {str(new_data_cars[car]["count"])} (+{new_data_cars[car]["count"] - data_cars[car]["count"]})'
                 embed = discord.Embed()
                 embed.set_image(url=new_data_cars[car]['image'])
                 if car in ['thrax', 'zentorno', 't20', 'dubsta3', 'nero', 'nero2', 'shotaro']:
-                    await channel.send(f'<@&712655260266790912> <@!268053859866247188>', embed=embed)
+                    await channel.send(f'<@&712655260266790912>\n{info}', embed=embed)
                 else:
-                    await channel.send(f'<@&712655260266790912> {info}', embed=embed)
+                    await channel.send(f'<@&712655260266790912>\n{info}', embed=embed)
         data_cars = new_data_cars.copy()
     except Exception:
         pass

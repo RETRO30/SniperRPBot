@@ -13,7 +13,8 @@ bot = commands.Bot(command_prefix='$')
 bot.remove_command('help')
 dates_paunder = [4, 8, 12, 16, 20, 24, 28]
 dates_bizwars = [3, 6, 9, 12, 15, 18, 21, 24, 27, 30]
-whitelist = ['retro', 722774766230175784, 'Apelsin', 731047569114791976, 'ballas gang', 725700933178097714, 725700328552661133, 'ukrain mafia', 738791491585048736, 'gpra', 740059477801173174]
+whitelist = ['retro', 722774766230175784, 'Apelsin', 731047569114791976, 'ballas gang', 725700933178097714,
+             725700328552661133, 'ukrain mafia', 738791491585048736, 'gpra', 740059477801173174]
 blacklist = [580478163344162819, 612074024117469184, 305584796946530304, 304853315177545728, 168770786570534912,
              353910133010464769, 365094849961132032, 304853315177545728, 530347941609734145, 480114691004170250]
 status = cycle(['Хочешь меня на свой сервер?', 'Тебе к retro#9860', 'Введи $help, чтобы узнать что я умею'])
@@ -29,7 +30,8 @@ help_embed.add_field(name='$find [параметр поиска]', value='най
 help_embed.add_field(name='$deathtime', value='время на сервере(не очень точное)')
 help_embed.add_field(name='$isonline', value='проверить есть ли игрок онлайн')
 help_embed.add_field(name='$carinfo [название тс]', value='информация о тс(цена и наличе в магазине)')
-help_embed.add_field(name='$info [тег пользователя]', value='информация о пользователе, чтобы увидеть информаицию о пользователе нужно его тегнуть, без тега выведется информация о авторе')
+help_embed.add_field(name='$info [тег пользователя]',
+                     value='информация о пользователе, чтобы увидеть информаицию о пользователе нужно его тегнуть, без тега выведется информация о авторе')
 help_embed.set_thumbnail(
     url='https://cdn.discordapp.com/avatars/706272473288671303/ee27442b2391ed48ae232d1404f03d29.webp?size=128')
 
@@ -288,8 +290,8 @@ async def find(ctx, *arg):
             pass
     except Exception:
         await ctx.send('Что-то не так :(')
-                                          
-                                          
+
+
 @bot.command(pass_context=True)
 async def info(ctx, *arg):
     try:
@@ -394,19 +396,21 @@ async def notifications2():
     if time_:
         if time_[0] == '22' and not flag:
             flag = True
-                                          
+
             # apelsin
             channel = bot.get_channel(732336335356166235)
             await channel.send(f'''@everyone Скоро грузы. Сейчас в игре {instr(time_[0])}:{instr(time_[1])}''')
-                                          
+
             # ballas gang
             channel = bot.get_channel(725719732178649149)
-            await channel.send(f'''<@&699626003760414761> Скоро грузы. Место сбора - 6-ая амунация. Сейчас в игре {instr(time_[0])}:{instr(time_[1])}''')
-            
+            await channel.send(
+                f'''<@&699626003760414761> Скоро грузы. Место сбора - 6-ая амунация. Сейчас в игре {instr(time_[0])}:{instr(time_[1])}''')
+
             # ukrain mafia
             channel = bot.get_channel(738792481566752871)
-            await channel.send(f'''<@&739426439417298974> <@&739425880320770150> Скоро грузы, братья. Сейчас в игре {instr(time_[0])}:{instr(time_[1])}''')
-                                          
+            await channel.send(
+                f'''<@&739426439417298974> <@&739425880320770150> Скоро грузы, братья. Сейчас в игре {instr(time_[0])}:{instr(time_[1])}''')
+
         elif time_[0] != '22':
             flag = False
 
@@ -420,26 +424,26 @@ async def change_status():
 async def notifications3():
     try:
         global data, data_cars
-        channel = bot.get_channel(733887346898108499)
+        channel = bot.get_channel(740139945574006805)
         new_data = collect_for_exp().copy()
         if len(new_data):
             if len(data) < len(new_data):
                 for i in difer(data, new_data):
-                    embed = discord.Embed(title=i[0], description=f'{i[1]}\n{i[2]}')
-                    await channel.send(f'<@&712655260266790912>', embed=embed)
+                    info = f'**{i[0]}**\n{i[1]}\n{i[2]}'
+                    await channel.send(f'<@&712655260266790912> {info}')
             data = new_data.copy()
 
         new_data_cars = get_carlist()
+        channel = bot.get_channel(740139877743722527)
         for car in data_cars.keys():
             if data_cars[car]['count'] < new_data_cars[car]['count']:
-                embed = discord.Embed(title=car.upper(),
-                                      description=f'{new_data_cars[car]["cost"]}\n В наличии: {str(new_data_cars[car]["count"])}\n +{new_data_cars[car]["count"] - data_cars[car]["count"]}',
-                                      colour=discord.Colour.green())
+                info = f'**{car.upper()}**\n{new_data_cars[car]["cost"]}\nВ наличии: {str(new_data_cars[car]["count"])}(+{new_data_cars[car]["count"] - data_cars[car]["count"]})'
+                embed = discord.Embed()
                 embed.set_image(url=new_data_cars[car]['image'])
                 if car in ['thrax', 'zentorno', 't20', 'dubsta3', 'nero', 'nero2', 'shotaro']:
                     await channel.send(f'<@&712655260266790912> <@!268053859866247188>', embed=embed)
                 else:
-                    await channel.send(f'<@&712655260266790912>', embed=embed)
+                    await channel.send(f'<@&712655260266790912> {info}', embed=embed)
         data_cars = new_data_cars.copy()
     except Exception:
         pass
@@ -497,6 +501,7 @@ async def on_command_error(ctx, error):
         return
     raise error
 
+
 @bot.event
 async def on_raw_reaction_add(payload):
     try:
@@ -510,6 +515,7 @@ async def on_raw_reaction_add(payload):
     except Exception:
         pass
 
+
 @bot.event
 async def on_raw_reaction_remove(payload):
     try:
@@ -521,6 +527,7 @@ async def on_raw_reaction_remove(payload):
         await member.remove_roles(role)
     except Exception:
         pass
+
 
 # Запуск бота
 bot.run(os.environ.get('BOT_TOKEN'))

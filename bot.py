@@ -430,7 +430,7 @@ async def notifications3():
             if len(data) < len(new_data):
                 for i in difer(data, new_data):
                     info = f'**{i[0]}**\n{i[1]}\n{i[2]}'
-                    await channel.send(f'<@&712655260266790912> {info}')
+                    await channel.send(f'<@&712655260266790912>\n{info}')
             data = new_data.copy()
 
         new_data_cars = get_carlist()

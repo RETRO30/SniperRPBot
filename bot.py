@@ -24,7 +24,7 @@ roles = {'☮️': 712655260266790912}
 
 help_embed = discord.Embed(title='BOT BY RETRO', description='Йоу, быдло!')
 help_embed.add_field(name='$help', value='вызвать это сообщение')
-help_embed.add_field(name='$ghetto_stats', value='статистика захватов территорий гетто')
+help_embed.add_field(name='$ghetto', value='статистика захватов территорий гетто')
 help_embed.add_field(name='$find [параметр поиска]', value='найти недвижимость')
 help_embed.add_field(name='$deathtime', value='время на сервере(не очень точное)')
 help_embed.add_field(name='$isonline', value='проверить есть ли игрок онлайн')
@@ -185,7 +185,7 @@ async def calc_time(ctx, *arg):
 
 
 @bot.command()
-async def ghetto_stats(ctx):
+async def ghetto(ctx):
     try:
         if ctx.message.channel.id in whitelist and ctx.message.author.id not in blacklist:
             GOOGLE_CHROME_PATH = '/app/.apt/usr/bin/google-chrome-stable'

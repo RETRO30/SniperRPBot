@@ -441,8 +441,8 @@ async def notifications3():
                 else:
                     await channel.send(f'<@&712655260266790912>\n{info}', embed=embed)
         data_cars = new_data_cars.copy()
-    except Exception:
-        pass
+    except Exception as e:
+        print(e)
 
 
 @tasks.loop(seconds=60)

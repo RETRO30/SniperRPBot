@@ -416,30 +416,33 @@ async def change_status():
 
 @tasks.loop(seconds=15)
 async def notifications3():
-    global data, data_cars
-    channel = bot.get_channel(740139945574006805)
-    new_data = collect_for_exp().copy()
-    if len(new_data):
-        if len(data) < len(new_data):
-            for i in difer(data, new_data):
-                info = f'**{i[0]}**\n{i[1]}\n{i[2]}'
-                await channel.send(f'<@&712655260266790912> {info}')
-        data = new_data.copy()
+     try:
+        global data, data_cars
+        channel = bot.get_channel(740139945574006805)
+        new_data = collect_for_exp().copy()
+        if len(new_data):
+            if len(data) < len(new_data):
+                for i in difer(data, new_data):
+                    info = f'**{i[0]}**\n{i[1]}\n{i[2]}'
+                    await channel.send(f'<@&712655260266790912> {info}')
+            data = new_data.copy()
 
-    new_data_cars = get_carlist()
-    channel = bot.get_channel(740139877743722527)
-    for car in data_cars.keys():
-        if data_cars[car]['count'] < new_data_cars[car]['count']:
-            info = f'**{car.upper()}**\n{new_data_cars[car]["cost"]}\nВ наличии: {str(new_data_cars[car]["count"])} (+{new_data_cars[car]["count"] - data_cars[car]["count"]})'
-            embed = discord.Embed()
-            embed.set_image(url=new_data_cars[car]['image'])
-            if car in ['thrax', 'zentorno', 't20', 'dubsta3', 'nero', 'nero2', 'shotaro']:
-                user = bot.get_guild(693811598338555944).get_member(268053859866247188)
-                await user.send(f'{info}', embed=embed)
-                await channel.send(f'<@&712655260266790912>\n{info}', embed=embed)
-            else:
-                await channel.send(f'<@&712655260266790912>\n{info}', embed=embed)
-    data_cars = new_data_cars.copy()
+        new_data_cars = get_carlist()
+        channel = bot.get_channel(740139877743722527)
+        for car in data_cars.keys():
+            if data_cars[car]['count'] < new_data_cars[car]['count']:
+                info = f'**{car.upper()}**\n{new_data_cars[car]["cost"]}\nВ наличии: {str(new_data_cars[car]["count"])} (+{new_data_cars[car]["count"] - data_cars[car]["count"]})'
+                embed = discord.Embed()
+                embed.set_image(url=new_data_cars[car]['image'])
+                if car in ['thrax', 'zentorno', 't20', 'dubsta3', 'nero', 'nero2', 'shotaro']:
+                    user = bot.get_guild(693811598338555944).get_member(268053859866247188)
+                    await user.send(f'{info}', embed=embed)
+                    await channel.send(f'<@&712655260266790912>\n{info}', embed=embed)
+                else:
+                    await channel.send(f'<@&712655260266790912>\n{info}', embed=embed)
+        data_cars = new_data_cars.copy()
+    except Exception as e:
+        print(e)
 
 
 @tasks.loop(seconds=60)

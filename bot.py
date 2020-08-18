@@ -302,11 +302,19 @@ async def find(ctx, *arg):
     try:
         if ctx.message.channel.id in whitelist and ctx.message.author.id not in blacklist:
             arg = ' '.join(list(arg))
-            if arg.lower() != 'склад' and arg.lower() != 'дом':
+            if arg.lower() != 'склад' and arg.lower() != 'дом' and arg.lower() != 'нет':
                 pass
             else:
                 arg = ''
             table = collect()
+            players = top_money_get()
+            money = ''
+            for i in players:
+                if i[0].lower() == arg.lower():
+                    money = i[1]
+            embed = discord.Embed(title='Деньги',
+                                  description=money)
+            await ctx.send(embed=embed)
             property_ = []
             for i in table:
                 for j in i.items():

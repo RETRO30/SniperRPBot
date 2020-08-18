@@ -324,10 +324,9 @@ async def find(ctx, *arg):
                             property_.append(i)
                     elif arg.lower() in j[1].lower():
                         property_.append(i)
-            if len(property_) == 0:
-                await ctx.send(
-                    'Увы, я ничего не нашёл.')
-            else:
+            if len(property_) == 0 and not money:
+                await ctx.send('Увы, я ничего не нашёл.')
+            elif len(property_):
                 for i in property_:
                     embed = discord.Embed(title=i["Название"],
                                           description=f'Владелец: {i["Владелец"]}\nЦена: {i["Цена"]}\nАдрес: {i["Адрес"]}')

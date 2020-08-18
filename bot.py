@@ -31,6 +31,7 @@ help_embed.add_field(name='$isonline', value='проверить есть ли �
 help_embed.add_field(name='$carinfo [название тс]', value='информация о тс(цена и наличе в магазине)')
 help_embed.add_field(name='$info [тег пользователя]',
                      value='информация о пользователе, чтобы увидеть информаицию о пользователе нужно его тегнуть, без тега выведется информация о авторе')
+help_embed.add_field(name='$top_money', value='отсортированная таблица богачей, принемает два значения - кол-во денег(от и до), если значение одно, второе принемается за ноль')
 help_embed.set_thumbnail(
     url='https://cdn.discordapp.com/avatars/706272473288671303/ee27442b2391ed48ae232d1404f03d29.webp?size=128')
 
@@ -129,6 +130,17 @@ def collect_for_exp():
                                  i[i.find('Цена: '):].split('<br>')[1]])
     return sorted_table
 
+def top_money_get():
+    code = requests.get('https://dednet.ru/servers').text
+    soup = BeautifulSoup(code, features='lxml')
+    table = soup.find('div', class_='col s12', id='top-money')
+    rows = table.find_all('tr')[1:]
+    top_money_players = []
+    for i in rows:
+        i = str(i).replace('<td>', '').replace('</td>', '').split('\n')
+        top_money_players.append([str(i[2]), str(i[3]),  int(str(i[3])[1:].replace(',', ''))])
+    return top_money_players
+
 
 def get_carlist():
     code = requests.get('https://dednet.ru/car-list').text
@@ -150,6 +162,32 @@ data_cars = get_carlist()
 
 
 # Команды бота
+@bot.command(pass_context=True)
+async def top_money(ctx, *arg):
+    try:
+        if ctx.message.channel.id in whitelist and ctx.message.author.id not in blacklist:
+                arg = list(arg)
+                if len(arg):
+                    if len(arg) == 1:
+                        from_ = 0
+                        to_ = int(arg[0])
+                    else:
+                        from_ = min(int(arg[0]), int(arg[1]))
+                        to_ = max(int(arg[0]), int(arg[1]))
+                    players = top_money_get()
+                    sorted_players = []
+                    for i in players:
+                        if from_ <= i[2] <= to_:
+                            sorted_players.append(f'{i[0]} - {i[1]}')
+                    if sorted_players:
+                        await ctx.send('\n'.join(sorted_players))
+                    else:
+                        await ctx.send('Увы, я ничего не нашёл.')
+                else:
+                    await ctx.send('Что-то не так :(')
+    except Exception:
+        await ctx.send('Что-то не так :(')
+
 @bot.command(pass_context=True)
 async def calc_time(ctx, *arg):
     try:

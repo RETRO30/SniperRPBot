@@ -314,7 +314,8 @@ async def find(ctx, *arg):
                     money = i[1]
             embed = discord.Embed(title='Деньги',
                                   description=money)
-            await ctx.send(embed=embed)
+            if money:
+                await ctx.send(embed=embed)
             property_ = []
             for i in table:
                 for j in i.items():

@@ -24,7 +24,7 @@ roles = {'☮️': 712655260266790912}
 
 help_embed = discord.Embed(title='BOT BY RETRO', description='Йоу, быдло!')
 help_embed.add_field(name='$help', value='вызвать это сообщение')
-help_embed.add_field(name='$ghetto', value='статистика захватов территорий гетто')
+help_embed.add_field(name='$ghetto [id территории]', value='информация о территории гетто, без аргумента - общая статистка гетто')
 help_embed.add_field(name='$find [параметр поиска]', value='найти недвижимость')
 help_embed.add_field(name='$deathtime', value='время на сервере(не очень точное)')
 help_embed.add_field(name='$isonline', value='проверить есть ли игрок онлайн')
@@ -37,6 +37,25 @@ help_embed.set_thumbnail(
 
 
 # вспомогательные функции
+def get_ghetto():
+    code = requests.get('https://dednet.ru/map').text
+    code = code.split('\n')
+    sorted_table = list(filter(lambda x: not x.find('L.polygon'), code[-13].split(';')))
+    code.clear()
+    f_table = []
+    for i in range(len(sorted_table)):
+        sorted_table[i] = sorted_table[i][sorted_table[i].find('.bindPopup(') + 12:sorted_table[i].find('.addTo(map)')]
+        f_table.append(
+            {
+                'id': sorted_table[i].split('<br>')[0][7:-4],
+                'Район': sorted_table[i].split('<br>')[-3][7:],
+                'Улица': sorted_table[i].split('<br>')[-2][7:],
+                'Под контролем': sorted_table[i].split('<br>')[-1][15:-2].strip(),
+                'head': len(sorted_table[i].split('<br>')) == 5
+            }
+        )
+    return f_table
+
 def dead_time():
     try:
         code = requests.get('https://dednet.ru/servers').text
@@ -222,46 +241,63 @@ async def calc_time(ctx, *arg):
         await ctx.send('Что-то не так :(')
 
 
-@bot.command()
-async def ghetto(ctx):
+@bot.command(pass_context=True)
+async def ghetto(ctx, *arg):
     try:
         if ctx.message.channel.id in whitelist and ctx.message.author.id not in blacklist:
-            GOOGLE_CHROME_PATH = '/app/.apt/usr/bin/google-chrome-stable'
-            CHROMEDRIVER_PATH = '/app/.chromedriver/bin/chromedriver'
-            chrome_options = webdriver.ChromeOptions()
-            chrome_options.add_argument('--disable-gpu')
-            chrome_options.add_argument('--no-sandbox')
-            chrome_options.binary_location = GOOGLE_CHROME_PATH
-            browser = webdriver.Chrome(CHROMEDRIVER_PATH, chrome_options=chrome_options)
-            browser.get('https://dednet.ru/map')
-            code = browser.page_source
-            browser.close()
+            arg = list(arg)
+            table = get_ghetto()
+            if len(arg):
+                id = arg[0]
+                territory = None
+                for i in table:
+                    if i['id'] == id:
+                        territory = i
 
-            soup = BeautifulSoup(code, features='lxml')
-            page = soup.find('svg', class_='leaflet-zoom-animated')
-            all_territories = page.find_all_next('g')
-            ghetto_table = []
-            for territory in all_territories:
-                args = str(territory.find('path')).split()
-                color = ''
-                for arg in args:
-                    if arg.startswith('fill='):
-                        color = arg
-                ghetto_table.append(color)
-            colors_ghetto = {'fill="#673AB7"': 'The Ballas Gang',
-                             'fill="#f44336"': 'Bloods',
-                             'fill="#4CAF50"': 'The Families',
-                             'fill="#2196F3"': 'Marabunta Grande',
-                             'fill="#FFEB3B"': 'Los Santos Vagos'}
-            ghetto_stats = {'The Ballas Gang': 0, 'Bloods': 0, 'The Families': 0, 'Marabunta Grande': 0,
-                            'Los Santos Vagos': 0}
-            for i in ghetto_table:
-                if i in colors_ghetto.keys():
-                    ghetto_stats[colors_ghetto[i]] += 1
-            string = ''
-            for band, amount in ghetto_stats.items():
-                string += f'{band}: {amount}\n'
-            await ctx.send(string)
+                if territory:
+                    if territory['Под контролем'] == 'The Ballas Gang':
+                        color = discord.Colour.purple()
+                    elif territory['Под контролем'] == 'The Families':
+                        color = discord.Colour.green()
+                    elif territory['Под контролем'] == 'Los Santos Vagos':
+                        color = discord.Colour.gold()
+                    elif territory['Под контролем'] == 'Marabunta Grande':
+                        color = discord.Colour.blue()
+                    elif territory['Под контролем'] == 'Bloods':
+                        color = discord.Colour.red()
+                    else:
+                        color = discord.Colour.darker_grey()
+                    if territory['head']:
+                        embed = discord.Embed(
+                            title=f'Территория {territory["id"]} - титульная',
+                            description=f'Район: {territory["Район"]}\nУлица: {territory["Улица"]}\nПод контролем: {territory["Под контролем"]}',
+                            color=color)
+                    else:
+                        embed = discord.Embed(
+                            title=f'Территория {territory["id"]}',
+                            description=f'Район: {territory["Район"]}\nУлица: {territory["Улица"]}\nПод контролем: {territory["Под контролем"]}',
+                            color=color)
+                    await ctx.send(embed=embed)
+                else:
+                    await ctx.send('Увы, я ничего не нашёл.')
+            else:
+                The_Ballas_Gang = 0
+                The_Families = 0
+                Los_Santos_Vagos = 0
+                Marabunta_Grande = 0
+                Bloods = 0
+                for i in table:
+                    if i['Под контролем'] == 'The Ballas Gang':
+                        The_Ballas_Gang += 1
+                    elif i['Под контролем'] == 'The Families':
+                        The_Families += 1
+                    elif i['Под контролем'] == 'Los Santos Vagos':
+                        Los_Santos_Vagos += 1
+                    elif i['Под контролем'] == 'Marabunta Grande':
+                        Marabunta_Grande += 1
+                    elif i['Под контролем'] == 'Bloods':
+                        Bloods += 1
+                await ctx.send(f'The Ballas Gang: {The_Ballas_Gang}\nBloods: {Bloods}\nThe Families: {The_Families}\nMarabunta Grande: {Marabunta_Grande}\nLos Santos Vagos: {Los_Santos_Vagos}')
         else:
             pass
     except Exception as e:

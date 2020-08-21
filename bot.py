@@ -23,15 +23,15 @@ exp_table = ['08:32', '11:56', '15:20', '18:44', '22:08', '01:32', '04:56']
 roles = {'☮️': 712655260266790912}
 
 help_embed = discord.Embed(title='BOT BY RETRO', description='Йоу, быдло!')
-help_embed.add_field(name='$help', value='вызвать это сообщение')
-help_embed.add_field(name='$ghetto [id территории]', value='информация о территории гетто, без аргумента - общая статистка гетто')
-help_embed.add_field(name='$find [параметр поиска]', value='найти недвижимость')
-help_embed.add_field(name='$deathtime', value='время на сервере(не очень точное)')
-help_embed.add_field(name='$isonline', value='проверить есть ли игрок онлайн')
-help_embed.add_field(name='$carinfo [название тс]', value='информация о тс(цена и наличе в магазине)')
+help_embed.add_field(name='$help', value='вызвать это сообщение', inline=False)
+help_embed.add_field(name='$ghetto [id территории]', value='информация о территории гетто, без аргумента - общая статистка гетто', inline=False)
+help_embed.add_field(name='$find [параметр поиска]', value='найти недвижимость', inline=False)
+help_embed.add_field(name='$deathtime', value='время на сервере(не очень точное)', inline=False)
+help_embed.add_field(name='$isonline', value='проверить есть ли игрок онлайн', inline=False)
+help_embed.add_field(name='$carinfo [название тс]', value='информация о тс(цена и наличе в магазине)', inline=False)
 help_embed.add_field(name='$info [тег пользователя]',
-                     value='информация о пользователе, чтобы увидеть информаицию о пользователе нужно его тегнуть, без тега выведется информация о авторе')
-help_embed.add_field(name='$top_money', value='отсортированная таблица богачей, принемает два значения - кол-во денег(от и до), если значение одно, второе принемается за ноль')
+                     value='информация о пользователе, чтобы увидеть информаицию о пользователе нужно его тегнуть, без тега выведется информация о авторе', inline=False)
+help_embed.add_field(name='$top_money', value='отсортированная таблица богачей, принемает два значения - кол-во денег(от и до), если значение одно, второе принемается за ноль', inline=False)
 help_embed.set_thumbnail(
     url='https://cdn.discordapp.com/avatars/706272473288671303/ee27442b2391ed48ae232d1404f03d29.webp?size=128')
 

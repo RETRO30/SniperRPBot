@@ -186,8 +186,9 @@ data_cars = get_carlist()
 @bot.command()
 async def restart(ctx):
     if ctx.message.author.id in admins:
-        await ctx.send('Блинб...')
-        await bot.close()
+        heroku_conn = heroku3.from_key(os.environ.get('API-KEY'))
+        app = heroku_conn.apps()['botbyretro']
+        app.restart()
 
 @bot.command(pass_context=True)
 async def top_money(ctx, *arg):

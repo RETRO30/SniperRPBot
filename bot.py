@@ -20,6 +20,8 @@ status = cycle(['Хочешь меня на свой сервер?', 'Тебе �
 flag = False
 exp_table = ['08:32', '11:56', '15:20', '18:44', '22:08', '01:32', '04:56']
 
+admins = [408605476365008897]
+
 roles = {'☮️': 712655260266790912}
 
 help_embed = discord.Embed(title='BOT BY RETRO', description='Йоу, быдло!')
@@ -181,6 +183,12 @@ data_cars = get_carlist()
 
 
 # Команды бота
+@bot.command()
+async def restart(ctx):
+    if ctx.message.author.id in admins:
+        await ctx.send('Блинб...')
+        await bot.close()
+
 @bot.command(pass_context=True)
 async def top_money(ctx, *arg):
     try:

@@ -7,6 +7,7 @@ from itertools import cycle
 import discord
 import requests
 from discord.ext.commands import CommandNotFound
+import heroku3
 
 # константы
 bot = commands.Bot(command_prefix='$')

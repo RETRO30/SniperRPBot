@@ -175,7 +175,8 @@ def get_carlist():
         name = car.find('span', class_='card-title').text.lower()
         cost = car.find('a', class_='bw-text btn z-depth-0').text
         count = int(car.find('a', class_='bw-text btn z-depth-0 right').text.split()[0].split('/')[0])
-        carlist.update({name: {'cost': cost, 'count': count, 'image': image}})
+        all_ = int(car.find('a', class_='bw-text btn z-depth-0 right').text.split()[0].split('/')[1])
+        carlist.update({name: {'cost': cost, 'count': count,'all': all_, 'image': image}})
     return carlist
 
 
@@ -430,7 +431,7 @@ async def carinfo(ctx, *arg):
             else:
                 color = discord.Colour.green()
             embed = discord.Embed(title=name.upper(),
-                                  description=f'{carlist[name]["cost"]}\n В наличии: {str(carlist[name]["count"])}',
+                                  description=f'{carlist[name]["cost"]}\n В наличии: {str(carlist[name]["count"])}/{str(carlist[name]["all"])}',
                                   colour=color)
             embed.set_image(url=carlist[name]['image'])
             await ctx.send(embed=embed)
@@ -524,7 +525,7 @@ async def notifications3():
         channel = bot.get_channel(740139877743722527)
         for car in data_cars.keys():
             if data_cars[car]['count'] < new_data_cars[car]['count']:
-                info = f'**{car.upper()}**\n{new_data_cars[car]["cost"]}\nВ наличии: {str(new_data_cars[car]["count"])} (+{new_data_cars[car]["count"] - data_cars[car]["count"]})'
+                info = f'**{car.upper()}**\n{new_data_cars[car]["cost"]}\nВ наличии: {str(new_data_cars[car]["count"])}/{str(new_data_cars[car]["all"])} (+{new_data_cars[car]["count"] - data_cars[car]["count"]})'
                 embed = discord.Embed()
                 embed.set_image(url=new_data_cars[car]['image'])
                 if car in ['thrax', 'zentorno', 't20', 'dubsta3', 'nero', 'nero2', 'shotaro']:

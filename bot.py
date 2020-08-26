@@ -494,11 +494,6 @@ async def notifications2():
             channel = bot.get_channel(732336335356166235)
             await channel.send(f'''@everyone Скоро грузы. Сейчас в игре {instr(time_[0])}:{instr(time_[1])}''')
 
-            # ukrain mafia
-            channel = bot.get_channel(738792481566752871)
-            await channel.send(
-                f'''<@&739426439417298974> <@&739425880320770150> Скоро грузы, братья. Сейчас в игре {instr(time_[0])}:{instr(time_[1])}''')
-
         elif time_[0] != '22':
             flag = False
 

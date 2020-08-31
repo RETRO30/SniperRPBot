@@ -171,7 +171,7 @@ def get_carlist():
     table = rows.find_all('div', class_='col s12 l3')
     carlist = {}
     for car in table:
-        image = 'https://dednet.ru/' + str(car.find('div', class_='card-image')).split('"')[7]
+        image = 'https://dednet.ru' + str(car.find('div', class_='card-image')).split('"')[7]
         name = car.find('span', class_='card-title').text.lower()
         cost = car.find('a', class_='bw-text btn z-depth-0').text
         count = int(car.find('a', class_='bw-text btn z-depth-0 right').text.split()[0].split('/')[0])

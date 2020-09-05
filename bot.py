@@ -466,7 +466,7 @@ async def change_status():
 
 
 @tasks.loop(seconds=15)
-async def notifications3():
+async def exp1():
     try:
         global data_cars, data_houses, data_stocks, data_condos, data_business
         new_data_houses = get_houses_for_exp().copy()
@@ -533,7 +533,7 @@ async def notifications3():
 
 
 @tasks.loop(seconds=60)
-async def notifications4():
+async def exp2():
     global exp_table
     now = datetime.datetime.utcnow()
     hour = now.time().hour
@@ -568,10 +568,8 @@ async def on_ready():
     print('Starting background tasks...')
     try:
         change_status.start()
-        notifications.start()
-        notifications2.start()
-        notifications3.start()
-        notifications4.start()
+        exp1.start()
+        exp2.start()
     except Exception as e:
         print("Error! " + str(e))
     else:

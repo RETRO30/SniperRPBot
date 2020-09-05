@@ -306,7 +306,7 @@ async def ghetto(ctx):
                 f'The Ballas Gang: {The_Ballas_Gang}\nBloods: {Bloods}\nThe Families: {The_Families}\nMarabunta Grande: {Marabunta_Grande}\nLos Santos Vagos: {Los_Santos_Vagos}')
     except Exception as e:
         print(e)
-    await ctx.send('Что-то не так :(')
+        await ctx.send('Что-то не так :(')
 
 
 @bot.command()

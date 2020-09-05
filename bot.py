@@ -523,9 +523,9 @@ async def exp1():
                 if car in ['thrax', 'zentorno', 't20', 'dubsta3', 'nero', 'nero2', 'shotaro', 'zorya']:
                     user = bot.get_guild(693811598338555944).get_member(268053859866247188)
                     await user.send(f'{info}', embed=embed)
-                    await channel.send(f'||<@&740139877743722527>||\n{info}', embed=embed)
+                    await channel.send(f'||<@&751783971146301470>||\n{info}', embed=embed)
                 else:
-                    await channel.send(f'||<@&740139877743722527>||\n{info}', embed=embed)
+                    await channel.send(f'||<@&751783971146301470>||\n{info}', embed=embed)
         data_cars = new_data_cars.copy()
         new_data_cars.clear()
     except Exception as e:

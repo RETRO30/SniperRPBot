@@ -1,6 +1,5 @@
 discord.py
 bs4
-selenium
 lxml
 requests
 heroku3

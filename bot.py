@@ -519,7 +519,7 @@ async def exp1():
             if data_cars[car]['count'] < new_data_cars[car]['count']:
                 info = f'**{car.upper()}**\n{new_data_cars[car]["cost"]}\nВ наличии: {str(new_data_cars[car]["count"])}/{str(new_data_cars[car]["all"])} (+{new_data_cars[car]["count"] - data_cars[car]["count"]})'
                 embed = discord.Embed()
-                embed.set_image(url=get_car_image(car.capitalize()))
+                embed.set_image(url=get_car_image(name)["img_small"])
                 if car in ['thrax', 'zentorno', 't20', 'dubsta3', 'nero', 'nero2', 'shotaro', 'zorya']:
                     user = bot.get_guild(693811598338555944).get_member(268053859866247188)
                     await user.send(f'{info}', embed=embed)

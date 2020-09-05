@@ -1,11 +1,11 @@
-rom discord.ext import commands, tasks
-import os
+from discord.ext import commands, tasks
 from bs4 import BeautifulSoup
-import datetime
 from itertools import cycle
+from discord.ext.commands import CommandNotFound
+import os
+import datetime
 import discord
 import requests
-from discord.ext.commands import CommandNotFound
 import heroku3
 import json
 

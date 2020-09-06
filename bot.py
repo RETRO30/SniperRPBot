@@ -357,7 +357,7 @@ async def find(ctx, *arg):
             money = get_with_name(top_money_get(), name_in_str)
             online_info = get_user_info(name_in_str)
             yacht = get_with_owner_name(get_yachts(), name_in_str)
-            if online_info:
+            if online_info["online_all"]:
                 if isonline(name_in_str):
                     color = discord.Colour.green()
                 else:
@@ -473,7 +473,7 @@ async def exp1():
         channel = bot.get_channel(740139945574006805)
         if len(data_houses) < len(new_data_houses):
             for house in difer(data_houses, new_data_houses):
-                channel.send(
+                await channel.send(
                     f'||<@&751783634674909185>||\n**Дом**\nАдрес: {house["address"]}, {house["street"]} {house["number"]}\nЦена: {inmoney(house["price"])}')
         data_houses = new_data_houses.copy()
         new_data_houses.clear()
@@ -482,7 +482,7 @@ async def exp1():
         channel = bot.get_channel(740139945574006805)
         if len(data_condos) < len(new_data_condos):
             for condo in difer(data_condos, new_data_condos):
-                channel.send(
+                await channel.send(
                     f'||<@&751783634674909185>||\n**Квартира**\nАдрес: {condo["address"]}, {condo["street"]} {condo["number"]}\nЦена: {inmoney(condo["price"])}')
         data_condos = new_data_condos.copy()
         new_data_condos.clear()
@@ -499,7 +499,7 @@ async def exp1():
                         stock_type = 'Средний'
                     if stock['type'] == '2':
                         stock_type = 'Большой'
-                channel.send(
+                await channel.send(
                     f'||<@&751784197986975847>||\n**Склад**\nАдрес: {stock["address"]}, {stock["street"]} {stock["number"]}\nЦена: {inmoney(stock["price"])}\nТип: {stock_type}')
         data_stocks = new_data_stocks.copy()
         new_data_stocks.clear()
@@ -508,7 +508,7 @@ async def exp1():
         channel = bot.get_channel(750019394750513223)
         if len(data_business) < len(new_data_business):
             for busines in difer(data_condos, new_data_business):
-                channel.send(
+                await channel.send(
                     f'||<@&751784103686307840>||\n**Бизнес**Название: {business["name"]}\nЦена: {inmoney(business["price"])}')
         data_business = new_data_business.copy()
         new_data_business.clear()

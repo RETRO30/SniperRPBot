@@ -543,20 +543,20 @@ async def exp2():
         if hour + 3 < 24:
             time_ = f'{instr(hour + 3)}:{instr(minute + 5)}'
             if time_ in exp_table:
-                await channel.send(f'||<@&712655260266790912>|| слёт через 5 минут')
+                await channel.send(f'||<@&751784325959123015>|| слёт через 5 минут')
         else:
             time_ = f'{instr(hour + 3 - 24)}:{instr(minute + 5)}'
             if time_ in exp_table:
-                await channel.send(f'||<@&712655260266790912>|| слёт через 5 минут')
+                await channel.send(f'||<@&751784325959123015>|| слёт через 5 минут')
     else:
         if hour + 4 < 24:
             time_ = f'{instr(hour + 4)}:{instr(minute + 5 - 60)}'
             if time_ in exp_table:
-                await channel.send(f'||<@&712655260266790912>|| слёт через 5 минут')
+                await channel.send(f'||<@&751784325959123015>|| слёт через 5 минут')
         else:
             time_ = f'{instr(hour + 4 - 24)}:{instr(minute + 5 - 60)}'
             if time_ in exp_table:
-                await channel.send(f'||<@&712655260266790912>|| слёт через 5 минут')
+                await channel.send(f'||<@&751784325959123015>|| слёт через 5 минут')
 
 
 # События

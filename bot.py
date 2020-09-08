@@ -509,7 +509,7 @@ async def exp1():
         if len(data_business) < len(new_data_business):
             for busines in difer(data_condos, new_data_business):
                 await channel.send(
-                    f'||<@&751784103686307840>||\n**Бизнес**Название: {business["name"]}\nЦена: {inmoney(business["price"])}')
+                    f'||<@&751784103686307840>||\n**Бизнес**Название: {busines["name"]}\nЦена: {inmoney(busines["price"])}')
         data_business = new_data_business.copy()
         new_data_business.clear()
 

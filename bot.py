@@ -430,7 +430,7 @@ async def info(ctx, *arg):
             user_embed.add_field(name='Сидит тут с:', value=date_join)
             user_embed.add_field(name='Вылупился:', value=date_created)
             user_embed.set_image(url=avatar)
-            user_embed.set_footer(text='А это его ебало')
+            user_embed.set_footer(text='А это его лицо получается')
             await ctx.send(embed=user_embed)
         else:
             pass

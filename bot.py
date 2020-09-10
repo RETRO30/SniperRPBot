@@ -28,7 +28,7 @@ roles = {'🧙‍♂️': 751784325959123015,
          '🏢': 751784103686307840,
          '📦': 751784197986975847}
 
-help_embed = discord.Embed(title='BOT BY RETRO', description='Йоу, быдло!')
+help_embed = discord.Embed(title='BOT BY RETRO', description='Здесь должно было быть описание')
 help_embed.add_field(name='$help', value='вызвать это сообщение', inline=False)
 help_embed.add_field(name='$ghetto [id территории]',
                      value='информация о территории гетто, без аргумента - общая статистка гетто', inline=False)
@@ -419,7 +419,7 @@ async def info(ctx, *arg):
             date_join = user.joined_at.strftime("%A %d-%B-%y %H:%M")
             date_created = user.created_at.strftime("%A %d-%B-%y %H:%M")
             if not activity:
-                description = 'Гоняет лысого'
+                description = 'Тут должен был быть статус, но его похоже нет...'
             else:
                 description = activity.name
             if nick:

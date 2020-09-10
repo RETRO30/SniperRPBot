@@ -41,8 +41,6 @@ help_embed.add_field(name='$info [тег пользователя]',
 help_embed.add_field(name='$top_money',
                      value='отсортированная таблица богачей, принемает два значения - кол-во денег(от и до), если значение одно, второе принемается за ноль',
                      inline=False)
-help_embed.set_thumbnail(
-    url='https://cdn.discordapp.com/avatars/706272473288671303/ee27442b2391ed48ae232d1404f03d29.webp?size=128')
 
 
 # вспомогательные функции

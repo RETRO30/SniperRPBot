@@ -290,15 +290,15 @@ async def ghetto(ctx):
             Marabunta_Grande = 0
             Bloods = 0
             for i in table:
-                if i['fraction_name'] == 'The Ballas Gang':
+                if i['fraction_name'].strip() == 'The Ballas Gang':
                     The_Ballas_Gang += 1
-                elif i['fraction_name'] == 'The Families':
+                elif i['fraction_name'].strip() == 'The Families':
                     The_Families += 1
-                elif i['fraction_name'] == 'Los Santos Vagos':
+                elif i['fraction_name'].strip() == 'Los Santos Vagos':
                     Los_Santos_Vagos += 1
-                elif i['fraction_name'] == 'Marabunta Grande':
+                elif i['fraction_name'].strip() == 'Marabunta Grande':
                     Marabunta_Grande += 1
-                elif i['fraction_name'] == 'Bloods':
+                elif i['fraction_name'].strip() == 'Bloods':
                     Bloods += 1
             await ctx.send(
                 f'The Ballas Gang: {The_Ballas_Gang}\nBloods: {Bloods}\nThe Families: {The_Families}\nMarabunta Grande: {Marabunta_Grande}\nLos Santos Vagos: {Los_Santos_Vagos}')
